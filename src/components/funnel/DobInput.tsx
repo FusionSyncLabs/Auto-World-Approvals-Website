@@ -84,7 +84,7 @@ export function DobInput({ value, onChange, autoFocus, onBlur }: Props) {
   };
 
   const cellClass =
-    "h-14 rounded-xl border border-input bg-background text-center text-xl font-semibold tabular-nums tracking-widest outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30";
+    "h-12 sm:h-14 rounded-xl border border-input bg-background text-center text-lg sm:text-xl font-semibold tabular-nums tracking-normal min-[380px]:tracking-wider sm:tracking-widest outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30";
 
   const onPaste = (e: React.ClipboardEvent) => {
     const raw = e.clipboardData.getData("text");
@@ -124,7 +124,7 @@ export function DobInput({ value, onChange, autoFocus, onBlur }: Props) {
   };
 
   return (
-    <div className="grid grid-cols-[1fr_1fr_1.6fr_auto] gap-3" onPaste={onPaste}>
+    <div className="grid grid-cols-[1fr_1fr_1.5fr_auto] gap-2 sm:gap-3" onPaste={onPaste}>
       <div>
         <input
           ref={mmRef}
@@ -177,12 +177,12 @@ export function DobInput({ value, onChange, autoFocus, onBlur }: Props) {
               type="button"
               variant="outline"
               aria-label="Pick date of birth from calendar"
-              className="h-14 w-14 rounded-xl p-0"
+              className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl p-0"
             >
               <CalendarIcon className="h-5 w-5" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="end">
+          <PopoverContent className="w-auto p-0 max-w-[calc(100vw-2rem)]" align="end">
             <Calendar
               mode="single"
               selected={selected}

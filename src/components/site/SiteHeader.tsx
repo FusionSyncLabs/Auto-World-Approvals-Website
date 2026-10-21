@@ -42,7 +42,7 @@ export function SiteHeader() {
       }`}
     >
       <div
-        className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 h-20 md:h-24 md:flex md:justify-between lg:px-8"
+        className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:gap-3 px-3 sm:px-4 h-16 sm:h-20 md:h-24 md:flex md:justify-between lg:px-8"
       >
         <Logo />
         <nav className="hidden items-center gap-9 lg:flex">

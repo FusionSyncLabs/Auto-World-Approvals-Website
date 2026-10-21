@@ -185,7 +185,7 @@ function ApplyForm() {
     <div className="min-h-screen bg-soft">
       {/* Canada Drives Modern Sticky Header */}
       <header className="sticky top-0 z-30 border-b border-border/80 bg-background/95 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
+        <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 lg:px-8">
           <div className="flex items-center gap-2">
             <Logo />
           </div>
@@ -212,7 +212,7 @@ function ApplyForm() {
         </div>
 
         {/* Micro-Progress Subheader */}
-        <div className="container mx-auto flex items-center justify-end px-4 py-1.5 text-xs font-semibold text-muted-foreground">
+        <div className="container mx-auto flex items-center justify-end px-3 sm:px-4 py-1.5 text-xs font-semibold text-muted-foreground">
           <span className="text-primary font-bold">{progressPercent}% Complete</span>
         </div>
 
@@ -221,7 +221,7 @@ function ApplyForm() {
         </p>
       </header>
 
-      <main data-private data-clarity-mask="true" className="container mx-auto px-4 py-8 lg:px-8 lg:py-12 ph-no-capture">
+      <main data-private data-clarity-mask="true" className="container mx-auto px-3 py-5 sm:px-4 sm:py-8 lg:px-8 lg:py-12 ph-no-capture">
         <div className="mx-auto w-full max-w-[640px]">
           {matching ? (
             <LenderMatchingLoader
@@ -487,7 +487,7 @@ function StepRenderer({
           description="Select your preferred body style to view matched rates and certified inventory."
           footer={autoAdvanceFooter}
         >
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
             {vehicleCards.map((v) => (
               <VehicleGridCard
                 key={v.value}
@@ -512,7 +512,7 @@ function StepRenderer({
                 setTimeout(onNext, 240);
               }}
               className={cn(
-                "group relative flex flex-col items-center justify-between rounded-2xl border-2 border-dashed p-4 text-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 motion-safe:active:scale-[0.98]",
+                "group relative flex flex-col items-center justify-between rounded-xl sm:rounded-2xl border-2 border-dashed p-3 sm:p-4 text-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 motion-safe:active:scale-[0.98]",
                 data.vehicle_type === "not_sure"
                   ? "border-primary bg-primary/5 shadow-md shadow-primary/10 ring-2 ring-primary/20"
                   : "border-border/80 bg-card/60 hover:-translate-y-1 hover:border-primary/50 hover:bg-card hover:shadow-lg hover:shadow-slate-200/50"
@@ -521,29 +521,29 @@ function StepRenderer({
               <span
                 aria-hidden
                 className={cn(
-                  "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-colors",
+                  "absolute right-2 top-2 sm:right-3 sm:top-3 flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full border-2 transition-colors",
                   data.vehicle_type === "not_sure"
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-border bg-card group-hover:border-primary/40"
                 )}
               >
-                {data.vehicle_type === "not_sure" && <Check className="h-3.5 w-3.5 stroke-[2.5]" />}
+                {data.vehicle_type === "not_sure" && <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5 stroke-[2.5]" />}
               </span>
 
-              <div className="my-2 flex h-24 w-full items-center justify-center">
-                <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/20 bg-primary/5 shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:border-primary/40 group-hover:bg-primary/10">
-                  <Car className="h-8 w-8 stroke-[1.8] text-primary transition-transform duration-200 group-hover:scale-105" />
-                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-amber-400/40 bg-amber-400/20 text-amber-500 shadow-xs">
-                    <Sparkles className="h-3 w-3 stroke-[2.5]" />
+              <div className="my-1.5 sm:my-2 flex h-20 sm:h-24 w-full items-center justify-center">
+                <div className="relative flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl border border-primary/20 bg-primary/5 shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:border-primary/40 group-hover:bg-primary/10">
+                  <Car className="h-6 w-6 sm:h-8 sm:w-8 stroke-[1.8] text-primary transition-transform duration-200 group-hover:scale-105" />
+                  <span className="absolute -right-1 -top-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full border border-amber-400/40 bg-amber-400/20 text-amber-500 shadow-xs">
+                    <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 stroke-[2.5]" />
                   </span>
                 </div>
               </div>
 
               <div>
-                <span className="block font-display text-base font-bold text-foreground">
+                <span className="block font-display text-xs sm:text-base font-bold text-foreground leading-snug">
                   Not Sure Yet
                 </span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">
+                <span className="mt-0.5 block text-[10px] sm:text-xs text-muted-foreground">
                   Show me all options
                 </span>
               </div>

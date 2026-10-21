@@ -46,9 +46,9 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
   ];
 
   return (
-    <div className="rounded-3xl border border-slate-200/90 bg-card p-6 sm:p-10 shadow-xl shadow-slate-200/50 text-center animate-fade-in">
+    <div className="rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-card p-5 sm:p-10 shadow-xl shadow-slate-200/50 text-center animate-fade-in">
       {/* High-End Fintech Orbital Radar Loader */}
-      <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center">
+      <div className="relative mx-auto mb-5 sm:mb-6 flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center">
         {/* Soft pulsing ambient aura */}
         <span
           className="absolute inset-0 rounded-full bg-primary/15 animate-ping opacity-60"
@@ -65,28 +65,28 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
         />
 
         {/* Core animated icon container */}
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[var(--navy)] text-white shadow-lg shadow-primary/25">
-          <Search className="h-6 w-6 animate-pulse text-white" />
+        <div className="relative flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[var(--navy)] text-white shadow-lg shadow-primary/25">
+          <Search className="h-5 w-5 sm:h-6 sm:w-6 animate-pulse text-white" />
         </div>
       </div>
 
-      <h2 className="font-display text-2xl font-extrabold text-foreground sm:text-3xl">
+      <h2 className="font-display text-xl sm:text-3xl font-extrabold text-foreground">
         Matching Your Financing Options
       </h2>
-      <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground sm:text-base">
+      <p className="mx-auto mt-1.5 sm:mt-2 max-w-md text-xs sm:text-base text-muted-foreground">
         Connecting your inquiry with certified dealer-finance partners in Western Canada...
       </p>
 
       {/* Progress bar */}
-      <div className="mx-auto mt-8 max-w-md">
-        <div className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <div className="mx-auto mt-6 sm:mt-8 max-w-md">
+        <div className="mb-2 flex items-center justify-between text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           <span className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             Search in progress
           </span>
-          <span className="text-primary font-bold text-sm">{progress}%</span>
+          <span className="text-primary font-bold text-xs sm:text-sm">{progress}%</span>
         </div>
-        <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+        <div className="h-2 sm:h-2.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
           <div
             className="h-full rounded-full bg-gradient-to-r from-blue-600 via-[var(--electric)] to-emerald-500 transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
@@ -95,7 +95,7 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
       </div>
 
       {/* Checklist */}
-      <div className="mx-auto mt-8 max-w-sm space-y-3 text-left">
+      <div className="mx-auto mt-6 sm:mt-8 max-w-sm space-y-2 sm:space-y-3 text-left">
         {items.map((it, i) => {
           const isDone = stage > i;
           const isCurrent = stage === i;
@@ -104,7 +104,7 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
           return (
             <div
               key={it.label}
-              className={`flex items-center gap-3 rounded-xl border p-3 transition-all duration-300 ${
+              className={`flex items-center gap-2.5 sm:gap-3 rounded-xl border p-2.5 sm:p-3 transition-all duration-300 ${
                 isDone
                   ? "border-emerald-500/30 bg-emerald-500/5 text-foreground dark:border-emerald-900/60 dark:bg-emerald-950/20"
                   : isCurrent
@@ -113,26 +113,26 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
               }`}
             >
               {isDone ? (
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-                  <CheckCircle2 className="h-4.5 w-4.5 stroke-[2.2]" />
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle2 className="h-4 w-4 sm:h-4.5 sm:w-4.5 stroke-[2.2]" />
                 </div>
               ) : isCurrent ? (
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-primary" />
                 </div>
               ) : (
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground/70">
-                  <Icon className="h-4 w-4" />
+                <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground/70">
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
               )}
-              <span className="text-sm font-semibold leading-tight">{it.label}</span>
+              <span className="text-xs sm:text-sm font-semibold leading-tight">{it.label}</span>
             </div>
           );
         })}
       </div>
 
-      <div className="mt-8 flex items-center justify-center gap-2 text-xs font-medium text-muted-foreground">
-        <ShieldCheck className="h-4 w-4 text-emerald-600" />
+      <div className="mt-6 sm:mt-8 flex items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-muted-foreground">
+        <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600 shrink-0" />
         <span>100% Free · No credit check required · No obligation</span>
       </div>
     </div>

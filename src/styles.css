@@ -280,8 +280,7 @@
 
 /* Fixed physical gutters leave usable text space when browser text size grows. */
 @media (max-width: 639px) {
-  main[data-private] { padding-inline: 16px; }
-  [data-step-shell], [data-intake-choice] { padding-inline: 16px; }
-  [data-choice-indicator] { width: 24px; height: 24px; }
-  [data-intake-choice] > span { gap: 12px; }
+  main[data-private] { padding-inline: 12px; }
+  [data-step-shell] { padding-inline: 16px; }
+  [data-choice-indicator] { width: 22px; height: 22px; }
 }

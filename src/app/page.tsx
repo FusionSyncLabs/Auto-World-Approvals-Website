@@ -157,28 +157,28 @@ export default function HomePage() {
       <VipOfferPopup />
       {/* ============ HERO ============ */}
       <section className="relative overflow-hidden bg-background text-foreground">
-        <div className="container relative mx-auto px-4 pb-8 pt-4 text-center sm:pt-6 lg:pt-8 lg:px-8 lg:pb-12">
+        <div className="container relative mx-auto px-3 sm:px-4 pb-6 pt-3 text-center sm:pt-6 lg:pt-8 lg:px-8 lg:pb-12">
           <motion.h1
             {...fadeIn(0)}
-            className="mx-auto max-w-3xl text-balance font-display text-[2rem] font-extrabold leading-[1.06] tracking-normal sm:text-[2.75rem] sm:leading-[1.03] md:text-6xl"
+            className="mx-auto max-w-3xl text-balance font-display text-[1.85rem] font-extrabold leading-[1.08] tracking-normal sm:text-[2.75rem] sm:leading-[1.03] md:text-6xl"
           >
             Get pre-qualified. Choose your ride.{" "}
             <span className="text-electric">Drive away.</span>
           </motion.h1>
 
-          <motion.p {...fadeIn(0.06)} className="mx-auto mt-3 max-w-xl text-lg text-muted-foreground sm:mt-4">
+          <motion.p {...fadeIn(0.06)} className="mx-auto mt-2.5 max-w-xl text-base sm:text-lg text-muted-foreground sm:mt-4">
             Start by picking the type of vehicle you want. No obligation.
           </motion.p>
 
           {/* Vehicle tiles */}
-          <motion.div {...fadeIn(0.12)} className="mx-auto mt-6 grid max-w-6xl grid-cols-1 min-[360px]:grid-cols-2 gap-3 sm:mt-8 sm:gap-5 md:grid-cols-4">
+          <motion.div {...fadeIn(0.12)} className="mx-auto mt-5 grid max-w-6xl grid-cols-2 gap-2.5 sm:mt-8 sm:gap-5 md:grid-cols-4">
             {categories.map((o, index) => {
               const imgSrc = o.img;
               return (
                 <Link
                   key={o.value}
                   href={`/apply?vt=${o.value}`}
-                  className="group flex touch-manipulation flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground shadow-card transition duration-200 hover:-translate-y-1 hover:border-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none motion-reduce:transition-none"
+                  className="group flex touch-manipulation flex-col overflow-hidden rounded-lg sm:rounded-xl border border-border bg-card text-card-foreground shadow-card transition duration-200 hover:-translate-y-1 hover:border-electric focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-reduce:transform-none motion-reduce:transition-none"
                 >
                   <img
                     src={imgSrc}
@@ -190,9 +190,9 @@ export default function HomePage() {
                     decoding="async"
                     className="mx-auto aspect-[3/2] w-full object-contain transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none"
                   />
-                  <span className="relative flex w-full items-center justify-between bg-card px-3 py-4 text-lg font-bold tracking-normal sm:px-5 sm:text-xl">
+                  <span className="relative flex w-full items-center justify-between bg-card px-2.5 py-3 text-sm font-bold tracking-normal sm:px-5 sm:py-4 sm:text-xl">
                     {o.label}
-                    <ArrowRight className="h-5 w-5 text-electric transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
+                    <ArrowRight className="h-4 w-4 text-electric transition-transform group-hover:translate-x-1 motion-reduce:transform-none sm:h-5 sm:w-5" />
                   </span>
                 </Link>
               );
@@ -200,10 +200,10 @@ export default function HomePage() {
           </motion.div>
 
           {/* Trust strip */}
-          <motion.div {...fadeIn(0.18)} className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[17px] text-muted-foreground sm:mt-8 sm:gap-x-6 sm:gap-y-3">
+          <motion.div {...fadeIn(0.18)} className="mx-auto mt-5 flex flex-wrap items-center justify-center gap-x-3.5 gap-y-1.5 text-xs sm:text-base text-muted-foreground sm:mt-8 sm:gap-x-6 sm:gap-y-3">
             {trustChips.map((t) => (
-              <span key={t.text} className="inline-flex items-center gap-1.5">
-                <t.icon className="h-4 w-4 text-[var(--electric)]" />
+              <span key={t.text} className="inline-flex items-center gap-1.5 font-medium">
+                <t.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--electric)]" />
                 {t.text}
               </span>
             ))}
@@ -212,19 +212,19 @@ export default function HomePage() {
       </section>
 
       {/* ============ LENDER LOGOS STRIP ============ */}
-      <section className="border-b border-border bg-soft/50 py-9 sm:py-11">
+      <section className="border-b border-border bg-soft/50 py-6 sm:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <p className="mb-6 sm:mb-8 text-center text-xs sm:text-sm font-bold uppercase tracking-[0.24em] text-muted-foreground">
+          <p className="mb-4 sm:mb-8 text-center text-xs sm:text-sm font-bold uppercase tracking-[0.24em] text-muted-foreground">
             Partnered with Canada&apos;s Top Lenders
           </p>
           <div className="marquee-pause relative overflow-hidden">
             <div className="marquee flex items-center">
               {[0, 1].map((g) => (
-                <div key={g} className="marquee-group flex items-center gap-6 sm:gap-8" aria-hidden={g === 1}>
+                <div key={g} className="marquee-group flex items-center gap-4 sm:gap-8" aria-hidden={g === 1}>
                   {lenders.map((l, i) => (
                     <div
                       key={`${l.name}-${i}`}
-                      className="group flex h-14 min-w-[170px] sm:min-w-[195px] items-center justify-center rounded-xl border border-border/80 bg-card px-5 py-2.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--electric)]/60 hover:shadow-md hover:bg-card"
+                      className="group flex h-12 sm:h-14 min-w-[145px] sm:min-w-[195px] items-center justify-center rounded-xl border border-border/80 bg-card px-3.5 sm:px-5 py-2 sm:py-2.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--electric)]/60 hover:shadow-md hover:bg-card"
                       title={l.name}
                     >
                       <img
@@ -233,15 +233,15 @@ export default function HomePage() {
                         width={180}
                         height={44}
                         loading="lazy"
-                        className="h-8 w-auto max-h-8 max-w-[155px] sm:max-w-[180px] object-contain transition-all duration-300 opacity-85 group-hover:opacity-100 group-hover:scale-105"
+                        className="h-6 sm:h-8 w-auto max-h-6 sm:max-h-8 max-w-[125px] sm:max-w-[180px] object-contain transition-all duration-300 opacity-85 group-hover:opacity-100 group-hover:scale-105"
                       />
                     </div>
                   ))}
                 </div>
               ))}
             </div>
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-36 bg-gradient-to-r from-background via-background/80 to-transparent" />
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-36 bg-gradient-to-l from-background via-background/80 to-transparent" />
+            <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-36 bg-gradient-to-r from-background via-background/80 to-transparent" />
+            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-36 bg-gradient-to-l from-background via-background/80 to-transparent" />
           </div>
         </div>
       </section>
@@ -377,23 +377,23 @@ export default function HomePage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="relative overflow-hidden bg-background pt-10 pb-16 md:pt-12 md:pb-20">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="relative overflow-hidden rounded-[2rem] bg-hero p-10 text-white shadow-elevated md:p-14">
+      <section className="relative overflow-hidden bg-background pt-8 pb-12 sm:pt-10 sm:pb-16 md:pt-12 md:pb-20">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] bg-hero p-6 sm:p-10 md:p-14 text-white shadow-elevated">
             <div aria-hidden className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[var(--electric)]/30 blur-3xl" />
             <div aria-hidden className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-            <div className="relative flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="relative flex flex-col items-start gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
-                <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+                <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                   Your next vehicle is two minutes away.
                 </h2>
-                <p className="mt-4 text-white/80">No SIN. No cost. No obligation.</p>
+                <p className="mt-2.5 sm:mt-4 text-sm sm:text-base text-white/80">No SIN. No cost. No obligation.</p>
               </div>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-                <Button asChild variant="hero" size="xl" className="shadow-glow">
+                <Button asChild variant="hero" size="lg" className="w-full sm:w-auto shadow-glow">
                   <Link href="/apply">Check Financing Options <ArrowRight className="h-5 w-5" /></Link>
                 </Button>
-                <Button asChild size="xl" variant="outline" className="border-white/25 bg-white/[0.04] text-white backdrop-blur hover:bg-white/15 hover:text-white">
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-white/25 bg-white/[0.04] text-white backdrop-blur hover:bg-white/15 hover:text-white">
                   <Link href="/sell-trade-in">Value Trade-In</Link>
                 </Button>
               </div>

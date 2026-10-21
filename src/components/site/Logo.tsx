@@ -55,7 +55,7 @@ export function Logo({ variant = "default", className = "" }: LogoProps) {
           width={280}
           height={70}
           onError={handleError}
-          className="h-11 md:h-14 w-auto max-w-[240px] md:max-w-[280px] object-contain bg-transparent transition-transform duration-300 motion-safe:group-hover:scale-105"
+          className="h-8 min-[360px]:h-9 sm:h-11 md:h-14 w-auto max-w-[165px] min-[360px]:max-w-[195px] sm:max-w-[250px] md:max-w-[280px] object-contain bg-transparent transition-transform duration-300 motion-safe:group-hover:scale-105"
         />
       ) : (
         <div className="flex items-center gap-2.5">
