@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Pages we don't want in search results use a noindex tag instead of a
+# Disallow rule — Google must be able to crawl them to see the noindex.
+# (/apply, /thank-you, /auth and /admin all send "noindex".)
+
+Sitemap: https://autoworldapprovals.com/sitemap.xml

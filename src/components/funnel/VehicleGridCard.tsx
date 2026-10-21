@@ -1,0 +1,68 @@
+"use client";
+
+import React from "react";
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface VehicleGridCardProps {
+  label: string;
+  badge?: string;
+  imageSrc: string | { src: string } | any;
+  selected?: boolean;
+  onClick: () => void;
+}
+
+export function VehicleGridCard({
+  label,
+  badge,
+  imageSrc,
+  selected,
+  onClick,
+}: VehicleGridCardProps) {
+  const imgSrc = typeof imageSrc === "string" ? imageSrc : imageSrc?.src || "";
+  return (
+    <button
+      type="button"
+      data-intake-choice
+      aria-pressed={Boolean(selected)}
+      onClick={onClick}
+      className={cn(
+        "group relative flex flex-col items-center justify-between rounded-2xl border-2 p-4 text-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 motion-safe:active:scale-[0.98]",
+        selected
+          ? "border-primary bg-primary/5 shadow-md shadow-primary/10 ring-2 ring-primary/20"
+          : "border-border/80 bg-card hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-slate-200/50"
+      )}
+    >
+      {badge && (
+        <span className="absolute left-3 top-3 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-primary">
+          {badge}
+        </span>
+      )}
+
+      <span
+        aria-hidden
+        className={cn(
+          "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-colors",
+          selected
+            ? "border-primary bg-primary text-primary-foreground"
+            : "border-border bg-card group-hover:border-primary/40"
+        )}
+      >
+        {selected && <Check className="h-3.5 w-3.5 stroke-[2.5]" />}
+      </span>
+
+      <div className="my-2 flex h-24 w-full items-center justify-center">
+        <img
+          src={imgSrc}
+          alt={label}
+          className="max-h-20 w-auto max-w-full object-contain transition-transform duration-200 group-hover:scale-105"
+          loading="eager"
+        />
+      </div>
+
+      <span className="mt-1 block font-display text-base font-bold text-foreground">
+        {label}
+      </span>
+    </button>
+  );
+}

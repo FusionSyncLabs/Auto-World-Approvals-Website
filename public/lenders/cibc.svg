@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" fill="none" class="h-9 w-auto">
+  <!-- CIBC Logo Ribbon -->
+  <rect x="2" y="6" width="38" height="32" rx="7" fill="#C41F3E"/>
+  <path d="M12 14C12 12.5 15 12 18 12C23 12 25 15 25 18C25 24 12 20 12 26C12 28.5 14.5 30 18 30C21.5 30 24 28.5 24 28.5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- CIBC Text -->
+  <text x="48" y="27" fill="#C41F3E" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="21" letter-spacing="0.5">CIBC</text>
+  <text x="49" y="37" fill="#6B7280" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="8.5" letter-spacing="0.4">AUTO FINANCE</text>
+</svg>

@@ -1,0 +1,1 @@
+INSERT INTO public.app_settings (key, value) VALUES ('from_email', '"Auto World Approvals <leads@autoworldapprovals.com>"'::jsonb) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now();

@@ -1,0 +1,35 @@
+import { describe, it, expect } from "vitest";
+import { getSteps, EMPLOYMENT } from "./schema";
+import { IntakeSubmissionSchema, LocationSchema, canadianPhoneError } from "./intake-validation";
+const answers = { vehicle_type: "not_sure", monthly_budget: "not_sure", province: "BC", city: "Vancouver", purchase_timeline: "just_exploring", street_address: "123 Main St", date_of_birth: "1990-01-15", employment_status: "employed", employment_length: "1_year", pay_frequency: "monthly", income_amount: "Under $2,000", first_name: "Test", last_name: "Applicant", email: "test@example.com", phone: "6045550123" };
+const submission = { idempotency_key: "f74e577d-9a55-4ea3-a74e-2c16b493b7a9", answers, consents: { consent_accuracy: true, consent_contact: true, consent_not_guarantee: true } };
+describe("initial financing intake rules", () => {
+  it("requires street address and date of birth", () => {
+    const steps = getSteps({});
+    expect(steps).toContain("street_address");
+    expect(steps).toContain("date_of_birth");
+  });
+  it("asks easy buyer questions before financing and contact", () => { expect(getSteps({})).toEqual(["vehicle_type", "monthly_budget", "address_details", "street_address", "employment_status", "income", "date_of_birth", "contact", "review"]); });
+  it("preserves progressive order for either old test arm", () => { expect(getSteps({}, false, "B")).toEqual(getSteps({}, true, "A")); });
+  it("allows unsure vehicle and budget preferences", () => { expect(IntakeSubmissionSchema.safeParse(submission).success).toBe(true); });
+  it("leaves down payment and trade-in optional", () => { expect(IntakeSubmissionSchema.parse(submission).answers.down_payment).toBeUndefined(); });
+  it("accepts city without postal code", () => { expect(LocationSchema.safeParse(answers).success).toBe(true); });
+  it("requires city as part of the address, even with a postal code", () => { expect(LocationSchema.safeParse({ ...answers, city: "", postal_code: "V6B 0A1" }).success).toBe(false); });
+  it("requires purchase timing", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, purchase_timeline: "" } }).success).toBe(false); });
+  it("excludes income situations lenders cannot approve", () => { const values = EMPLOYMENT.map((o) => o.value); expect(values).toEqual(expect.arrayContaining(["employed", "self_employed", "student", "other"])); for (const v of ["retired", "benefits", "unemployed"]) expect(values).not.toContain(v); });
+  it("rejects non-qualifying employment statuses", () => { for (const v of ["retired", "benefits", "unemployed"]) expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, employment_status: v } }).success).toBe(false); });
+  it("requests tenure only for working applicants", () => { expect(getSteps({ employment_status: "employed" })).toContain("employment_length"); expect(getSteps({ employment_status: "student" })).not.toContain("employment_length"); });
+  it("requires first and last name", () => { for (const field of ["first_name", "last_name"]) expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, [field]: "" } }).success).toBe(false); });
+  it("rejects numeric names before application submission", () => { for (const field of ["first_name", "last_name"]) expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, [field]: "123456" } }).success).toBe(false); });
+  it("rejects special characters and non-English letters in submitted names", () => { for (const field of ["first_name", "last_name"]) for (const name of ["Anne-Marie", "O'Neil", "José", "李"]) expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, [field]: name } }).success).toBe(false); });
+  it("requires valid email", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, email: "invalid" } }).success).toBe(false); });
+  it("requires Canadian phone", () => { expect(canadianPhoneError("2125550123")).not.toBeNull(); expect(canadianPhoneError("8675550123")).toBeNull(); });
+  it("requires acknowledgement", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, consents: { ...submission.consents, consent_contact: false } }).success).toBe(false); });
+  it("marketing consent defaults unchecked", () => { expect(IntakeSubmissionSchema.parse(submission).consents.consent_marketing).toBe(false); });
+  it("requires street address", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, street_address: "" } }).success).toBe(false); });
+  it("rejects an under-18 date of birth", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, date_of_birth: "2010-01-15" } }).success).toBe(false); });
+  it("rejects an impossible date of birth", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, date_of_birth: "1990-02-30" } }).success).toBe(false); });
+  it("accepts a valid adult date of birth", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, date_of_birth: "1990-01-15" } }).success).toBe(true); });
+  it("requires a stable valid submission key", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, idempotency_key: "" }).success).toBe(false); });
+  it("validates down payment choices", () => { expect(IntakeSubmissionSchema.safeParse({ ...submission, answers: { ...answers, down_payment: "-500" } }).success).toBe(false); });
+});

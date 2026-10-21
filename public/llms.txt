@@ -1,0 +1,23 @@
+# Auto World Approvals
+
+> Canadian auto financing service helping drivers get approved for vehicle loans regardless of credit history. Bad credit, no credit, bankruptcy, and new-to-Canada approvals.
+
+Auto World Approvals matches Canadian drivers with lenders and vehicle inventory across the country. We offer a fast online pre-qualification process, transparent terms, and dedicated financing specialists who guide applicants from application to delivery.
+
+## Pages
+
+- [Home](/): Overview of our auto financing services and how to get pre-qualified.
+- [How It Works](/how-it-works): Step-by-step explanation of our 4-step financing process.
+- [Vehicles](/vehicles): Browse the inventory of vehicles available through our lender network.
+- [Sell or Trade In](/sell-trade-in): Get an offer on your current vehicle to put toward financing.
+- [About](/about): Our mission, story, and the team behind Auto World Approvals.
+- [FAQ](/faq): Answers to common questions about credit, approvals, rates, and the process.
+- [Contact](/contact): Ways to reach our financing team by phone, email, or form.
+
+## Optional
+
+- [Privacy Policy](/privacy): How we collect, use, and protect personal information.
+- [Terms and Conditions](/terms): Terms governing use of this website.
+- [Credit Application Consent](/consent): Consent terms for credit checks and lender sharing.
+- [Cookie Policy](/cookies): How this site uses cookies.
+- [Legal](/legal): Legal disclosures and regulatory information.

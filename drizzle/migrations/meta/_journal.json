@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791668472995,
+      "tag": "0000_funnel_variant",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792366353952,
+      "tag": "0001_spec_tracking_audit",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792366866633,
+      "tag": "0002_purge_anonymous_drafts",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792367308648,
+      "tag": "0003_create_notification_log",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792367884595,
+      "tag": "0004_revoke_trigger_function_execute",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792368608045,
+      "tag": "0005_advertising_consent_and_event_audit",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792372000358,
+      "tag": "0006_financing_intake_preferences_and_atomic_consent",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792372102428,
+      "tag": "0007_intake_submission_rate_limits",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792426774206,
+      "tag": "0008_add_spec_lead_statuses",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792427587115,
+      "tag": "0009_allow_crm_outcome_events",
+      "breakpoints": true
+    }
+  ]
+}

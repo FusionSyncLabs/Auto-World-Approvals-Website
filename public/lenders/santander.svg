@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 44" fill="none" class="h-9 w-auto">
+  <!-- Santander Flame -->
+  <circle cx="20" cy="22" r="18" fill="#EC0000"/>
+  <path d="M18 10C18 10 21 13 20 17C23 15 25 18 24 21C27 18 28 23 26 27C24.5 30 21 32 18 32C13 32 10 27.5 11 23C12 18.5 15.5 15 18 10Z" fill="#FFFFFF"/>
+  <!-- Santander Text -->
+  <text x="45" y="24" fill="#EC0000" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="16" letter-spacing="-0.3">Santander</text>
+  <text x="46" y="35" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="9" letter-spacing="0.5">CONSUMER OPERATIONS</text>
+</svg>

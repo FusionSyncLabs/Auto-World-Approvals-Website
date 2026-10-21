@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 44" fill="none" class="h-9 w-auto">
+  <!-- RBC Shield Emblem -->
+  <path d="M4 8C4 6.89543 4.89543 6 6 6H34C35.1046 6 36 6.89543 36 8V24C36 32 20 38 20 38C20 38 4 32 4 24V8Z" fill="#0051A5"/>
+  <path d="M20 10L23 15H17L20 10Z" fill="#FFCC00"/>
+  <circle cx="20" cy="22" r="5" fill="#FFCC00"/>
+  <path d="M16 26C16 24 18 23 20 23C22 23 24 24 24 26H16Z" fill="#FFCC00"/>
+  <!-- RBC Text -->
+  <text x="44" y="24" fill="#0051A5" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="18" letter-spacing="-0.5">RBC</text>
+  <text x="86" y="24" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="13" letter-spacing="-0.2">Royal Bank</text>
+  <text x="45" y="35" fill="#6B7280" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="8.5" letter-spacing="0.4">AUTOMOTIVE FINANCE</text>
+</svg>

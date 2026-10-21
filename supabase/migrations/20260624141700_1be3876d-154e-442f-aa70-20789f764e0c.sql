@@ -1,0 +1,1 @@
+DELETE FROM public.brand_assets WHERE kind = 'ad_generated' AND ((metadata->>'baked')::boolean IS DISTINCT FROM true);

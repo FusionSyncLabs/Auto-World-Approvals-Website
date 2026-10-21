@@ -1,0 +1,2 @@
+ALTER TABLE public.ad_conversion_log DROP CONSTRAINT ad_conversion_log_event_name_check;
+ALTER TABLE public.ad_conversion_log ADD CONSTRAINT ad_conversion_log_event_name_check CHECK (event_name = ANY (ARRAY['Lead','PageView','working_lead','qualify_lead','close_convert_lead']));

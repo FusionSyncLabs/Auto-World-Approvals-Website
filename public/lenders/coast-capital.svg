@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195 44" fill="none" class="h-9 w-auto">
+  <!-- Coast Capital Emblem -->
+  <circle cx="20" cy="22" r="18" fill="#002D62"/>
+  <path d="M10 24C14 16 26 16 30 24" stroke="#00A3E0" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M13 28C16 22 24 22 27 28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Coast Capital Text -->
+  <text x="45" y="23" fill="#002D62" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="15" letter-spacing="-0.3">coast<tspan fill="#00A3E0">capital</tspan></text>
+  <text x="46" y="34" fill="#6B7280" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="8.5" letter-spacing="0.4">SAVINGS CREDIT UNION</text>
+</svg>

@@ -1,0 +1,1 @@
+UPDATE public.profiles SET username = 'adam@autoworldapprovals.com' WHERE id = '12cca0ca-0a3f-41c4-a6a2-dc117849964e';

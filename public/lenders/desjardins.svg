@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 185 44" fill="none" class="h-9 w-auto">
+  <!-- Desjardins Hexagon -->
+  <path d="M20 5L34 13V29L20 37L6 29V13L20 5Z" fill="#00874E"/>
+  <path d="M20 12L27 16V24L20 28L13 24V16L20 12Z" fill="#FFFFFF"/>
+  <!-- Desjardins Text -->
+  <text x="42" y="25" fill="#00874E" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="17" letter-spacing="-0.3">Desjardins</text>
+  <text x="43" y="35" fill="#6B7280" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="8.5" letter-spacing="0.4">FINANCIAL GROUP</text>
+</svg>

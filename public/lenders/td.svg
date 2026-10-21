@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 44" fill="none" class="h-9 w-auto">
+  <!-- TD Green Box -->
+  <rect x="2" y="4" width="36" height="36" rx="6" fill="#008A00"/>
+  <text x="7" y="29" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="20" letter-spacing="-0.5">TD</text>
+  <!-- Text -->
+  <text x="46" y="23" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="15" letter-spacing="-0.2">Auto Finance</text>
+  <text x="46" y="35" fill="#008A00" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="9" letter-spacing="0.5">LENDER PARTNER</text>
+</svg>

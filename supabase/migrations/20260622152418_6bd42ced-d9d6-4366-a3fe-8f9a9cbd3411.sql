@@ -1,0 +1,1 @@
+UPDATE public.app_settings SET value = to_jsonb('/__l5e/assets-v1/7edba9e4-2984-43bc-ba1c-b22846096a94/auto-world-approvals-logo-original.png'::text) WHERE key IN ('logo_url','logo_url_light','logo_url_dark');

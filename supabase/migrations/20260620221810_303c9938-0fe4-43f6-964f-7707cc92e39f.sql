@@ -1,0 +1,1 @@
+ALTER TABLE public.brand_assets ADD COLUMN IF NOT EXISTS pair_id uuid; ALTER TABLE public.brand_assets ADD COLUMN IF NOT EXISTS pair_mode text CHECK (pair_mode IN ('light','dark')); CREATE INDEX IF NOT EXISTS brand_assets_pair_id_idx ON public.brand_assets(pair_id);
