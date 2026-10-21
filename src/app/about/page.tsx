@@ -19,13 +19,13 @@ export default function AboutPage() {
       <section className="container mx-auto grid gap-10 px-4 py-16 lg:grid-cols-2 lg:px-8">
         <div className="text-center lg:text-left">
           <h2 className="text-2xl font-bold">Our mission</h2>
-          <p className="mt-4 text-foreground/85">
+          <p className="mobile-body mt-4 text-foreground/85">
             Buying a vehicle should feel straightforward. We built Auto World
             Approvals to give Western Canadian drivers a simple, honest way to see
             financing options before they walk into a dealership. No surprise
             calls. No obligation. Just clear next steps.
           </p>
-          <p className="mt-4 text-foreground/85">
+          <p className="mobile-body mt-4 text-foreground/85">
             We work with a vetted network of dealer-finance partners across
             British Columbia and Alberta, so you can compare options on your own
             time — and only move forward when you&apos;re ready.
@@ -60,7 +60,7 @@ export default function AboutPage() {
             >
               <c.i className="h-6 w-6 text-[var(--electric)]" />
               <p className="mt-3 font-semibold">{c.t}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{c.b}</p>
+              <p className="mobile-body mt-1 w-full text-sm text-muted-foreground">{c.b}</p>
             </div>
           ))}
         </div>

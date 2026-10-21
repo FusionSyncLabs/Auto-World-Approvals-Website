@@ -183,15 +183,15 @@ function ApplyForm() {
 
   return (
     <div className="min-h-screen bg-soft">
-      {/* Canada Drives Modern Sticky Header */}
-      <header className="sticky top-0 z-30 border-b border-border/80 bg-background/95 backdrop-blur-md">
+      {/* Intake header stays in flow on phones and short screens. */}
+      <header className="application-header z-30 border-b border-border/80 bg-background/95 backdrop-blur-md">
         <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4 lg:px-8">
           <div className="flex items-center gap-2">
             <Logo />
           </div>
 
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-xs font-semibold text-muted-foreground hover:text-foreground">
+            <Link href="/" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-2 text-xs font-semibold text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
               Exit
             </Link>
           </div>
@@ -487,7 +487,7 @@ function StepRenderer({
           description="Select your preferred body style to view matched rates and certified inventory."
           footer={autoAdvanceFooter}
         >
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
+          <div className="grid grid-cols-1 gap-2.5 min-[360px]:grid-cols-2 sm:grid-cols-3 sm:gap-4">
             {vehicleCards.map((v) => (
               <VehicleGridCard
                 key={v.value}
@@ -897,7 +897,7 @@ function ContactStep({ data, update, onSubmit, onBack, submitting }: ContactStep
         <div className="mt-4">
           <Field label="Preferred contact method" optional fieldKey="preferred_contact">
             <select
-              className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm"
+              className="h-11 w-full rounded-md border border-input bg-background px-3 text-base"
               value={data.preferred_contact || ""}
               onChange={(e) => update({ preferred_contact: e.target.value })}
             >

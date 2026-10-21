@@ -87,7 +87,7 @@ export function SiteHeader() {
           size="icon"
           onClick={() => setOpen((v) => !v)}
           className="shrink-0 lg:hidden"
-          aria-label="Menu"
+          aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
         >
@@ -95,8 +95,8 @@ export function SiteHeader() {
         </Button>
       </div>
       {open && (
-        <div id="mobile-navigation" className="max-h-[calc(100dvh-6rem)] overflow-y-auto animate-fade-in border-t border-border bg-background lg:hidden">
-          <div className="container mx-auto flex flex-col gap-1 px-4 py-3 text-center">
+        <nav id="mobile-navigation" aria-label="Main navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain animate-fade-in border-t border-border bg-background sm:max-h-[calc(100dvh-5rem)] md:max-h-[calc(100dvh-6rem)] lg:hidden">
+          <div className="container mx-auto flex flex-col gap-1 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center">
             {NAV.map((n) => (
               <span key={n.to}>
                 {isHome && n.scrollTo ? (
@@ -106,7 +106,7 @@ export function SiteHeader() {
                       scrollToHowItWorks(e);
                       setOpen(false);
                     }}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent"
+                    className="flex min-h-11 items-center justify-center rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {n.label}
                   </a>
@@ -114,7 +114,7 @@ export function SiteHeader() {
                   <Link
                     to={n.to}
                     onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent"
+                    className="flex min-h-11 items-center justify-center rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     {n.label}
                   </Link>
@@ -125,7 +125,7 @@ export function SiteHeader() {
               <Link to="/apply" onClick={() => setOpen(false)}>Check Financing Options</Link>
             </Button>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

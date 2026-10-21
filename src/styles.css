@@ -280,6 +280,13 @@
 
 /* Fixed physical gutters leave usable text space when browser text size grows. */
 @media (max-width: 639px) {
+  .mobile-heading { text-align: center; }
+  .mobile-body {
+    text-align: justify;
+    text-justify: inter-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
   main[data-private] { padding-inline: 12px; }
   [data-step-shell] { padding-inline: 16px; }
   [data-choice-indicator] { width: 22px; height: 22px; }

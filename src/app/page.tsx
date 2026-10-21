@@ -190,9 +190,9 @@ export default function HomePage() {
                     decoding="async"
                     className="mx-auto aspect-[3/2] w-full object-contain transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none"
                   />
-                  <span className="relative flex w-full items-center justify-between bg-card px-2.5 py-3 text-sm font-bold tracking-normal sm:px-5 sm:py-4 sm:text-xl">
+                  <span className="relative flex min-h-11 w-full items-center justify-center bg-card px-8 py-3 text-sm font-bold tracking-normal sm:justify-between sm:px-5 sm:py-4 sm:text-xl">
                     {o.label}
-                    <ArrowRight className="h-4 w-4 text-electric transition-transform group-hover:translate-x-1 motion-reduce:transform-none sm:h-5 sm:w-5" />
+                    <ArrowRight className="absolute right-2.5 h-4 w-4 shrink-0 text-electric transition-transform group-hover:translate-x-1 motion-reduce:transform-none sm:static sm:h-5 sm:w-5" />
                   </span>
                 </Link>
               );
@@ -256,7 +256,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="relative mt-16 grid gap-6 md:grid-cols-3">
+          <div className="relative mt-8 grid gap-8 sm:mt-12 md:mt-16 md:grid-cols-3 md:gap-6">
             <div aria-hidden className="absolute left-0 right-0 top-7 hidden h-px md:block">
               <div className="mx-[8.33%] h-full bg-gradient-to-r from-transparent via-[var(--electric)]/40 to-transparent" />
             </div>
@@ -266,13 +266,13 @@ export default function HomePage() {
                   {s.n}
                 </div>
                 <h3 className="mt-3.5 sm:mt-5 font-display text-lg sm:text-xl font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm sm:text-base text-muted-foreground">{s.body}</p>
+                <p className="mobile-body mt-2 w-full text-sm sm:text-base text-muted-foreground">{s.body}</p>
               </div>
             ))}
           </div>
 
           <div className="reveal mt-10 sm:mt-12 text-center">
-            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto">
+            <Button asChild variant="hero" size="xl" className="h-auto min-h-14 w-full px-4 py-3 sm:w-auto sm:px-10">
               <Link href="/apply">Start your application <ArrowRight className="h-5 w-5" /></Link>
             </Button>
           </div>
@@ -304,7 +304,7 @@ export default function HomePage() {
             <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight lg:text-5xl">
               We don't lend. We help you find financing.
             </h2>
-            <p className="mt-4 sm:mt-5 text-sm sm:text-base text-white/75">
+            <p className="mobile-body mt-4 sm:mt-5 text-sm sm:text-base text-white/75">
               We're the bridge between you and dealer-finance partners suited to your situation across Western Canada. Final approval, rates and terms are always decided by the lender.
             </p>
             <ul className="mt-6 sm:mt-7 space-y-3.5 sm:space-y-4 text-left inline-block max-w-lg mx-auto lg:mx-0">
@@ -316,7 +316,7 @@ export default function HomePage() {
               ].map((line) => (
                 <li key={line} className="flex items-start gap-3 text-white/85 text-sm sm:text-base">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
-                  <span>{line}</span>
+                  <span className="mobile-body min-w-0">{line}</span>
                 </li>
               ))}
             </ul>
@@ -350,7 +350,7 @@ export default function HomePage() {
             <h2 className="font-display text-3xl font-bold tracking-tight lg:text-4xl">
               Frequently asked questions.
             </h2>
-            <p className="mt-3 text-base text-muted-foreground">
+            <p className="mobile-body mt-3 text-base text-muted-foreground">
               Everything you need to know about vehicle pre-qualification and financing in Western Canada.
             </p>
           </div>
@@ -361,12 +361,12 @@ export default function HomePage() {
                 <AccordionItem
                   key={i}
                   value={`faq-${i}`}
-                  className="rounded-2xl border border-border bg-card px-6 shadow-card transition-colors hover:border-[var(--electric)]/40"
+                  className="rounded-2xl border border-border bg-card px-4 shadow-card transition-colors hover:border-[var(--electric)]/40 sm:px-6"
                 >
-                  <AccordionTrigger className="text-left text-base font-semibold hover:no-underline hover:text-[var(--electric)]">
-                    {f.q}
+                  <AccordionTrigger className="text-base font-semibold hover:no-underline hover:text-[var(--electric)]">
+                    <span className="min-w-0 flex-1 pl-6 text-center sm:pl-0 sm:text-left">{f.q}</span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-base text-foreground/80 leading-relaxed pt-1 pb-4">
+                  <AccordionContent className="mobile-body text-base text-foreground/80 leading-relaxed pt-1 pb-4">
                     {f.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -390,10 +390,10 @@ export default function HomePage() {
                 <p className="mt-2.5 sm:mt-4 text-sm sm:text-base text-white/80">No SIN. No cost. No obligation.</p>
               </div>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-                <Button asChild variant="hero" size="lg" className="w-full sm:w-auto shadow-glow">
+                <Button asChild variant="hero" size="lg" className="h-auto min-h-12 w-full px-4 py-3 sm:w-auto sm:px-8 shadow-glow">
                   <Link href="/apply">Check Financing Options <ArrowRight className="h-5 w-5" /></Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-white/25 bg-white/[0.04] text-white backdrop-blur hover:bg-white/15 hover:text-white">
+                <Button asChild size="lg" variant="outline" className="h-auto min-h-12 w-full px-4 py-3 sm:w-auto sm:px-8 border-white/25 bg-white/[0.04] text-white backdrop-blur hover:bg-white/15 hover:text-white">
                   <Link href="/sell-trade-in">Value Trade-In</Link>
                 </Button>
               </div>

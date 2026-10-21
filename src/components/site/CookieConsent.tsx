@@ -203,7 +203,7 @@ export function CookieConsent() {
           aria-label="Cookie consent"
           className="fixed inset-x-3 bottom-3 z-[60] pb-[env(safe-area-inset-bottom)] sm:inset-x-auto sm:left-5 sm:bottom-5 sm:w-[380px]"
         >
-          <div className="rounded-xl border border-border bg-card p-4 text-card-foreground shadow-lg">
+          <div className="max-h-[calc(100dvh-1.5rem-env(safe-area-inset-bottom))] overflow-y-auto overscroll-contain rounded-xl border border-border bg-card p-4 text-card-foreground shadow-lg">
             <div className="flex items-start gap-2.5">
               <Cookie className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
               <p className="text-sm leading-snug text-muted-foreground">
@@ -213,18 +213,18 @@ export function CookieConsent() {
                 </Link>
               </p>
             </div>
-            <div className="mt-3 flex items-center gap-2">
+            <div className="mt-3 grid grid-cols-3 items-center gap-2">
               <button
                 type="button"
                 onClick={() => setManageOpen(true)}
-                className="mr-auto min-h-10 rounded px-1 text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                className="min-h-11 min-w-0 rounded px-1 text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Manage
               </button>
-              <Button variant="outline" size="sm" className="h-10" onClick={rejectAll}>
+              <Button variant="outline" size="sm" className="h-auto min-h-11 min-w-0 px-2" onClick={rejectAll}>
                 Reject
               </Button>
-              <Button size="sm" className="h-10" onClick={acceptAll}>
+              <Button size="sm" className="h-auto min-h-11 min-w-0 px-2" onClick={acceptAll}>
                 Accept
               </Button>
             </div>
@@ -234,8 +234,8 @@ export function CookieConsent() {
 
       <Dialog open={manageOpen} onOpenChange={setManageOpen}>
         <DialogContent className="max-h-[85dvh] max-w-lg overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Cookie preferences</DialogTitle>
+          <DialogHeader className="min-w-0 pt-3 sm:pt-0">
+            <DialogTitle className="px-5 leading-snug sm:pl-0 sm:pr-6">Cookie preferences</DialogTitle>
             <DialogDescription>
               Choose which categories of cookies you allow. Strictly necessary cookies cannot be
               disabled because the site cannot function without them. {AD_NOTICE_TEXT}{" "}
@@ -275,14 +275,14 @@ export function CookieConsent() {
           </div>
 
           <DialogFooter className="flex-col-reverse gap-2 sm:flex-row sm:justify-between">
-            <Button variant="ghost" size="sm" onClick={rejectAll}>
+            <Button variant="ghost" size="sm" className="h-auto min-h-11" onClick={rejectAll}>
               Reject non-essential
             </Button>
             <div className="grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
-              <Button variant="outline" size="sm" onClick={acceptAll}>
+              <Button variant="outline" size="sm" className="h-auto min-h-11" onClick={acceptAll}>
                 Accept all
               </Button>
-              <Button size="sm" onClick={saveCustom}>
+              <Button size="sm" className="h-auto min-h-11" onClick={saveCustom}>
                 Save preferences
               </Button>
             </div>

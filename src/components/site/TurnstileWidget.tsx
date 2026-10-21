@@ -53,6 +53,7 @@ export function TurnstileWidget({ onToken, onExpire, className }: Props) {
           "expired-callback": () => onExpire?.(),
           "error-callback": () => onExpire?.(),
           theme: "light",
+          size: "compact",
         });
       })
       .catch((e) => console.error("[turnstile]", e));
@@ -71,5 +72,5 @@ export function TurnstileWidget({ onToken, onExpire, className }: Props) {
       </div>
     );
   }
-  return <div ref={ref} className={className} />;
+  return <div ref={ref} className={`flex justify-center sm:justify-start ${className ?? ""}`} />;
 }

@@ -103,7 +103,7 @@ export default function SellTradeInPage() {
             <div className="text-center">
               <CheckCircle2 className="mx-auto h-10 w-10 text-success" />
               <h3 className="mt-3 text-xl font-bold">We got it!</h3>
-              <p className="mt-2 text-muted-foreground">
+              <p className="mobile-body mt-2 text-muted-foreground">
                 A representative may contact you shortly with an estimate.
               </p>
             </div>
@@ -201,7 +201,7 @@ export default function SellTradeInPage() {
               >
                 {busy ? "Sending..." : "Request estimate"}
               </Button>
-              <p className="text-xs text-muted-foreground">
+              <p className="mobile-body text-xs text-muted-foreground">
                 By submitting, you agree to be contacted. This is not a formal
                 offer.
               </p>

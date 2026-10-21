@@ -38,14 +38,14 @@ export default function VehiclesPage() {
           >
             <v.icon className="h-8 w-8 text-[var(--navy)] transition group-hover:text-[var(--electric)]" />
             <h3 className="mt-4 font-semibold">{v.t}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{v.b}</p>
+            <p className="mobile-body mt-1 w-full text-sm text-muted-foreground">{v.b}</p>
           </Link>
         ))}
       </section>
       <section className="bg-soft py-12">
         <div className="container mx-auto flex flex-col items-center gap-4 px-4 text-center lg:px-8">
           <h2 className="text-2xl font-bold lg:text-3xl">Not sure which type fits?</h2>
-          <p className="max-w-xl text-muted-foreground">
+          <p className="mobile-body w-full max-w-xl text-muted-foreground">
             Start the application and we&apos;ll help you sort it out along the way.
           </p>
           <Button asChild variant="hero" size="lg" className="w-full sm:w-auto">

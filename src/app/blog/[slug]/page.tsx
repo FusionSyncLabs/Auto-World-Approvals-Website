@@ -87,8 +87,8 @@ export default async function BlogPostPage({ params }: Props) {
                 </span>
               )}
             </div>
-            <h1 className="text-balance text-3xl font-bold leading-tight lg:text-4xl">{post.title}</h1>
-            {post.excerpt && <p className="mt-4 text-lg text-white/75">{post.excerpt}</p>}
+            <h1 className="mobile-heading text-balance text-3xl font-bold leading-tight lg:text-4xl">{post.title}</h1>
+            {post.excerpt && <p className="mobile-body mt-4 text-lg text-white/75">{post.excerpt}</p>}
           </div>
         </header>
 
@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="container mx-auto max-w-3xl px-4 py-12 lg:px-8 lg:py-16">
           <div
-            className="prose prose-slate max-w-none text-foreground/85 [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-foreground [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_p]:mt-3 [&_p]:leading-relaxed [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mt-1 [&_table]:my-5 [&_table]:w-full [&_th]:border-b [&_th]:p-2 [&_th]:text-left [&_td]:border-b [&_td]:p-2"
+            className="prose prose-slate min-w-0 max-w-none text-foreground/85 [overflow-wrap:anywhere] max-sm:[&_h1]:text-center [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-foreground max-sm:[&_h2]:text-center [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold max-sm:[&_h3]:text-center max-sm:[&_h4]:text-center max-sm:[&_h5]:text-center max-sm:[&_h6]:text-center [&_p]:mt-3 [&_p]:leading-relaxed max-sm:[&_p]:text-justify max-sm:[&_p]:hyphens-auto [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mt-1 [&_img]:h-auto [&_img]:max-w-full [&_table]:my-5 [&_table]:block [&_table]:w-full [&_table]:max-w-full [&_table]:overflow-x-auto [&_table]:text-left [&_table]:[overflow-wrap:normal] [&_th]:border-b [&_th]:p-2 [&_th]:text-left [&_td]:border-b [&_td]:p-2 [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_pre]:text-left [&_pre]:[overflow-wrap:normal]"
             dangerouslySetInnerHTML={{ __html: html }}
           />
 
@@ -120,7 +120,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           <div className="mt-12 rounded-2xl border border-border bg-soft p-6 text-center">
             <p className="font-display text-xl font-bold">Wondering what you'd actually qualify for?</p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mobile-body mt-2 text-sm text-muted-foreground">
               A short financing inquiry takes 2 minutes, is 100% free with no impact on your credit score.
             </p>
             <Button asChild className="mt-4">
@@ -132,7 +132,7 @@ export default async function BlogPostPage({ params }: Props) {
         {related.length > 0 && (
           <section className="border-t border-border bg-soft">
             <div className="container mx-auto max-w-5xl px-4 py-14 lg:px-8">
-              <h2 className="mb-6 font-display text-xl font-bold">Keep reading</h2>
+              <h2 className="mobile-heading mb-6 font-display text-xl font-bold">Keep reading</h2>
               <div className="grid gap-5 sm:grid-cols-3">
                 {related.map((r) => (
                   <Link
@@ -149,7 +149,7 @@ export default async function BlogPostPage({ params }: Props) {
                       />
                     )}
                     <div className="p-4">
-                      <p className="font-semibold leading-snug group-hover:text-primary">{r.title}</p>
+                      <p className="mobile-heading font-semibold leading-snug group-hover:text-primary">{r.title}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{r.reading_minutes} min read</p>
                     </div>
                   </Link>

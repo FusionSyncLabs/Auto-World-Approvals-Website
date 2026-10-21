@@ -116,16 +116,16 @@ export default async function VehicleRoute({
 
           <div className="mt-10 rounded-2xl border border-border bg-card p-6 sm:p-8 text-center shadow-card w-full">
             <h3 className="text-xl font-bold">Check your financing options</h3>
-            <p className="mt-2 text-muted-foreground">
+            <p className="mobile-body mt-2 text-muted-foreground">
               Answer a few quick questions and a financing specialist will follow
               up with your options.
             </p>
             <Link
               href={`/apply?vt=${page.vt}`}
-              className="mt-6 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--electric)] px-8 py-3 text-base font-semibold text-white hover:opacity-90"
+              className="mt-6 inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--electric)] px-4 py-3 text-center text-base font-semibold text-white hover:opacity-90 sm:px-8"
             >
               Start my {page.name.toLowerCase()} application{" "}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 shrink-0" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
               Free to apply · No obligation

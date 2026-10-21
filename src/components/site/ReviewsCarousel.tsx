@@ -1,13 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight, Star, ExternalLink, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CarouselDots } from "./CarouselDots";
+import { SwipeSurface } from "./SwipeSurface";
 
 export type Review = { name: string; city: string; body: string; url?: string };
 
 export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const n = reviews.length;
 
@@ -33,14 +37,14 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
 
   // Auto-advance reviews carousel
   useEffect(() => {
-    if (paused || totalPages <= 1) return;
+    if (hovered || focused || dragging || totalPages <= 1) return;
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = setInterval(() => {
       setDirection(1);
       setCurrentPage((prev) => (prev + 1) % totalPages);
     }, 6500);
     return () => clearInterval(timer);
-  }, [paused, totalPages]);
+  }, [hovered, focused, dragging, totalPages]);
 
   if (!n) return null;
 
@@ -68,15 +72,23 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
   return (
     <div
       className="mx-auto mt-10 max-w-6xl px-2"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
+      }}
       aria-roledescription="carousel"
       aria-label="Customer Google reviews"
     >
       {/* Reviews Grid Animated by Page (no popLayout glitches) */}
-      <div className="overflow-hidden py-2">
+      <SwipeSurface
+        className="py-2"
+        enabled={totalPages > 1}
+        onNext={handleNext}
+        onPrevious={handlePrev}
+        onDraggingChange={setDragging}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={`page-${currentPage}-${itemsPerPage}`}
@@ -95,31 +107,31 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             {currentReviews.map((r) => (
               <figure
                 key={r.name}
-                className="flex h-full flex-col justify-between rounded-2xl border border-border/80 bg-card p-6 shadow-sm transition-all duration-300 hover:border-[var(--electric)]/40 hover:shadow-md"
+                className="flex h-full min-w-0 flex-col justify-between rounded-2xl border border-border/80 bg-card p-5 shadow-sm transition-all duration-300 hover:border-[var(--electric)]/40 hover:shadow-md sm:p-6"
               >
                 <div>
                   {/* Header: 5 Stars + Google Badge */}
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex gap-1 text-[#FBBC05]" aria-label="5 out of 5 stars">
+                  <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:justify-between">
+                    <div className="flex shrink-0 gap-1 text-[#FBBC05]" aria-label="5 out of 5 stars">
                       {Array.from({ length: 5 }).map((_, j) => (
                         <Star key={j} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/60 bg-muted/50 px-2.5 py-1 text-xs font-medium text-muted-foreground">
                       <GoogleIcon />
                       <span>Google review</span>
                     </span>
                   </div>
 
                   {/* Review Body */}
-                  <blockquote className="mt-4 text-sm leading-relaxed text-foreground/90 sm:text-[15px]">
+                  <blockquote className="mt-4 break-words text-justify text-sm leading-relaxed text-foreground/90 sm:text-left sm:text-[15px]">
                     "{r.body}"
                   </blockquote>
                 </div>
 
                 {/* Author Footer */}
-                <figcaption className="mt-6 flex items-center justify-between border-t border-border/70 pt-4">
-                  <div>
+                <figcaption className="mt-6 flex flex-col flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-border/70 pt-4 sm:flex-row sm:justify-between">
+                  <div className="min-w-0 break-words text-center sm:text-left">
                     <p className="text-sm font-bold text-foreground">{r.name}</p>
                     <p className="text-xs text-muted-foreground">{r.city}</p>
                   </div>
@@ -129,7 +141,7 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                       href={r.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--electric)] transition-colors hover:underline"
+                      className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-sm text-xs font-semibold text-[var(--electric)] transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     >
                       <span>View on Google</span>
                       <ExternalLink className="h-3 w-3" />
@@ -145,47 +157,33 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             ))}
           </motion.div>
         </AnimatePresence>
-      </div>
+      </SwipeSurface>
 
       {/* Navigation Controls */}
       {totalPages > 1 && (
-        <div className="mt-8 flex items-center justify-center gap-4">
+        <div className="mx-auto mt-6 grid max-w-full grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-2 sm:mt-8 sm:w-fit sm:grid-cols-[44px_auto_44px] sm:gap-4">
           <button
             type="button"
             aria-label="Previous reviews"
             onClick={handlePrev}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
 
           {/* Dot Indicators (Representing Actual Pages) */}
-          <div className="flex items-center gap-1.5">
-            {Array.from({ length: totalPages }).map((_, j) => (
-              <button
-                key={j}
-                type="button"
-                aria-label={`Go to page ${j + 1}`}
-                aria-current={j === currentPage}
-                onClick={() => handleDotClick(j)}
-                className="flex h-8 w-6 items-center justify-center"
-              >
-                <span
-                  className={`h-2.5 rounded-full transition-all duration-300 ${
-                    j === currentPage
-                      ? "w-7 bg-[var(--electric)] shadow-[0_0_8px_var(--electric)]"
-                      : "w-2.5 bg-border hover:bg-muted-foreground/40"
-                  }`}
-                />
-              </button>
-            ))}
-          </div>
+          <CarouselDots
+            total={totalPages}
+            current={currentPage % totalPages}
+            onSelect={handleDotClick}
+            label="page"
+          />
 
           <button
             type="button"
             aria-label="Next reviews"
             onClick={handleNext}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ChevronRight className="h-5 w-5" />
           </button>

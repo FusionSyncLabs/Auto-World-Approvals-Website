@@ -51,7 +51,7 @@ export default function HowItWorksPage() {
                 {s.n}
               </p>
               <h3 className="mt-2 text-lg sm:text-xl font-semibold">{s.t}</h3>
-              <p className="mt-2 text-sm sm:text-base text-muted-foreground">{s.b}</p>
+              <p className="mobile-body mt-2 w-full text-sm sm:text-base text-muted-foreground">{s.b}</p>
             </div>
           ))}
         </div>

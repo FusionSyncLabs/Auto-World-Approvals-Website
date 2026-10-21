@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { CarouselDots } from "./CarouselDots";
+import { SwipeSurface } from "./SwipeSurface";
 
 export type HappyClient = {
   id: string;
@@ -118,6 +120,8 @@ export function HappyClientsShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [isHovered, setIsHovered] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
   const [inView, setInView] = useState(false);
@@ -207,12 +211,12 @@ export function HappyClientsShowcase() {
 
   // Auto-play horizontal scroll
   useEffect(() => {
-    if (!inView || reduce || isHovered) return;
+    if (!inView || reduce || isHovered || hasFocus || dragging) return;
     const timer = setInterval(() => {
       scrollNext();
     }, 5500);
     return () => clearInterval(timer);
-  }, [inView, reduce, isHovered, scrollNext]);
+  }, [inView, reduce, isHovered, hasFocus, dragging, scrollNext]);
 
   const reveal = reduce || inView;
 
@@ -244,7 +248,7 @@ export function HappyClientsShowcase() {
           <h2 className="font-display text-3xl font-extrabold tracking-tight md:text-5xl">
             Real Canadians. Real Approvals.
           </h2>
-          <p className="mt-3 text-base text-white/75 md:text-lg">
+          <p className="mobile-body mt-3 text-base text-white/75 md:text-lg">
             Every day we connect drivers with trusted dealer-finance partners tailored to their credit situation.
             Here is what our approved drivers have to say.
           </p>
@@ -254,6 +258,10 @@ export function HappyClientsShowcase() {
         <div
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onFocusCapture={() => setHasFocus(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setHasFocus(false);
+          }}
           className="relative mt-10"
         >
           {/* Side arrow buttons (positioned comfortably away from cards) */}
@@ -262,7 +270,7 @@ export function HappyClientsShowcase() {
               type="button"
               onClick={scrollPrev}
               aria-label="Previous story"
-              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[var(--navy)]/95 text-white shadow-elevated backdrop-blur-md transition-all hover:scale-105 hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 active:scale-95"
+              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[var(--navy)]/95 text-white shadow-elevated backdrop-blur-md transition-all hover:scale-105 hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -270,60 +278,60 @@ export function HappyClientsShowcase() {
               type="button"
               onClick={scrollNext}
               aria-label="Next story"
-              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[var(--navy)]/95 text-white shadow-elevated backdrop-blur-md transition-all hover:scale-105 hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 active:scale-95"
+              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[var(--navy)]/95 text-white shadow-elevated backdrop-blur-md transition-all hover:scale-105 hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
           </div>
 
           {/* Smooth Horizontal Scroll Track */}
-          <div
-            ref={scrollContainerRef}
-            onScroll={handleScroll}
-            className="flex gap-6 overflow-x-auto scroll-smooth py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+          <SwipeSurface
+            enabled={totalDots > 1}
+            onNext={scrollNext}
+            onPrevious={scrollPrev}
+            onDraggingChange={setDragging}
           >
-            {clients.map((client) => (
-              <div
-                key={client.id}
-                className="w-full flex-none snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
-              >
-                <ClientCard client={client} />
-              </div>
-            ))}
-          </div>
+            <div
+              ref={scrollContainerRef}
+              onScroll={handleScroll}
+              className="flex gap-6 overflow-x-auto scroll-smooth py-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+            >
+              {clients.map((client) => (
+                <div
+                  key={client.id}
+                  className="w-full flex-none snap-start sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+                >
+                  <ClientCard client={client} />
+                </div>
+              ))}
+            </div>
+          </SwipeSurface>
 
           {/* Bottom Indicators & Mobile Controls */}
-          <div className="mt-8 flex items-center justify-center gap-4">
+          <div className="mx-auto mt-6 grid max-w-full grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-2 md:mt-8 md:flex md:justify-center">
             <button
               type="button"
               onClick={scrollPrev}
               aria-label="Previous story"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white md:hidden active:scale-95"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white md:hidden active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
 
             {/* Pagination Dots (Only valid scroll positions) */}
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: totalDots }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => scrollToCard(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    activeIndex === i
-                      ? "w-8 bg-[var(--electric)] shadow-[0_0_12px_var(--electric)]"
-                      : "w-2 bg-white/20 hover:bg-white/40"
-                  }`}
-                />
-              ))}
-            </div>
+            <CarouselDots
+              total={totalDots}
+              current={activeIndex}
+              onSelect={scrollToCard}
+              label="slide"
+              dark
+            />
 
             <button
               type="button"
               onClick={scrollNext}
               aria-label="Next story"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white md:hidden active:scale-95"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white md:hidden active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -359,7 +367,7 @@ function ClientCard({ client }: { client: HappyClient }) {
 
           {/* Vehicle Badge (Bottom Left) */}
           {client.vehicle && (
-            <div className="absolute bottom-2.5 left-2.5 right-2.5">
+            <div className="absolute bottom-2.5 left-2.5 right-2.5 text-center sm:text-left">
               <span className="inline-flex max-w-full items-center gap-1.5 truncate rounded-lg border border-white/15 bg-black/60 px-2.5 py-1 text-xs font-medium text-white/95 backdrop-blur-md">
                 <Car className="h-3.5 w-3.5 flex-shrink-0 text-[var(--electric)]" />
                 <span className="truncate">{client.vehicle}</span>
@@ -371,7 +379,7 @@ function ClientCard({ client }: { client: HappyClient }) {
         {/* Card Body */}
         <div className="mt-4">
           {/* Star Rating */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-between">
             <div className="flex items-center gap-0.5 text-amber-400">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
@@ -385,7 +393,7 @@ function ClientCard({ client }: { client: HappyClient }) {
           {/* Quote */}
           <div className="relative mt-3">
             <Quote className="absolute -left-1 -top-1 h-5 w-5 text-white/10" />
-            <p className="relative pl-3 text-sm font-medium leading-relaxed text-white/90">
+            <p className="relative px-3 text-justify text-sm font-medium leading-relaxed text-white/90 sm:pl-3 sm:pr-0 sm:text-left">
               "{client.quote}"
             </p>
           </div>
@@ -393,10 +401,10 @@ function ClientCard({ client }: { client: HappyClient }) {
       </div>
 
       {/* Customer Footer */}
-      <div className="mt-5 border-t border-white/10 pt-3.5">
+      <div className="mt-5 border-t border-white/10 pt-3.5 text-center sm:text-left">
         <p className="text-sm font-bold tracking-wide text-white">{client.client_name}</p>
         {client.location && (
-          <p className="mt-0.5 flex items-center gap-1 text-xs text-white/60">
+          <p className="mt-0.5 flex items-center justify-center gap-1 text-xs text-white/60 sm:justify-start">
             <MapPin className="h-3 w-3 text-[var(--electric)]" />
             {client.location}
           </p>

@@ -118,9 +118,9 @@ export default async function RegionPageView({ params }: Props) {
                 className="rounded-2xl border border-border bg-card px-6 shadow-card transition-colors hover:border-[var(--electric)]/40"
               >
                 <AccordionTrigger className="text-left text-base sm:text-lg font-semibold hover:no-underline hover:text-[var(--electric)] py-5">
-                  {s.h}
+                  <span className="mobile-heading min-w-0 flex-1 pl-4 sm:pl-0">{s.h}</span>
                 </AccordionTrigger>
-                <AccordionContent className="text-base text-foreground/80 leading-relaxed pt-1 pb-5">
+                <AccordionContent className="mobile-body text-base text-foreground/80 leading-relaxed pt-1 pb-5">
                   {s.p}
                 </AccordionContent>
               </AccordionItem>
@@ -129,7 +129,7 @@ export default async function RegionPageView({ params }: Props) {
 
           <div className="mt-12 rounded-2xl border border-border bg-card p-8 sm:p-10 text-center shadow-card">
             <h3 className="font-display text-2xl font-bold tracking-tight">Ready to explore your options?</h3>
-            <p className="mt-2 text-muted-foreground">A short inquiry, then an advisor contacts you about next steps.</p>
+            <p className="mobile-body mt-2 text-muted-foreground">A short inquiry, then an advisor contacts you about next steps.</p>
             <Button asChild variant="hero" size="xl" className="mt-6 shadow-glow">
               <Link href="/apply">
                 Check Financing Options <ArrowRight className="h-5 w-5" />
