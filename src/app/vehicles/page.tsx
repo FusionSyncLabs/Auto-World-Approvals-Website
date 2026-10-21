@@ -34,7 +34,7 @@ export default function VehiclesPage() {
           <Link
             key={v.t}
             href={`/apply?vt=${v.vt}`}
-            className="group rounded-2xl border border-border bg-card p-6 shadow-card transition hover:-translate-y-1 hover:border-[var(--electric)] hover:shadow-elevated"
+            className="group flex flex-col items-center text-center sm:items-start sm:text-left rounded-2xl border border-border bg-card p-6 shadow-card transition hover:-translate-y-1 hover:border-[var(--electric)] hover:shadow-elevated"
           >
             <v.icon className="h-8 w-8 text-[var(--navy)] transition group-hover:text-[var(--electric)]" />
             <h3 className="mt-4 font-semibold">{v.t}</h3>
@@ -48,7 +48,7 @@ export default function VehiclesPage() {
           <p className="max-w-xl text-muted-foreground">
             Start the application and we&apos;ll help you sort it out along the way.
           </p>
-          <Button asChild variant="hero" size="lg">
+          <Button asChild variant="hero" size="lg" className="w-full sm:w-auto">
             <Link href="/apply">Check Financing Options</Link>
           </Button>
         </div>

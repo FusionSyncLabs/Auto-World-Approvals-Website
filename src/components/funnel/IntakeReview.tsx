@@ -41,8 +41,8 @@ export function IntakeReview({ data, update, onBack, onEdit, onSubmit, submittin
     </div>
     {errorMsg && <p role="alert" className="mt-5 text-sm text-destructive">{errorMsg}</p>}
     <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-      <Button variant="ghost" onClick={onBack} disabled={submitting}><ArrowLeft className="h-4 w-4" />Back</Button>
-      <Button size="lg" variant="hero" disabled={!acknowledged || submitting} onClick={() => onSubmit({})}>{submitting ? <><Loader2 className="h-4 w-4 animate-spin" />Saving your inquiry…</> : <>Submit my application<ArrowRight className="h-4 w-4" /></>}</Button>
+      <Button variant="ghost" onClick={onBack} disabled={submitting} className="w-full sm:w-auto"><ArrowLeft className="h-4 w-4" />Back</Button>
+      <Button size="lg" variant="hero" disabled={!acknowledged || submitting} onClick={() => onSubmit({})} className="w-full sm:w-auto">{submitting ? <><Loader2 className="h-4 w-4 animate-spin" />Saving your inquiry…</> : <>Submit my application<ArrowRight className="h-4 w-4" /></>}</Button>
     </div>
   </StepShell>;
 }

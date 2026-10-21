@@ -29,9 +29,9 @@ function ThankYouContent() {
               Reference: {id.slice(0, 8).toUpperCase()}
             </p>
           )}
-          <div className="mt-10 border-t border-border pt-8 text-left">
+          <div className="mt-10 border-t border-border pt-8 text-center sm:text-left">
             <h2 className="text-xl font-semibold">What happens next</h2>
-            <ol className="mt-4 list-decimal space-y-4 pl-5 text-base text-muted-foreground">
+            <ol className="mt-4 inline-block list-decimal space-y-4 pl-5 text-left text-base text-muted-foreground">
               <li>An advisor reviews your inquiry and vehicle preferences.</li>
               <li>
                 The advisor contacts you to discuss options and any additional
@@ -43,7 +43,7 @@ function ThankYouContent() {
               </li>
             </ol>
           </div>
-          <Button asChild size="lg" className="mt-10">
+          <Button asChild size="lg" className="mt-10 w-full sm:w-auto">
             <Link href="/">Back to home</Link>
           </Button>
         </div>

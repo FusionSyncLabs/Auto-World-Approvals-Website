@@ -79,9 +79,9 @@ export default function SellTradeInPage() {
         description="Send us a few details and a representative may follow up with an estimate."
       />
       <section className="container mx-auto grid gap-10 px-4 py-16 lg:grid-cols-2 lg:px-8">
-        <div>
+        <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
           <h2 className="text-2xl font-bold">How it works</h2>
-          <ul className="mt-4 space-y-3 text-foreground/85">
+          <ul className="mt-4 space-y-3 text-foreground/85 text-left inline-block">
             {[
               "Submit your vehicle details",
               "We review your trade-in and the market",
@@ -89,12 +89,12 @@ export default function SellTradeInPage() {
               "Apply it to a new vehicle or sell outright",
             ].map((l) => (
               <li key={l} className="flex items-start gap-3">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 text-[var(--electric)]" />
-                {l}
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
+                <span>{l}</span>
               </li>
             ))}
           </ul>
-          <Button asChild variant="navy" size="lg" className="mt-6">
+          <Button asChild variant="navy" size="lg" className="mt-6 w-full sm:w-auto">
             <Link href="/apply">Apply with a trade-in</Link>
           </Button>
         </div>
@@ -109,7 +109,7 @@ export default function SellTradeInPage() {
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
-              <h3 className="text-xl font-bold">Tell us about your vehicle</h3>
+              <h3 className="text-xl font-bold text-center sm:text-left">Tell us about your vehicle</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label>Year</Label>

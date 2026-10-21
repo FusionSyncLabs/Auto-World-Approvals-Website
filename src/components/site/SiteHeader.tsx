@@ -96,7 +96,7 @@ export function SiteHeader() {
       </div>
       {open && (
         <div id="mobile-navigation" className="max-h-[calc(100dvh-6rem)] overflow-y-auto animate-fade-in border-t border-border bg-background lg:hidden">
-          <div className="container mx-auto flex flex-col gap-1 px-4 py-3">
+          <div className="container mx-auto flex flex-col gap-1 px-4 py-3 text-center">
             {NAV.map((n) => (
               <span key={n.to}>
                 {isHome && n.scrollTo ? (
@@ -106,7 +106,7 @@ export function SiteHeader() {
                       scrollToHowItWorks(e);
                       setOpen(false);
                     }}
-                    className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent"
                   >
                     {n.label}
                   </a>
@@ -114,14 +114,14 @@ export function SiteHeader() {
                   <Link
                     to={n.to}
                     onClick={() => setOpen(false)}
-                    className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-accent"
                   >
                     {n.label}
                   </Link>
                 )}
               </span>
             ))}
-            <Button asChild variant="hero" size="lg" className="mt-2">
+            <Button asChild variant="hero" size="lg" className="mt-2 w-full">
               <Link to="/apply" onClick={() => setOpen(false)}>Check Financing Options</Link>
             </Button>
           </div>

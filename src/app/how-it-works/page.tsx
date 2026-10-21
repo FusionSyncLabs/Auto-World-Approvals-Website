@@ -45,18 +45,18 @@ export default function HowItWorksPage() {
           {steps.map((s) => (
             <div
               key={s.n}
-              className="rounded-2xl border border-border bg-card p-8 shadow-card"
+              className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-card flex flex-col items-center text-center sm:items-start sm:text-left"
             >
-              <p className="font-display text-4xl font-bold text-[var(--electric)]">
+              <p className="font-display text-3xl sm:text-4xl font-bold text-[var(--electric)]">
                 {s.n}
               </p>
-              <h3 className="mt-2 text-xl font-semibold">{s.t}</h3>
-              <p className="mt-2 text-muted-foreground">{s.b}</p>
+              <h3 className="mt-2 text-lg sm:text-xl font-semibold">{s.t}</h3>
+              <p className="mt-2 text-sm sm:text-base text-muted-foreground">{s.b}</p>
             </div>
           ))}
         </div>
-        <div className="mt-12 text-center">
-          <Button asChild variant="hero" size="xl">
+        <div className="mt-10 sm:mt-12 text-center">
+          <Button asChild variant="hero" size="xl" className="w-full sm:w-auto">
             <Link href="/apply">Check Financing Options</Link>
           </Button>
         </div>

@@ -60,7 +60,7 @@ export default function ContactPage() {
       />
       <section className="container mx-auto grid grid-cols-1 gap-10 px-4 py-16 lg:grid-cols-2 lg:px-8">
         <div className="min-w-0 space-y-4">
-          <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-left rounded-xl border border-border bg-card p-5 shadow-card">
             <Mail className="h-5 w-5 text-[var(--electric)]" />
             <p className="mt-2 font-semibold">Email</p>
             <a
@@ -70,7 +70,7 @@ export default function ContactPage() {
               admin@autoworldapprovals.com
             </a>
           </div>
-          <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-left rounded-xl border border-border bg-card p-5 shadow-card">
             <MapPin className="h-5 w-5 text-[var(--electric)]" />
             <p className="mt-2 font-semibold">Service area</p>
             <p className="text-sm text-muted-foreground">
@@ -89,7 +89,7 @@ export default function ContactPage() {
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
-              <h3 className="text-xl font-bold">Send us a message</h3>
+              <h3 className="text-xl font-bold text-center sm:text-left">Send us a message</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="contact-name">Name</Label>

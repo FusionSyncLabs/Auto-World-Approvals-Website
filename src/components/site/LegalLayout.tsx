@@ -17,7 +17,7 @@ export function LegalLayout({ title, lastUpdated = "October 19, 2026", children 
     <SiteLayout>
       <PageHero title={title} description={`Last updated: ${lastUpdated}`} />
       <section className="container mx-auto max-w-3xl px-4 py-16 lg:px-8">
-        <nav aria-label="Legal documents" className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-base">
+        <nav aria-label="Legal documents" className="mb-8 flex flex-wrap items-center justify-center sm:justify-start gap-x-5 gap-y-3 text-base">
           <Link to="/privacy" className="underline">Privacy</Link>
           <Link to="/terms" className="underline">Terms</Link>
           <Link to="/consent" className="underline">Application consent</Link>

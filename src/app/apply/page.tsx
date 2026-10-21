@@ -212,7 +212,7 @@ function ApplyForm() {
         </div>
 
         {/* Micro-Progress Subheader */}
-        <div className="container mx-auto flex items-center justify-end px-3 sm:px-4 py-1.5 text-xs font-semibold text-muted-foreground">
+        <div className="container mx-auto flex items-center justify-center sm:justify-end px-3 sm:px-4 py-1.5 text-xs font-semibold text-muted-foreground">
           <span className="text-primary font-bold">{progressPercent}% Complete</span>
         </div>
 
@@ -802,14 +802,14 @@ function StepRenderer({
 function NotQualified({ onBack }: { onBack: () => void }) {
   return (
     <StepShell title="Thank you for your interest" description="We appreciate you taking the time.">
-      <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+      <div className="space-y-4 text-base leading-relaxed text-muted-foreground text-center sm:text-left">
         <p>Right now, our lending partners are only able to consider applications where the applicant has employment or self-employment income, so we're not able to continue your application today.</p>
         <p>If your situation changes, you'd be very welcome to come back — and if you have questions, email us at <a href="mailto:admin@autoworldapprovals.com" className="break-words underline">admin@autoworldapprovals.com</a>.</p>
         <p className="text-sm">No application has been recorded and none of your answers have been saved.</p>
       </div>
       <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-        <Button variant="ghost" onClick={onBack}><ArrowLeft className="h-4 w-4" />Back</Button>
-        <Button asChild variant="hero" size="lg"><Link href="/">Return to homepage<ArrowRight className="h-4 w-4" /></Link></Button>
+        <Button variant="ghost" onClick={onBack} className="w-full sm:w-auto"><ArrowLeft className="h-4 w-4" />Back</Button>
+        <Button asChild variant="hero" size="lg" className="w-full sm:w-auto"><Link href="/">Return to homepage<ArrowRight className="h-4 w-4" /></Link></Button>
       </div>
     </StepShell>
   );
@@ -817,8 +817,8 @@ function NotQualified({ onBack }: { onBack: () => void }) {
 
 function Helper({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-5 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-      <Info className="mt-px h-3.5 w-3.5 flex-shrink-0 text-[var(--electric)]" />
+    <p className="mt-5 flex items-start sm:items-center justify-center sm:justify-start gap-2 text-xs leading-relaxed text-muted-foreground text-center sm:text-left">
+      <Info className="mt-0.5 sm:mt-0 h-3.5 w-3.5 flex-shrink-0 text-[var(--electric)]" />
       <span>{children}</span>
     </p>
   );

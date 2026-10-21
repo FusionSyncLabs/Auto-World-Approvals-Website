@@ -19,12 +19,12 @@ export function StepShell({ title, description, children, footer }: StepShellPro
         <h1
           tabIndex={-1}
           data-step-heading
-          className="font-display text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground focus:outline-none"
+          className="font-display text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-foreground focus:outline-none text-center sm:text-left"
         >
           {title}
         </h1>
         {description && (
-          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed text-center sm:text-left">
             {description}
           </p>
         )}

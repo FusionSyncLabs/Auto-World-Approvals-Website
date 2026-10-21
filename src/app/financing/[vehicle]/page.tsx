@@ -103,9 +103,9 @@ export default async function VehicleRoute({
       />
 
       <section className="container mx-auto px-4 py-16 lg:px-8">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl flex flex-col items-center sm:items-start text-center sm:text-left">
           <h2 className="text-2xl font-bold">What you get</h2>
-          <ul className="mt-6 space-y-4">
+          <ul className="mt-6 space-y-4 text-left inline-block">
             {page.points.map((p) => (
               <li key={p} className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
@@ -114,7 +114,7 @@ export default async function VehicleRoute({
             ))}
           </ul>
 
-          <div className="mt-10 rounded-2xl border border-border bg-card p-8 text-center shadow-card">
+          <div className="mt-10 rounded-2xl border border-border bg-card p-6 sm:p-8 text-center shadow-card w-full">
             <h3 className="text-xl font-bold">Check your financing options</h3>
             <p className="mt-2 text-muted-foreground">
               Answer a few quick questions and a financing specialist will follow
@@ -122,7 +122,7 @@ export default async function VehicleRoute({
             </p>
             <Link
               href={`/apply?vt=${page.vt}`}
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--electric)] px-8 py-3 text-base font-semibold text-white hover:opacity-90"
+              className="mt-6 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--electric)] px-8 py-3 text-base font-semibold text-white hover:opacity-90"
             >
               Start my {page.name.toLowerCase()} application{" "}
               <ArrowRight className="h-4 w-4" />
@@ -132,7 +132,7 @@ export default async function VehicleRoute({
             </p>
           </div>
 
-          <p className="mt-8 text-sm text-muted-foreground">
+          <p className="mt-8 text-sm text-muted-foreground text-center sm:text-left">
             Serving British Columbia, Alberta, Saskatchewan, Manitoba, Yukon,
             the Northwest Territories and Nunavut. Submitting an inquiry is not
             an approval; any financing decision is made by the lender.

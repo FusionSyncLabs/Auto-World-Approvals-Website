@@ -261,18 +261,18 @@ export default function HomePage() {
               <div className="mx-[8.33%] h-full bg-gradient-to-r from-transparent via-[var(--electric)]/40 to-transparent" />
             </div>
             {steps.map((s) => (
-              <div key={s.n} className="relative">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[var(--electric)] bg-card font-display text-lg font-bold text-[var(--electric)] shadow-sm">
+              <div key={s.n} className="relative flex flex-col items-center text-center md:items-start md:text-left">
+                <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full border-2 border-[var(--electric)] bg-card font-display text-base sm:text-lg font-bold text-[var(--electric)] shadow-sm">
                   {s.n}
                 </div>
-                <h3 className="mt-5 font-display text-xl font-semibold">{s.title}</h3>
-                <p className="mt-2 text-muted-foreground">{s.body}</p>
+                <h3 className="mt-3.5 sm:mt-5 font-display text-lg sm:text-xl font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm sm:text-base text-muted-foreground">{s.body}</p>
               </div>
             ))}
           </div>
 
-          <div className="reveal mt-12 text-center">
-            <Button asChild variant="hero" size="xl">
+          <div className="reveal mt-10 sm:mt-12 text-center">
+            <Button asChild variant="hero" size="xl" className="w-full sm:w-auto">
               <Link href="/apply">Start your application <ArrowRight className="h-5 w-5" /></Link>
             </Button>
           </div>
@@ -280,11 +280,11 @@ export default function HomePage() {
       </section>
 
       {/* ============ WHY US ============ */}
-      <section className="relative overflow-hidden bg-[var(--navy)] pt-12 pb-12 text-white md:pt-16 md:pb-14">
+      <section className="relative overflow-hidden bg-[var(--navy)] pt-10 pb-10 text-white sm:pt-12 sm:pb-12 md:pt-16 md:pb-14">
         <div aria-hidden className="absolute -right-32 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full opacity-20 blur-3xl" style={{ background: "radial-gradient(circle, oklch(0.55 0.22 245), transparent 70%)" }} />
-        <div className="container relative mx-auto grid gap-12 px-4 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8">
+        <div className="container relative mx-auto grid gap-8 sm:gap-12 px-4 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8">
           <div className="relative">
-            <div className="overflow-hidden rounded-3xl shadow-elevated ring-1 ring-white/10">
+            <div className="overflow-hidden rounded-2xl sm:rounded-3xl shadow-elevated ring-1 ring-white/10">
               <img src={keysSrc} alt="Happy customer with newly approved vehicle in their driveway" loading="lazy" width={1200} height={1200} className="h-full w-full object-cover" />
             </div>
             <div className="absolute -bottom-6 -right-6 hidden rounded-2xl border border-white/15 bg-[oklch(0.14_0.05_255/0.85)] p-5 backdrop-blur-md shadow-elevated sm:block">
@@ -300,21 +300,21 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div>
-            <h2 className="font-display text-3xl font-bold tracking-tight lg:text-5xl">
+          <div className="text-center lg:text-left">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight lg:text-5xl">
               We don't lend. We help you find financing.
             </h2>
-            <p className="mt-5 text-white/75">
+            <p className="mt-4 sm:mt-5 text-sm sm:text-base text-white/75">
               We're the bridge between you and dealer-finance partners suited to your situation across Western Canada. Final approval, rates and terms are always decided by the lender.
             </p>
-            <ul className="mt-7 space-y-4">
+            <ul className="mt-6 sm:mt-7 space-y-3.5 sm:space-y-4 text-left inline-block max-w-lg mx-auto lg:mx-0">
               {[
                 "Our inquiry does not run a credit check. A lender asks your permission before any credit check.",
                 "All credit considered: new, rebuilding, or established.",
                 "Tell us about your trade-in so it can be considered up front.",
                 "Real humans, not chatbots — based right here in Canada.",
               ].map((line) => (
-                <li key={line} className="flex items-start gap-3 text-white/85">
+                <li key={line} className="flex items-start gap-3 text-white/85 text-sm sm:text-base">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
                   <span>{line}</span>
                 </li>
@@ -382,7 +382,7 @@ export default function HomePage() {
           <div className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] bg-hero p-6 sm:p-10 md:p-14 text-white shadow-elevated">
             <div aria-hidden className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[var(--electric)]/30 blur-3xl" />
             <div aria-hidden className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-            <div className="relative flex flex-col items-start gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="relative flex flex-col items-center text-center gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between lg:text-left">
               <div className="max-w-xl">
                 <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                   Your next vehicle is two minutes away.

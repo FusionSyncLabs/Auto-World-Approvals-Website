@@ -8,12 +8,12 @@ export function SiteFooter() {
   return (
     <footer className="bg-[var(--navy)] text-[var(--navy-foreground)]">
       <div className="container mx-auto grid grid-cols-1 gap-10 px-4 py-14 lg:grid-cols-4 lg:px-8">
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col items-center text-center lg:items-start lg:text-left">
           <Logo variant="light" />
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-white/70 max-w-sm">
             Vehicle financing inquiries for drivers across Western Canada. No obligation.
           </p>
-          <div className="flex items-center gap-3 pt-1">
+          <div className="flex items-center justify-center lg:justify-start gap-3 pt-1">
             <a
               href="https://www.facebook.com/autoworldapprovals"
               target="_blank"
@@ -25,7 +25,7 @@ export function SiteFooter() {
             </a>
           </div>
         </div>
-        <div>
+        <div className="text-center lg:text-left">
           <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/90">Company</h4>
           <ul className="space-y-2 text-sm text-white/70">
             <li><Link to="/about" className="hover:text-white">About Us</Link></li>
@@ -37,7 +37,7 @@ export function SiteFooter() {
             <li><Link href="/vehicle-financing/alberta" className="hover:text-white">Alberta Financing Guide</Link></li>
           </ul>
         </div>
-        <div>
+        <div className="text-center lg:text-left">
           <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/90">Legal</h4>
           <ul className="space-y-2 text-sm text-white/70">
             <li><Link to="/privacy" className="hover:text-white">Privacy Policy</Link></li>
@@ -56,20 +56,20 @@ export function SiteFooter() {
             <li><Link to="/legal" className="hover:text-white">Legal Agreements</Link></li>
           </ul>
         </div>
-        <div>
+        <div className="text-center lg:text-left">
           <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/90">Contact</h4>
-          <ul className="space-y-2.5 text-sm text-white/70">
-            <li className="flex items-center gap-2.5">
+          <ul className="space-y-2.5 text-sm text-white/70 flex flex-col items-center lg:items-start">
+            <li className="flex items-center justify-center lg:justify-start gap-2.5">
               <Mail className="h-4 w-4 shrink-0 text-white/70" />
               <a href="mailto:admin@autoworldapprovals.com" className="break-all hover:text-white transition-colors">
                 admin@autoworldapprovals.com
               </a>
             </li>
-            <li className="flex items-center gap-2.5">
+            <li className="flex items-center justify-center lg:justify-start gap-2.5">
               <MapPin className="h-4 w-4 shrink-0 text-white/70" />
               <span>BC, AB, SK, MB, YT, NT &amp; NU</span>
             </li>
-            <li className="flex items-center gap-2.5">
+            <li className="flex items-center justify-center lg:justify-start gap-2.5">
               <Building2 className="h-4 w-4 shrink-0 text-white/70" />
               <span>Operated by Merk Digital Ltd.</span>
             </li>
