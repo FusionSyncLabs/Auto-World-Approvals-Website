@@ -7,12 +7,20 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, ArrowLeft } from "lucide-react";
-import { fetchPublishedPost } from "@/lib/blog-data";
+import { fetchPublishedPost, fetchPublishedPosts } from "@/lib/blog-data";
 
 const BASE = "https://autoworldapprovals.com";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const posts = await fetchPublishedPosts();
+  if (!posts || posts.length === 0) {
+    return [{ slug: "getting-started" }];
+  }
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

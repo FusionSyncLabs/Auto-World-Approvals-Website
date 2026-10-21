@@ -68,6 +68,10 @@ const PAGES: Record<string, VehiclePage> = {
   },
 };
 
+export function generateStaticParams() {
+  return Object.keys(PAGES).map((vehicle) => ({ vehicle }));
+}
+
 export async function generateMetadata({
   params,
 }: {

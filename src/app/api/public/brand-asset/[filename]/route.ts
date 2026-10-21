@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  const dir = path.join(process.cwd(), "public", "brand-asset");
+  if (fs.existsSync(dir)) {
+    return fs.readdirSync(dir).map((filename) => ({ filename }));
+  }
+  return [];
+}
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ filename: string }> }

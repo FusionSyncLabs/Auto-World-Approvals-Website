@@ -74,6 +74,10 @@ interface Props {
   params: Promise<{ region: string }>;
 }
 
+export function generateStaticParams() {
+  return Object.keys(REGIONS).map((region) => ({ region }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region } = await params;
   const r = REGIONS[region.toLowerCase()];

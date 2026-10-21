@@ -3,6 +3,8 @@ import { fetchPublishedPosts } from "@/lib/blog-data";
 
 const BASE_URL = "https://autoworldapprovals.com";
 
+export const dynamic = "force-static";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes: MetadataRoute.Sitemap = [
     { url: `${BASE_URL}/`, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
