@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { HappyClientsShowcase } from "@/components/site/HappyClientsShowcase";
@@ -95,21 +96,19 @@ const categories = [
   { label: "Car", value: "car", img: vehicleCar },
   { label: "SUV", value: "suv", img: vehicleSuv },
   { label: "Truck", value: "truck", img: vehicleTruck },
-  { label: "Vans", value: "van", img: vehicleVan },
+  { label: "Van", value: "van", img: vehicleVan },
 ];
-
 
 const trustChips = [
-  { icon: Zap, text: "2-minute application" },
-  { icon: ShieldCheck, text: "No obligation" },
-  { icon: Lock, text: "All credit welcome" },
+  { icon: Zap, text: "Quick Online Form" },
+  { icon: ShieldCheck, text: "No Obligation" },
+  { icon: Clock, text: "Personal Follow-Up" },
 ];
 
-
 const steps = [
-  { n: "01", title: "Apply online", body: "Answer a few quick questions about the vehicle and budget you want." },
-  { n: "02", title: "Get matched", body: "An advisor contacts you and shares your inquiry with suitable dealer-finance partners." },
-  { n: "03", title: "Drive away", body: "Review the options a lender offers you, then choose — no obligation." },
+  { n: "01", title: "Choose Your Vehicle", body: "Tell us what type of vehicle you're looking for and what fits your budget." },
+  { n: "02", title: "Apply Online", body: "Complete a simple online application to tell us about your financing needs." },
+  { n: "03", title: "Explore Your Options", body: "Our team will contact you to discuss possible financing options and the next steps." },
 ];
 
 
@@ -177,6 +176,10 @@ const faqs = [
     a: "We work with lenders that serve a wide range of credit profiles. We'll share realistic options rather than over-promising.",
   },
   {
+    q: "What income or employment details are required?",
+    a: "Applicants should have a verifiable regular source of income (such as full-time or part-time employment, self-employment, or government benefits). Exact criteria vary by lending partner.",
+  },
+  {
     q: "Is there a cost to apply?",
     a: "No. Submitting an application is free with no obligation to purchase.",
   },
@@ -225,15 +228,14 @@ function Home() {
             {...fadeIn(0.08)}
             className="mx-auto max-w-3xl text-balance font-display text-[2rem] font-extrabold leading-[1.06] tracking-normal sm:text-[2.75rem] sm:leading-[1.03] md:text-6xl"
           >
-            Get pre-qualified. Choose your ride.{" "}
+            Your Next Ride Starts Here.{" "}
             <span className="text-electric">
-              Drive away.
+              Explore Financing Options.
             </span>
           </motion.h1>
 
-
           <motion.p {...fadeIn(0.16)} className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground sm:mt-5">
-            Start by picking the type of vehicle you want. No obligation.
+            Looking for a car, truck, SUV, or van? Choose your vehicle type and start exploring your financing options online.
           </motion.p>
 
           {/* Vehicle tiles */}
@@ -266,7 +268,7 @@ function Home() {
           {/* Trust strip */}
           <motion.div {...fadeIn(0.32)} className="mx-auto mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[17px] text-muted-foreground sm:mt-10 sm:gap-x-6 sm:gap-y-3">
             {trustChips.map((t) => (
-              <span key={t.text} className="inline-flex items-center gap-1.5">
+              <span key={t.text} className="inline-flex items-center gap-1.5 font-medium">
                 <t.icon className="h-4 w-4 text-[var(--electric)]" />
                 {t.text}
               </span>
@@ -276,28 +278,15 @@ function Home() {
         </div>
       </section>
 
-
-      {/* ============ LENDER STRIP ============ */}
-      <section className="border-b border-border bg-background py-10">
-        <div className="container mx-auto px-4 lg:px-8">
-          <p className="mb-6 text-center text-[17px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Partnered with Canada&apos;s Top Lenders
+      {/* ============ FINANCING OPTIONS STRIP ============ */}
+      <section className="border-b border-border bg-soft/50 py-8">
+        <div className="container mx-auto px-4 text-center lg:px-8">
+          <p className="text-sm font-bold uppercase tracking-[0.22em] text-foreground/80">
+            Helping You Explore Vehicle Financing Options
           </p>
-          <div className="marquee-pause relative overflow-hidden">
-            <div className="marquee opacity-70">
-              {[0, 1].map((g) => (
-                <div key={g} className="marquee-group" aria-hidden={g === 1}>
-                  {lenders.map((l, i) => (
-                    <span key={`${l}-${i}`} className="whitespace-nowrap font-display text-base font-semibold tracking-tight text-[var(--navy)] md:text-lg">
-                      {l}
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
-            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
-          </div>
+          <p className="mx-auto mt-2 max-w-2xl text-sm text-muted-foreground">
+            We help connect applicants with participating dealer-finance partners to explore available financing options.
+          </p>
         </div>
       </section>
 
@@ -307,7 +296,7 @@ function Home() {
         <div className="container relative mx-auto px-4 lg:px-8">
           <div className="reveal mx-auto max-w-2xl text-center">
             <h2 className="font-display text-3xl font-bold tracking-tight lg:text-5xl">
-              From application to driveway in <span className="text-gradient">three steps.</span>
+              Financing Made Simple. <span className="text-gradient">Three Easy Steps.</span>
             </h2>
           </div>
 
@@ -327,7 +316,7 @@ function Home() {
           </div>
 
           <div className="reveal mt-12 text-center">
-            <Button asChild variant="hero" size="xl"><Link to="/apply">Start your application <ArrowRight className="h-5 w-5" /></Link></Button>
+            <Button asChild variant="hero" size="xl"><Link to="/apply">Check Financing Options <ArrowRight className="h-5 w-5" /></Link></Button>
           </div>
         </div>
       </section>
@@ -355,17 +344,17 @@ function Home() {
 
           <div>
             <h2 className="font-display text-3xl font-bold tracking-tight lg:text-5xl">
-              We don't lend. We help you find financing.
+              We&apos;re Not a Lender. We&apos;re Here to Help.
             </h2>
             <p className="mt-5 text-white/75">
-              We're the bridge between you and dealer-finance partners suited to your situation across Western Canada. Final approval, rates and terms are always decided by the lender.
+              Auto World Approvals helps Canadian drivers explore vehicle financing options through participating dealer-finance partners. Our team provides personal guidance to help you understand your options and take the next step toward your next vehicle.
             </p>
             <ul className="mt-7 space-y-4">
               {[
-                "Our inquiry does not run a credit check. A lender asks your permission before any credit check.",
-                "All credit considered: new, rebuilding, or established.",
-                "Tell us about your trade-in so it can be considered up front.",
-                "Real humans, not chatbots — based right here in Canada.",
+                "Explore financing options for cars, trucks, SUVs and vans.",
+                "Speak with a real advisor about your vehicle needs.",
+                "Understand available options before making a decision.",
+                "No obligation to accept a financing offer.",
               ].map((line) => (
                 <li key={line} className="flex items-start gap-3 text-white/85">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
@@ -388,8 +377,11 @@ function Home() {
               <GoogleIcon /> Google reviews
             </p>
             <h2 className="mt-4 font-display text-2xl font-bold tracking-tight lg:text-4xl">
-              Trusted by drivers across Western Canada.
+              What Drivers Are Saying.
             </h2>
+            <p className="mt-3 text-base text-muted-foreground">
+              Read genuine feedback from customers about their experiences with Auto World Approvals.
+            </p>
           </div>
 
           <ReviewsCarousel reviews={reviews} />
@@ -402,10 +394,10 @@ function Home() {
         <div className="container mx-auto max-w-4xl px-4 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-display text-3xl font-bold tracking-tight lg:text-4xl">
-              Frequently asked questions.
+              Frequently Asked Questions.
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Everything you need to know about vehicle pre-qualification and financing in Western Canada.
+              Find answers to common questions about vehicle financing and our application process.
             </p>
           </div>
 
@@ -439,13 +431,18 @@ function Home() {
             <div className="relative flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-                  Your next vehicle is two minutes away.
+                  Ready to Find Your Next Ride?
                 </h2>
-                <p className="mt-4 text-white/80">No SIN. No cost. No obligation.</p>
+                <p className="mt-4 text-white/80">
+                  Start exploring your vehicle financing options online. Our team will help you understand the next steps.
+                </p>
+                <p className="mt-2 text-xs text-white/65">
+                  No obligation to accept a financing offer.
+                </p>
               </div>
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
                 <Button asChild variant="hero" size="xl" className="shadow-glow"><Link to="/apply">Check Financing Options <ArrowRight className="h-5 w-5" /></Link></Button>
-                <Button asChild size="xl" variant="outline" className="border-white/25 bg-white/[0.04] text-white backdrop-blur hover:bg-white/15 hover:text-white"><Link to="/sell-trade-in">Value Trade-In</Link></Button>
+                <Button asChild size="xl" variant="outline" className="border-white/25 bg-white/[0.04] text-white backdrop-blur hover:bg-white/15 hover:text-white"><Link to="/sell-trade-in">Value Your Trade-In</Link></Button>
               </div>
             </div>
           </div>

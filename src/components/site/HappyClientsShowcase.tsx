@@ -246,11 +246,10 @@ export function HappyClientsShowcase() {
           }`}
         >
           <h2 className="font-display text-3xl font-extrabold tracking-tight md:text-5xl">
-            Real Canadians. Real Approvals.
+            Real Drivers. Real Experiences.
           </h2>
           <p className="mobile-body mt-3 text-base text-white/75 md:text-lg">
-            Every day we connect drivers with trusted dealer-finance partners tailored to their credit situation.
-            Here is what our approved drivers have to say.
+            Hear from drivers who have shared their experiences with Auto World Approvals.
           </p>
         </div>
 

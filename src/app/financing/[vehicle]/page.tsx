@@ -124,7 +124,7 @@ export default async function VehicleRoute({
               href={`/apply?vt=${page.vt}`}
               className="mt-6 inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--electric)] px-4 py-3 text-center text-base font-semibold text-white hover:opacity-90 sm:px-8"
             >
-              Start my {page.name.toLowerCase()} application{" "}
+              Check Financing Options{" "}
               <ArrowRight className="h-4 w-4 shrink-0" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">

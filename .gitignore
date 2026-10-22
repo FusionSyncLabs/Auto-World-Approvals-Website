@@ -37,3 +37,4 @@ out/
 tsconfig.tsbuildinfo
 mem_tmp
 scratch/
+*.docx

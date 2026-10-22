@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: Props) {
               A short financing inquiry takes 2 minutes, is 100% free with no impact on your credit score.
             </p>
             <Button asChild className="mt-4">
-              <Link href="/apply">Check my options</Link>
+              <Link href="/apply">Check Financing Options</Link>
             </Button>
           </div>
         </div>

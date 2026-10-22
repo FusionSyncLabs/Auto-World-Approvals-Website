@@ -298,7 +298,7 @@ export function VipOfferPopup() {
                     className="w-full rounded-xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-base font-black uppercase tracking-wide text-slate-950 hover:from-amber-300 hover:to-amber-400"
                   >
                     <Link to="/apply" onClick={close}>
-                      Start my application <ArrowRight className="h-5 w-5" />
+                      Check Financing Options <ArrowRight className="h-5 w-5" />
                     </Link>
                   </Button>
                 </motion.div>
