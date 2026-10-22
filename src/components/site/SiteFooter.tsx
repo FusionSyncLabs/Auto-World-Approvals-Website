@@ -29,7 +29,22 @@ export function SiteFooter() {
           <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/90">Company</h4>
           <ul className="text-sm text-white/70 [overflow-wrap:anywhere] [&_a]:inline-flex [&_a]:max-w-full [&_a]:min-h-11 [&_a]:items-center [&_a]:justify-center [&_a]:rounded [&_a]:py-2 [&_a]:focus-visible:outline-none [&_a]:focus-visible:ring-2 [&_a]:focus-visible:ring-white lg:[&_a]:justify-start">
             <li><Link to="/about" className="hover:text-white">About Us</Link></li>
-            <li><Link to="/how-it-works" className="hover:text-white">How It Works</Link></li>
+            <li>
+              <Link
+                to="/#how-it-works"
+                onClick={(e) => {
+                  const el = document.getElementById("how-it-works");
+                  if (el) {
+                    e.preventDefault();
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    window.history.pushState(null, "", "/#how-it-works");
+                  }
+                }}
+                className="hover:text-white"
+              >
+                How It Works
+              </Link>
+            </li>
             <li><Link to="/vehicles" className="hover:text-white">Vehicle Types</Link></li>
             <li><Link to="/blog" className="hover:text-white">Resources &amp; Guides</Link></li>
             <li><Link to="/contact" className="hover:text-white">Contact</Link></li>

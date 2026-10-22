@@ -8,15 +8,16 @@ import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 
 const NAV = [
-  { to: "/how-it-works", label: "How It Works", scrollTo: "how-it-works" },
+  { to: "/#how-it-works", label: "How It Works", scrollTo: "how-it-works" },
   { to: "/contact", label: "Contact" },
 ];
 
-function scrollToHowItWorks(e: MouseEvent) {
-  e.preventDefault();
+function scrollToHowItWorks(e?: MouseEvent) {
+  if (e) e.preventDefault();
   const el = document.getElementById("how-it-works");
   if (el) {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.pushState(null, "", "/#how-it-works");
   }
 }
 

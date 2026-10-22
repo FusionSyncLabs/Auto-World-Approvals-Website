@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { PageHero } from "@/components/site/PageHero";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { NameInput } from "@/components/ui/name-input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, CheckCircle2, Loader2 } from "lucide-react";
-import { TurnstileWidget } from "@/components/site/TurnstileWidget";
+import { executeRecaptcha, loadRecaptchaScript } from "@/lib/recaptcha";
 import { trackGa } from "@/lib/analytics";
 import { toast } from "sonner";
 
@@ -19,25 +19,26 @@ export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [turnstileToken, setTurnstileToken] = useState<string>("");
 
-  const hasTurnstile = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
-  const onToken = useCallback((t: string) => setTurnstileToken(t), []);
-  const onExpire = useCallback(() => setTurnstileToken(""), []);
+  useEffect(() => {
+    if (siteKey && siteKey !== "your_recaptcha_site_key_here") {
+      loadRecaptchaScript(siteKey).catch((e) => console.error("[recaptcha]", e));
+    }
+  }, [siteKey]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (hasTurnstile && !turnstileToken) {
-      toast.error("Please complete the captcha first.");
-      return;
-    }
     setBusy(true);
     try {
+      // Execute reCAPTCHA v3 invisible check
+      const recaptchaToken = await executeRecaptcha("contact_form");
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message, turnstileToken }),
+        body: JSON.stringify({ name, email, message, recaptchaToken }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -126,13 +127,12 @@ export default function ContactPage() {
                   onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
-              <TurnstileWidget onToken={onToken} onExpire={onExpire} />
               <Button
                 type="submit"
                 variant="hero"
                 size="lg"
                 className="h-auto min-h-12 w-full px-4 py-3"
-                disabled={busy || (hasTurnstile && !turnstileToken)}
+                disabled={busy}
               >
                 {busy ? (
                   <>
@@ -142,6 +142,27 @@ export default function ContactPage() {
                   "Send message"
                 )}
               </Button>
+              <p className="mt-2 text-center text-xs text-muted-foreground/80 leading-normal">
+                This site is protected by reCAPTCHA and the Google{" "}
+                <a
+                  href="https://policies.google.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-foreground"
+                >
+                  Privacy Policy
+                </a>{" "}
+                and{" "}
+                <a
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-foreground"
+                >
+                  Terms of Service
+                </a>{" "}
+                apply.
+              </p>
             </form>
           )}
         </div>

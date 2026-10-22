@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { HappyClientsShowcase } from "@/components/site/HappyClientsShowcase";
 import { VipOfferPopup } from "@/components/site/VipOfferPopup";
@@ -146,6 +147,17 @@ export default function HomePage() {
   const heroWhy = branding.data?.heroSlots?.hero_why_url;
   const validWhyUrl = typeof heroWhy === "string" && heroWhy.trim() !== "" && !heroWhy.startsWith("/__l5e/") && !heroWhy.includes("keys-handoff") ? heroWhy : null;
   const keysSrc = validWhyUrl || "/why-us.jpg";
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#how-it-works") {
+      const el = document.getElementById("how-it-works");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 120);
+      }
+    }
+  }, []);
 
   const fadeIn = (delay = 0) =>
     reduce
