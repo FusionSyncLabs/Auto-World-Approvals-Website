@@ -17,7 +17,11 @@ function scrollToHowItWorks(e?: MouseEvent) {
   const el = document.getElementById("how-it-works");
   if (el) {
     el.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.pushState(null, "", "/#how-it-works");
+    if (typeof window !== "undefined" && window.location.hash !== "#how-it-works") {
+      window.history.pushState(null, "", "/#how-it-works");
+    }
+  } else if (typeof window !== "undefined") {
+    window.location.href = "/#how-it-works";
   }
 }
 
@@ -61,9 +65,9 @@ export function SiteHeader() {
         <nav aria-label="Main navigation" className="hidden min-w-0 items-center gap-5 lg:flex xl:gap-9">
           {NAV.map((n) => (
             <span key={n.to}>
-              {isHome && n.scrollTo ? (
+              {n.scrollTo ? (
                 <a
-                  href={`#${n.scrollTo}`}
+                  href="/#how-it-works"
                   onClick={scrollToHowItWorks}
                   className="group relative inline-flex min-h-11 items-center rounded-sm text-center text-[17px] font-semibold uppercase leading-snug tracking-[0.16em] text-foreground/65 transition-colors hover:text-[var(--electric)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
@@ -113,9 +117,9 @@ export function SiteHeader() {
           <div className="container mx-auto flex flex-col gap-1 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center">
             {NAV.map((n) => (
               <span key={n.to}>
-                {isHome && n.scrollTo ? (
+                {n.scrollTo ? (
                   <a
-                    href={`#${n.scrollTo}`}
+                    href="/#how-it-works"
                     onClick={(e) => {
                       scrollToHowItWorks(e);
                       setOpen(false);

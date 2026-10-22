@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "@/styles.css";
 import { Providers } from "./providers";
 
@@ -50,9 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <script
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+      <body className="min-h-screen bg-background font-sans antialiased text-foreground">
+        <Script
+          id="gtag-consent"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'denied',personalization_storage:'denied',security_storage:'granted'});gtag('js',new Date());`,
           }}
@@ -73,8 +76,6 @@ export default function RootLayout({
             }),
           }}
         />
-      </head>
-      <body className="min-h-screen bg-background font-sans antialiased text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>

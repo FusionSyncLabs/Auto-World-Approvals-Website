@@ -93,7 +93,7 @@ const lenders = [
   { name: "CIBC Auto Finance", logo: "/lenders/cibc.svg" },
   { name: "Desjardins", logo: "/lenders/desjardins.svg" },
   { name: "Santander Consumer", logo: "/lenders/santander.svg" },
-  { name: "Carfinco Financial", logo: "/lenders/carfinco.svg" },
+  { name: "Carfinco Financial", logo: "/lenders/carfinco.png" },
   { name: "Coast Capital Savings", logo: "/lenders/coast-capital.svg" },
 ];
 
@@ -236,6 +236,32 @@ export default function HomePage() {
           <p className="mobile-body mx-auto mt-2 max-w-2xl text-xs sm:text-sm text-muted-foreground">
             We help connect applicants with participating dealer-finance partners to explore available financing options.
           </p>
+          <div className="marquee-pause relative mt-6 overflow-hidden motion-reduce:overflow-x-auto">
+            <div className="marquee flex items-center">
+              {[0, 1].map((g) => (
+                <div key={g} className="marquee-group flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6" aria-hidden={g === 1}>
+                  {lenders.map((l, i) => (
+                    <div
+                      key={`${l.name}-${i}`}
+                      className="group flex h-12 sm:h-14 w-[145px] sm:w-[195px] shrink-0 items-center justify-center rounded-xl border border-border/80 bg-card px-3.5 sm:px-5 py-2 sm:py-2.5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--electric)]/60 hover:shadow-md hover:bg-card"
+                      title={l.name}
+                    >
+                      <img
+                        src={l.logo}
+                        alt={`${l.name} logo`}
+                        width={180}
+                        height={44}
+                        loading="lazy"
+                        className="h-6 sm:h-8 w-full max-w-full object-contain transition-all duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-36 bg-gradient-to-r from-background via-background/80 to-transparent" />
+            <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-36 bg-gradient-to-l from-background via-background/80 to-transparent" />
+          </div>
         </div>
       </section>
 

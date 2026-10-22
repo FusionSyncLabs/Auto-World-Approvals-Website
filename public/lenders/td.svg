@@ -1,8 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 44" fill="none" class="h-9 w-auto">
-  <!-- TD Green Box -->
-  <rect x="2" y="4" width="36" height="36" rx="6" fill="#008A00"/>
-  <text x="7" y="29" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="20" letter-spacing="-0.5">TD</text>
-  <!-- Text -->
-  <text x="46" y="23" fill="#111827" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="15" letter-spacing="-0.2">Auto Finance</text>
-  <text x="46" y="35" fill="#008A00" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="9" letter-spacing="0.5">LENDER PARTNER</text>
-</svg>
+<!-- Official source: https://stories.td.com/ergo/serve/svg/svg-art/td-header-logo.svg --><svg xmlns="http://www.w3.org/2000/svg" width="51" height="45.221" data-name="Logo - TD Shield // Desktop Large" viewBox="0 0 51 45.221"><path fill="#43b02a" d="M0 0v45.221h50.565V0zm33.2 35.439H21.418V14.222h5.916V31.68h5.69c3.928 0 5.577-2.721 5.577-9.728 0-7.048-1.874-9.1-5.861-9.1H19.764v22.587h-5.858V12.856H5.31V9.089h29.254c7.056 0 10.408 3.651 10.408 12.808.001 12.063-5.004 13.542-11.772 13.542z" data-name="Logo - TD Shield // Desktop Large" /></svg>

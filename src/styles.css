@@ -237,7 +237,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .marquee { display: flex; width: max-content; animation: marquee 38s linear infinite; }
-  .marquee-group { display: flex; align-items: center; gap: 3rem; padding-right: 3rem; }
+  .marquee-group { display: flex; align-items: center; }
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }

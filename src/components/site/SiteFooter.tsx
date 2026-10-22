@@ -31,13 +31,15 @@ export function SiteFooter() {
             <li><Link to="/about" className="hover:text-white">About Us</Link></li>
             <li>
               <Link
-                to="/#how-it-works"
+                href="/#how-it-works"
                 onClick={(e) => {
                   const el = document.getElementById("how-it-works");
                   if (el) {
                     e.preventDefault();
                     el.scrollIntoView({ behavior: "smooth", block: "start" });
-                    window.history.pushState(null, "", "/#how-it-works");
+                    if (typeof window !== "undefined" && window.location.hash !== "#how-it-works") {
+                      window.history.pushState(null, "", "/#how-it-works");
+                    }
                   }
                 }}
                 className="hover:text-white"
@@ -73,26 +75,26 @@ export function SiteFooter() {
         </div>
         <div className="min-w-0 flex flex-col items-center min-[360px]:col-span-2 lg:col-span-1 lg:items-start">
           <div className="inline-flex min-w-0 max-w-full flex-col items-start text-left">
-            <h4 className="mb-3.5 text-sm font-semibold uppercase tracking-wider text-white/90">Contact</h4>
-            <ul className="min-w-0 max-w-full space-y-3 text-sm text-white/70">
+            <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-white/90">Contact</h4>
+            <ul className="min-w-0 max-w-full space-y-2.5 text-sm leading-normal text-white/70">
               <li className="flex min-w-0 max-w-full items-center gap-2.5">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center text-white/70">
                   <Mail className="h-4 w-4" />
                 </span>
                 <a
                   href="mailto:admin@autoworldapprovals.com"
-                  className="inline-flex min-h-11 min-w-0 max-w-full items-center break-all rounded py-2 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="min-w-0 break-all rounded hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 >
                   admin@autoworldapprovals.com
                 </a>
               </li>
-              <li className="flex min-w-0 items-center gap-2.5">
+              <li className="flex min-w-0 max-w-full items-center gap-2.5">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center text-white/70">
                   <MapPin className="h-4 w-4" />
                 </span>
                 <span className="min-w-0 break-words">BC, AB, SK, MB, YT, NT &amp; NU</span>
               </li>
-              <li className="flex min-w-0 items-center gap-2.5">
+              <li className="flex min-w-0 max-w-full items-center gap-2.5">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center text-white/70">
                   <Building2 className="h-4 w-4" />
                 </span>
