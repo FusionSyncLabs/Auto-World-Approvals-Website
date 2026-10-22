@@ -196,7 +196,7 @@ export function CookieConsent() {
 
   return (
     <>
-      {visible && (
+      {visible && !manageOpen && (
         <div
           role="dialog"
           aria-live="polite"
@@ -206,18 +206,18 @@ export function CookieConsent() {
           <div className="max-h-[calc(100dvh-1.5rem-env(safe-area-inset-bottom))] overflow-y-auto overscroll-contain rounded-xl border border-border bg-card p-4 text-card-foreground shadow-lg">
             <div className="flex items-start gap-2.5">
               <Cookie className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
-              <p className="text-sm leading-snug text-muted-foreground">
+              <p className="min-w-0 break-words text-sm leading-snug text-muted-foreground">
                 We use cookies to run this site and, with your OK, to improve it.{" "}
                 <Link to="/cookies" className="font-medium text-foreground underline underline-offset-2">
                   Learn more
                 </Link>
               </p>
             </div>
-            <div className="mt-3 grid grid-cols-3 items-center gap-2">
+            <div className="mt-3 grid grid-cols-1 items-center gap-2 min-[360px]:grid-cols-3">
               <button
                 type="button"
                 onClick={() => setManageOpen(true)}
-                className="min-h-11 min-w-0 rounded px-1 text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="min-h-11 min-w-0 [overflow-wrap:anywhere] rounded px-1 py-2 text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Manage
               </button>
@@ -234,8 +234,8 @@ export function CookieConsent() {
 
       <Dialog open={manageOpen} onOpenChange={setManageOpen}>
         <DialogContent className="max-h-[85dvh] max-w-lg overflow-y-auto">
-          <DialogHeader className="min-w-0 pt-3 sm:pt-0">
-            <DialogTitle className="px-5 leading-snug sm:pl-0 sm:pr-6">Cookie preferences</DialogTitle>
+          <DialogHeader>
+            <DialogTitle>Cookie preferences</DialogTitle>
             <DialogDescription>
               Choose which categories of cookies you allow. Strictly necessary cookies cannot be
               disabled because the site cannot function without them. {AD_NOTICE_TEXT}{" "}
@@ -275,10 +275,10 @@ export function CookieConsent() {
           </div>
 
           <DialogFooter className="flex-col-reverse gap-2 sm:flex-row sm:justify-between">
-            <Button variant="ghost" size="sm" className="h-auto min-h-11" onClick={rejectAll}>
+            <Button variant="ghost" size="sm" className="h-auto min-h-11 min-w-0" onClick={rejectAll}>
               Reject non-essential
             </Button>
-            <div className="grid grid-cols-1 gap-2 min-[390px]:grid-cols-2">
+            <div className="grid min-w-0 grid-cols-1 gap-2 min-[390px]:grid-cols-2 sm:flex-1">
               <Button variant="outline" size="sm" className="h-auto min-h-11" onClick={acceptAll}>
                 Accept all
               </Button>
@@ -309,23 +309,25 @@ function PrefRow({
   disabled?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-lg border bg-card/50 p-3">
-      <div className="flex min-w-0 items-start gap-2">
-        <div className="mt-0.5 hidden sm:flex shrink-0 h-7 w-7 items-center justify-center rounded-md bg-muted text-foreground">
+    <label className={`grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-lg border bg-card/50 p-3 ${disabled ? "cursor-default" : "cursor-pointer"}`}>
+      <span className="flex min-w-0 items-start gap-2">
+        <span className="mt-0.5 hidden sm:flex shrink-0 h-7 w-7 items-center justify-center rounded-md bg-muted text-foreground">
           {icon}
-        </div>
-        <div className="min-w-0 break-words">
-          <p className="text-sm font-medium">{title}</p>
-          <p className="mt-0.5 text-base text-muted-foreground">{description}</p>
-        </div>
-      </div>
-      <Switch
-        checked={checked}
-        disabled={disabled}
-        onCheckedChange={(v) => onChange?.(Boolean(v))}
-        aria-label={title}
-      />
-    </div>
+        </span>
+        <span className="min-w-0 break-words">
+          <span className="block text-sm font-medium">{title}</span>
+          <span className="mt-0.5 block text-base leading-relaxed text-muted-foreground">{description}</span>
+        </span>
+      </span>
+      <span className="flex min-h-11 min-w-11 items-center justify-center">
+        <Switch
+          checked={checked}
+          disabled={disabled}
+          onCheckedChange={(v) => onChange?.(Boolean(v))}
+          aria-label={title}
+        />
+      </span>
+    </label>
   );
 }
 

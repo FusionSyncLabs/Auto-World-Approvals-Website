@@ -151,7 +151,7 @@ export default function HomePage() {
     reduce
       ? { initial: false as const, animate: { opacity: 1, y: 0 }, transition: { duration: 0 } }
       : {
-          initial: { opacity: 0, y: 14 },
+          initial: false as const,
           animate: { opacity: 1, y: 0 },
           transition: { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
         };
@@ -164,7 +164,7 @@ export default function HomePage() {
         <div className="container relative mx-auto px-3 sm:px-4 pb-6 pt-3 text-center sm:pt-6 lg:pt-8 lg:px-8 lg:pb-12">
           <motion.h1
             {...fadeIn(0)}
-            className="mx-auto max-w-3xl text-balance font-display text-[1.85rem] font-extrabold leading-[1.08] tracking-normal sm:text-[2.75rem] sm:leading-[1.03] md:text-6xl"
+            className="mx-auto max-w-3xl break-words text-balance font-display text-[1.85rem] font-extrabold leading-[1.08] tracking-normal sm:text-[2.75rem] sm:leading-[1.03] md:text-6xl"
           >
             Your Next Ride Starts Here.{" "}
             <span className="text-electric">Explore Financing Options.</span>
@@ -175,7 +175,7 @@ export default function HomePage() {
           </motion.p>
 
           {/* Vehicle tiles */}
-          <motion.div {...fadeIn(0.12)} className="mx-auto mt-5 grid max-w-6xl grid-cols-2 gap-2.5 sm:mt-8 sm:gap-5 md:grid-cols-4">
+          <motion.div {...fadeIn(0.12)} className="mx-auto mt-5 grid max-w-6xl grid-cols-1 gap-2.5 min-[360px]:grid-cols-2 sm:mt-8 sm:gap-5 md:grid-cols-4">
             {categories.map((o, index) => {
               const imgSrc = o.img;
               return (
@@ -194,9 +194,9 @@ export default function HomePage() {
                     decoding="async"
                     className="mx-auto aspect-[3/2] w-full object-contain transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none"
                   />
-                  <span className="relative flex min-h-11 w-full items-center justify-center bg-card px-8 py-3 text-sm font-bold tracking-normal sm:justify-between sm:px-5 sm:py-4 sm:text-xl">
+                  <span className="relative flex min-h-11 w-full items-center justify-center bg-card px-3 py-3 text-center text-sm font-bold tracking-normal sm:justify-between sm:px-5 sm:py-4 sm:text-left sm:text-xl">
                     {o.label}
-                    <ArrowRight className="absolute right-2.5 h-4 w-4 shrink-0 text-electric transition-transform group-hover:translate-x-1 motion-reduce:transform-none sm:static sm:h-5 sm:w-5" />
+                    <ArrowRight className="hidden h-5 w-5 shrink-0 text-electric transition-transform group-hover:translate-x-1 motion-reduce:transform-none sm:block" />
                   </span>
                 </Link>
               );
@@ -371,14 +371,14 @@ export default function HomePage() {
                 <h2 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                   Ready to Find Your Next Ride?
                 </h2>
-                <p className="mt-2.5 sm:mt-4 text-sm sm:text-base text-white/80">
+                <p className="mobile-body mt-2.5 sm:mt-4 text-sm sm:text-base text-white/80">
                   Start exploring your vehicle financing options online. Our team will help you understand the next steps.
                 </p>
                 <p className="mt-2 text-xs text-white/65">
                   No obligation to accept a financing offer.
                 </p>
               </div>
-              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              <div className="flex w-full min-w-0 max-w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
                 <Button asChild variant="hero" size="lg" className="h-auto min-h-12 w-full px-4 py-3 sm:w-auto sm:px-8 shadow-glow">
                   <Link href="/apply">Check Financing Options <ArrowRight className="h-5 w-5" /></Link>
                 </Button>

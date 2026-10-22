@@ -115,10 +115,10 @@ export default async function RegionPageView({ params }: Props) {
               <AccordionItem
                 key={s.h}
                 value={`item-${i}`}
-                className="rounded-2xl border border-border bg-card px-6 shadow-card transition-colors hover:border-[var(--electric)]/40"
+                className="min-w-0 rounded-2xl border border-border bg-card px-4 shadow-card transition-colors hover:border-[var(--electric)]/40 sm:px-6"
               >
-                <AccordionTrigger className="text-left text-base sm:text-lg font-semibold hover:no-underline hover:text-[var(--electric)] py-5">
-                  <span className="mobile-heading min-w-0 flex-1 pl-4 sm:pl-0">{s.h}</span>
+                <AccordionTrigger className="min-h-11 gap-3 text-left text-base sm:text-lg font-semibold hover:no-underline hover:text-[var(--electric)] py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                  <span className="mobile-heading min-w-0 flex-1 pl-4 [overflow-wrap:anywhere] sm:pl-0">{s.h}</span>
                 </AccordionTrigger>
                 <AccordionContent className="mobile-body text-base text-foreground/80 leading-relaxed pt-1 pb-5">
                   {s.p}
@@ -127,12 +127,12 @@ export default async function RegionPageView({ params }: Props) {
             ))}
           </Accordion>
 
-          <div className="mt-12 rounded-2xl border border-border bg-card p-8 sm:p-10 text-center shadow-card">
+          <div className="mt-12 min-w-0 rounded-2xl border border-border bg-card p-5 sm:p-10 text-center shadow-card">
             <h3 className="font-display text-2xl font-bold tracking-tight">Ready to explore your options?</h3>
             <p className="mobile-body mt-2 text-muted-foreground">A short inquiry, then an advisor contacts you about next steps.</p>
-            <Button asChild variant="hero" size="xl" className="mt-6 shadow-glow">
+            <Button asChild variant="hero" size="xl" className="mt-6 h-auto min-h-14 w-full max-w-full px-4 py-3 text-center shadow-glow sm:w-auto sm:px-10">
               <Link href="/apply">
-                Check Financing Options <ArrowRight className="h-5 w-5" />
+                <span className="min-w-0 [overflow-wrap:anywhere]">Check Financing Options</span> <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
             <p className="mt-4 text-xs text-muted-foreground">

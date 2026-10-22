@@ -263,26 +263,6 @@ export function HappyClientsShowcase() {
           }}
           className="relative mt-10"
         >
-          {/* Side arrow buttons (positioned comfortably away from cards) */}
-          <div className="pointer-events-none absolute inset-y-0 -left-6 sm:-left-8 lg:-left-12 xl:-left-14 -right-6 sm:-right-8 lg:-right-12 xl:-right-14 z-10 hidden items-center justify-between md:flex">
-            <button
-              type="button"
-              onClick={scrollPrev}
-              aria-label="Previous story"
-              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[var(--navy)]/95 text-white shadow-elevated backdrop-blur-md transition-all hover:scale-105 hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={scrollNext}
-              aria-label="Next story"
-              className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-[var(--navy)]/95 text-white shadow-elevated backdrop-blur-md transition-all hover:scale-105 hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
-
           {/* Smooth Horizontal Scroll Track */}
           <SwipeSurface
             enabled={totalDots > 1}
@@ -307,12 +287,12 @@ export function HappyClientsShowcase() {
           </SwipeSurface>
 
           {/* Bottom Indicators & Mobile Controls */}
-          <div className="mx-auto mt-6 grid max-w-full grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-2 md:mt-8 md:flex md:justify-center">
+          <div className="mx-auto mt-6 grid w-full max-w-md grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-[8px] sm:gap-4 md:mt-8">
             <button
               type="button"
               onClick={scrollPrev}
               aria-label="Previous story"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white md:hidden active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="flex h-[44px] w-[44px] items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -330,7 +310,7 @@ export function HappyClientsShowcase() {
               type="button"
               onClick={scrollNext}
               aria-label="Next story"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white md:hidden active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="flex h-[44px] w-[44px] items-center justify-center rounded-full border border-white/15 bg-white/[0.05] text-white/80 transition-all hover:border-[var(--electric)] hover:bg-[var(--electric)]/20 hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -392,7 +372,7 @@ function ClientCard({ client }: { client: HappyClient }) {
           {/* Quote */}
           <div className="relative mt-3">
             <Quote className="absolute -left-1 -top-1 h-5 w-5 text-white/10" />
-            <p className="relative px-3 text-justify text-sm font-medium leading-relaxed text-white/90 sm:pl-3 sm:pr-0 sm:text-left">
+            <p className="relative break-words px-3 text-justify text-sm font-medium leading-relaxed text-white/90 max-sm:hyphens-auto sm:pl-3 sm:pr-0 sm:text-left">
               "{client.quote}"
             </p>
           </div>
@@ -401,11 +381,11 @@ function ClientCard({ client }: { client: HappyClient }) {
 
       {/* Customer Footer */}
       <div className="mt-5 border-t border-white/10 pt-3.5 text-center sm:text-left">
-        <p className="text-sm font-bold tracking-wide text-white">{client.client_name}</p>
+        <p className="break-words text-sm font-bold tracking-wide text-white">{client.client_name}</p>
         {client.location && (
-          <p className="mt-0.5 flex items-center justify-center gap-1 text-xs text-white/60 sm:justify-start">
-            <MapPin className="h-3 w-3 text-[var(--electric)]" />
-            {client.location}
+          <p className="mt-0.5 flex min-w-0 items-center justify-center gap-1 text-xs text-white/60 sm:justify-start">
+            <MapPin className="h-3 w-3 shrink-0 text-[var(--electric)]" />
+            <span className="min-w-0 break-words">{client.location}</span>
           </p>
         )}
       </div>

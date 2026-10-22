@@ -45,7 +45,7 @@ export function Logo({ variant = "default", className = "" }: LogoProps) {
   return (
     <Link
       to="/"
-      className={`group inline-flex min-w-0 items-center gap-2.5 font-display font-bold ${className}`}
+      className={`group inline-flex min-h-11 min-w-0 max-w-full items-center gap-2.5 rounded-sm font-display font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${className}`}
       aria-label="Auto World Approvals — Home"
     >
       {!allFailed ? (
@@ -55,19 +55,19 @@ export function Logo({ variant = "default", className = "" }: LogoProps) {
           width={280}
           height={70}
           onError={handleError}
-          className="h-8 min-[360px]:h-9 sm:h-11 md:h-14 w-auto max-w-[165px] min-[360px]:max-w-[195px] sm:max-w-[250px] md:max-w-[280px] object-contain bg-transparent transition-transform duration-300 motion-safe:group-hover:scale-105"
+          className="h-8 min-[360px]:h-9 sm:h-11 md:h-14 w-auto min-w-0 max-w-[min(100%,165px)] min-[360px]:max-w-[min(100%,195px)] sm:max-w-[min(100%,250px)] md:max-w-[min(100%,280px)] object-contain bg-transparent transition-transform duration-300 motion-safe:group-hover:scale-105"
         />
       ) : (
-        <div className="flex items-center gap-2.5">
+        <div className="flex min-w-0 max-w-full items-center gap-2.5">
           <img
             src="/brand-icon.png"
             alt="Auto World Approvals"
             width={36}
             height={36}
-            className="h-9 w-9 object-contain rounded-lg shadow-sm transition-transform duration-300 group-hover:scale-105"
+            className="h-9 w-9 shrink-0 object-contain rounded-lg shadow-sm transition-transform duration-300 motion-safe:group-hover:scale-105"
           />
-          <div className="flex flex-col leading-none">
-            <span className={`font-display text-lg font-black tracking-tight ${onDark ? "text-white" : "text-[var(--navy)] dark:text-white"}`}>
+          <div className="flex min-w-0 flex-col break-words leading-tight">
+            <span className={`font-display text-base font-black tracking-tight sm:text-lg ${onDark ? "text-white" : "text-[var(--navy)] dark:text-white"}`}>
               AUTO WORLD
             </span>
             <span className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-[var(--electric)]">

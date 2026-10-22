@@ -79,7 +79,7 @@ export default function SellTradeInPage() {
         description="Send us a few details and a representative may follow up with an estimate."
       />
       <section className="container mx-auto grid gap-10 px-4 py-16 lg:grid-cols-2 lg:px-8">
-        <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
+        <div className="min-w-0 text-center lg:text-left flex flex-col items-center lg:items-start">
           <h2 className="text-2xl font-bold">How it works</h2>
           <ul className="mt-4 space-y-3 text-foreground/85 text-left inline-block">
             {[
@@ -90,15 +90,15 @@ export default function SellTradeInPage() {
             ].map((l) => (
               <li key={l} className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
-                <span>{l}</span>
+                <span className="min-w-0 [overflow-wrap:anywhere]">{l}</span>
               </li>
             ))}
           </ul>
-          <Button asChild variant="navy" size="lg" className="mt-6 w-full sm:w-auto">
+          <Button asChild variant="navy" size="lg" className="mt-6 h-auto min-h-12 w-full max-w-full px-4 py-3 sm:w-auto">
             <Link href="/apply">Apply with a trade-in</Link>
           </Button>
         </div>
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-card lg:p-8">
+        <div className="min-w-0 rounded-2xl border border-border bg-card p-4 shadow-card sm:p-6 lg:p-8">
           {done ? (
             <div className="text-center">
               <CheckCircle2 className="mx-auto h-10 w-10 text-success" />
@@ -108,60 +108,67 @@ export default function SellTradeInPage() {
               </p>
             </div>
           ) : (
-            <form onSubmit={onSubmit} className="space-y-4">
+            <form onSubmit={onSubmit} className="min-w-0 space-y-4">
               <h3 className="text-xl font-bold text-center sm:text-left">Tell us about your vehicle</h3>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,13rem),1fr))] gap-4 [&>div]:min-w-0">
                 <div>
-                  <Label>Year</Label>
+                  <Label htmlFor="trade-year">Year</Label>
                   <Input
+                    id="trade-year"
                     value={form.year}
                     onChange={(e) => upd("year", e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <Label>Make</Label>
+                  <Label htmlFor="trade-make">Make</Label>
                   <Input
+                    id="trade-make"
                     value={form.make}
                     onChange={(e) => upd("make", e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <Label>Model</Label>
+                  <Label htmlFor="trade-model">Model</Label>
                   <Input
+                    id="trade-model"
                     value={form.model}
                     onChange={(e) => upd("model", e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <Label>Mileage (km)</Label>
+                  <Label htmlFor="trade-mileage">Mileage (km)</Label>
                   <Input
+                    id="trade-mileage"
                     value={form.mileage}
                     onChange={(e) => upd("mileage", e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <Label>First name</Label>
+                  <Label htmlFor="trade-first-name">First name</Label>
                   <NameInput
+                    id="trade-first-name"
                     value={form.first_name}
                     onChange={(e) => upd("first_name", e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <Label>Last name</Label>
+                  <Label htmlFor="trade-last-name">Last name</Label>
                   <NameInput
+                    id="trade-last-name"
                     value={form.last_name}
                     onChange={(e) => upd("last_name", e.target.value)}
                     required
                   />
                 </div>
                 <div>
-                  <Label>Email</Label>
+                  <Label htmlFor="trade-email">Email</Label>
                   <Input
+                    id="trade-email"
                     type="email"
                     value={form.email}
                     onChange={(e) => upd("email", e.target.value)}
@@ -169,17 +176,19 @@ export default function SellTradeInPage() {
                   />
                 </div>
                 <div>
-                  <Label>Phone</Label>
+                  <Label htmlFor="trade-phone">Phone</Label>
                   <Input
+                    id="trade-phone"
                     value={form.phone}
                     onChange={(e) => upd("phone", e.target.value)}
                     required
                   />
                 </div>
-                <div className="sm:col-span-2">
-                  <Label>Province</Label>
+                <div className="col-span-full">
+                  <Label htmlFor="trade-province">Province</Label>
                   <select
-                    className="h-10 w-full rounded-md border border-input bg-background px-3"
+                    id="trade-province"
+                    className="h-11 min-w-0 w-full rounded-md border border-input bg-background px-3 text-base"
                     value={form.province}
                     onChange={(e) => upd("province", e.target.value)}
                     required
@@ -191,12 +200,12 @@ export default function SellTradeInPage() {
                   </select>
                 </div>
               </div>
-              {err && <p className="text-sm text-destructive">{err}</p>}
+              {err && <p role="alert" className="text-sm text-destructive [overflow-wrap:anywhere]">{err}</p>}
               <Button
                 type="submit"
                 variant="hero"
                 size="lg"
-                className="w-full"
+                className="h-auto min-h-12 w-full px-4 py-3"
                 disabled={busy}
               >
                 {busy ? "Sending..." : "Request estimate"}

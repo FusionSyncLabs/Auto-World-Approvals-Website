@@ -17,7 +17,7 @@ export default function AboutPage() {
         description="We connect buyers with dealer-finance options in Western Canada — without the pressure or jargon."
       />
       <section className="container mx-auto grid gap-10 px-4 py-16 lg:grid-cols-2 lg:px-8">
-        <div className="text-center lg:text-left">
+        <div className="min-w-0 text-center lg:text-left">
           <h2 className="text-2xl font-bold">Our mission</h2>
           <p className="mobile-body mt-4 text-foreground/85">
             Buying a vehicle should feel straightforward. We built Auto World
@@ -56,7 +56,7 @@ export default function AboutPage() {
           ].map((c) => (
             <div
               key={c.t}
-              className="flex flex-col items-center text-center sm:items-start sm:text-left rounded-2xl border border-border bg-card p-5 shadow-card"
+              className="flex min-w-0 flex-col items-center text-center sm:items-start sm:text-left rounded-2xl border border-border bg-card p-5 shadow-card [overflow-wrap:anywhere]"
             >
               <c.i className="h-6 w-6 text-[var(--electric)]" />
               <p className="mt-3 font-semibold">{c.t}</p>

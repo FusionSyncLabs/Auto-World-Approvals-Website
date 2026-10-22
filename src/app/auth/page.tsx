@@ -59,9 +59,9 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-soft px-4">
-      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-elevated">
-        <div className="mb-6 flex justify-center">
+    <div className="flex min-h-dvh items-center justify-center bg-soft px-4 py-6 sm:py-10">
+      <div className="min-w-0 w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-elevated sm:p-8">
+        <div className="mb-6 flex min-w-0 justify-center [&_a]:max-w-full [&_img]:max-w-full">
           <Logo />
         </div>
         <h1 className="text-center text-2xl font-bold">
@@ -73,14 +73,14 @@ export default function AuthPage() {
             : "Access restricted to invited administrators."}
         </p>
         {resetSent ? (
-          <div className="mt-6 rounded-md bg-secondary p-4 text-center text-sm">
+          <div className="mt-6 rounded-md bg-secondary p-4 text-center text-sm [overflow-wrap:anywhere]">
             Check <strong>{email}</strong> for a password reset link.
             <button
               onClick={() => {
                 setResetMode(false);
                 setResetSent(false);
               }}
-              className="mt-3 block w-full font-semibold text-[var(--electric)] hover:underline"
+              className="mt-3 block min-h-11 w-full py-2 font-semibold text-[var(--electric)] hover:underline"
             >
               ← Back to sign in
             </button>
@@ -88,8 +88,9 @@ export default function AuthPage() {
         ) : (
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
             <div>
-              <Label>{resetMode ? "Email" : "Email or username"}</Label>
+              <Label htmlFor="auth-email">{resetMode ? "Email" : "Email or username"}</Label>
               <Input
+                id="auth-email"
                 type={resetMode ? "email" : "text"}
                 required
                 autoComplete="username"
@@ -99,8 +100,9 @@ export default function AuthPage() {
             </div>
             {!resetMode && (
               <div>
-                <Label>Password</Label>
+                <Label htmlFor="auth-password">Password</Label>
                 <Input
+                  id="auth-password"
                   type="password"
                   required
                   minLength={6}
@@ -109,12 +111,12 @@ export default function AuthPage() {
                 />
               </div>
             )}
-            {err && <p className="text-sm text-destructive">{err}</p>}
+            {err && <p role="alert" className="text-sm text-destructive [overflow-wrap:anywhere]">{err}</p>}
             <Button
               type="submit"
               variant="hero"
               size="lg"
-              className="w-full"
+              className="h-auto min-h-12 w-full px-4 py-3"
               disabled={busy}
             >
               {busy
@@ -129,14 +131,14 @@ export default function AuthPage() {
                 setResetMode(!resetMode);
                 setErr(null);
               }}
-              className="block w-full text-center text-sm font-semibold text-[var(--electric)] hover:underline"
+              className="block min-h-11 w-full py-2 text-center text-sm font-semibold text-[var(--electric)] hover:underline"
             >
               {resetMode ? "← Back to sign in" : "Forgot password?"}
             </button>
           </form>
         )}
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          <Link href="/" className="hover:underline">
+          <Link href="/" className="inline-flex min-h-11 items-center justify-center hover:underline">
             ← Back to site
           </Link>
         </p>

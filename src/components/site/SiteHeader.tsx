@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Link } from "@/components/ui/link";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 
@@ -23,6 +23,7 @@ function scrollToHowItWorks(e: MouseEvent) {
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -33,26 +34,37 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
     <header
-      className={`sticky top-0 z-40 border-b transition-all duration-300 ${
+      className={`sticky top-0 z-40 max-h-dvh overflow-y-auto overscroll-contain border-b transition-all duration-300 ${
         scrolled
           ? "border-border/80 bg-background/90 shadow-card backdrop-blur-xl"
           : "border-transparent bg-background/60 backdrop-blur-md"
       }`}
     >
       <div
-        className="container mx-auto grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:gap-3 px-3 sm:px-4 h-16 sm:h-20 md:h-24 md:flex md:justify-between lg:px-8"
+        className="container mx-auto grid min-h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:min-h-20 sm:gap-3 sm:px-4 sm:py-3 md:flex md:min-h-24 md:justify-between lg:px-8"
       >
         <Logo />
-        <nav className="hidden items-center gap-9 lg:flex">
+        <nav aria-label="Main navigation" className="hidden min-w-0 items-center gap-5 lg:flex xl:gap-9">
           {NAV.map((n) => (
             <span key={n.to}>
               {isHome && n.scrollTo ? (
                 <a
                   href={`#${n.scrollTo}`}
                   onClick={scrollToHowItWorks}
-                  className="group relative text-[17px] font-semibold uppercase tracking-[0.16em] text-foreground/65 transition-colors hover:text-[var(--electric)]"
+                  className="group relative inline-flex min-h-11 items-center rounded-sm text-center text-[17px] font-semibold uppercase leading-snug tracking-[0.16em] text-foreground/65 transition-colors hover:text-[var(--electric)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <span>{n.label}</span>
                   <span
@@ -63,7 +75,7 @@ export function SiteHeader() {
               ) : (
                 <Link
                   href={n.to}
-                  className={`group relative text-[17px] font-semibold uppercase tracking-[0.16em] transition-colors hover:text-[var(--electric)] ${
+                  className={`group relative inline-flex min-h-11 items-center rounded-sm text-center text-[17px] font-semibold uppercase leading-snug tracking-[0.16em] transition-colors hover:text-[var(--electric)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     pathname === n.to ? "text-[var(--electric)]" : "text-foreground/65"
                   }`}
                 >
@@ -77,12 +89,13 @@ export function SiteHeader() {
             </span>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden min-w-0 items-center gap-3 md:flex">
           <Button asChild variant="hero" size="default" className="rounded-full px-6">
             <Link to="/apply">Check Financing Options</Link>
           </Button>
         </div>
         <Button
+          ref={menuButtonRef}
           variant="ghost"
           size="icon"
           onClick={() => setOpen((v) => !v)}

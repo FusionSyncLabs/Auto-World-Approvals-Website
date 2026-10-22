@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 
 export function LegalMarkdown({ body }: { body: string }) {
   const html = DOMPurify.sanitize(marked.parse(body, { gfm: true, breaks: false }) as string);
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className="min-w-0 max-w-full" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 interface Props {

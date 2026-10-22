@@ -39,15 +39,15 @@ export default async function BlogIndexPage() {
 
       <section className="container mx-auto px-4 py-14 lg:px-8 lg:py-20">
         {posts.length === 0 ? (
-          <div className="rounded-2xl border border-border bg-card p-12 text-center">
+          <div className="min-w-0 rounded-2xl border border-border bg-card p-6 text-center sm:p-12">
             <h2 className="font-display text-xl font-bold">New guides are on the way</h2>
-            <p className="mt-2 text-muted-foreground">
+            <p className="mobile-body mt-2 text-muted-foreground">
               Our team is drafting practical advice on credit rebuilding, auto loan rates, and vehicle buying in BC & Alberta. Check back soon.
             </p>
             <div className="mt-6">
               <Link
                 href="/apply"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90"
+                className="inline-flex min-h-11 w-full max-w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:w-auto sm:px-6"
               >
                 Apply for Financing
               </Link>
@@ -58,7 +58,7 @@ export default async function BlogIndexPage() {
             {featured && (
               <Link
                 href={`/blog/${featured.slug}`}
-                className="group mb-12 grid gap-6 overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-primary/50 lg:grid-cols-2"
+                className="group mb-12 grid min-w-0 gap-6 overflow-hidden rounded-2xl border border-border bg-card transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 lg:grid-cols-2"
               >
                 {featured.cover_image_url && (
                   <img
@@ -68,18 +68,18 @@ export default async function BlogIndexPage() {
                     loading="eager"
                   />
                 )}
-                <div className="flex flex-col justify-center p-6 lg:p-10">
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
-                    {featured.category && <Badge variant="secondary">{featured.category}</Badge>}
+                <div className="flex min-w-0 flex-col justify-center p-6 lg:p-10">
+                  <div className="mb-3 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                    {featured.category && <Badge variant="secondary" className="max-w-full text-center [overflow-wrap:anywhere]">{featured.category}</Badge>}
                     <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                       <Clock className="h-3 w-3" /> {featured.reading_minutes} min read
                     </span>
                   </div>
-                  <h2 className="font-display text-2xl font-bold leading-tight group-hover:text-primary lg:text-3xl">
+                  <h2 className="mobile-heading font-display text-2xl font-bold leading-tight group-hover:text-primary [overflow-wrap:anywhere] lg:text-3xl">
                     {featured.title}
                   </h2>
-                  {featured.excerpt && <p className="mt-3 text-muted-foreground">{featured.excerpt}</p>}
-                  <p className="mt-4 text-xs text-muted-foreground">{fmtDate(featured.published_at)}</p>
+                  {featured.excerpt && <p className="mobile-body mt-3 text-muted-foreground [overflow-wrap:anywhere]">{featured.excerpt}</p>}
+                  <p className="mobile-heading mt-4 text-xs text-muted-foreground">{fmtDate(featured.published_at)}</p>
                 </div>
               </Link>
             )}
@@ -89,7 +89,7 @@ export default async function BlogIndexPage() {
                 <Link
                   key={p.slug}
                   href={`/blog/${p.slug}`}
-                  className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary/50"
+                  className="group flex min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   {p.cover_image_url && (
                     <img
@@ -99,18 +99,18 @@ export default async function BlogIndexPage() {
                       loading="lazy"
                     />
                   )}
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                      {p.category && <Badge variant="secondary">{p.category}</Badge>}
+                  <div className="flex min-w-0 flex-1 flex-col p-5">
+                    <div className="mb-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                      {p.category && <Badge variant="secondary" className="max-w-full text-center [overflow-wrap:anywhere]">{p.category}</Badge>}
                       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" /> {p.reading_minutes} min
                       </span>
                     </div>
-                    <h3 className="font-display text-lg font-bold leading-snug group-hover:text-primary">
+                    <h3 className="mobile-heading font-display text-lg font-bold leading-snug group-hover:text-primary [overflow-wrap:anywhere]">
                       {p.title}
                     </h3>
-                    {p.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>}
-                    <p className="mt-4 text-xs text-muted-foreground">{fmtDate(p.published_at)}</p>
+                    {p.excerpt && <p className="mobile-body mt-2 line-clamp-3 text-sm text-muted-foreground [overflow-wrap:anywhere]">{p.excerpt}</p>}
+                    <p className="mobile-heading mt-4 text-xs text-muted-foreground">{fmtDate(p.published_at)}</p>
                   </div>
                 </Link>
               ))}

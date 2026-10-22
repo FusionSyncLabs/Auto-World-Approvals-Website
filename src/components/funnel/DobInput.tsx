@@ -84,7 +84,7 @@ export function DobInput({ value, onChange, autoFocus, onBlur }: Props) {
   };
 
   const cellClass =
-    "h-12 sm:h-14 rounded-xl border border-input bg-background text-center text-lg sm:text-xl font-semibold tabular-nums tracking-normal min-[380px]:tracking-wider sm:tracking-widest outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30";
+    "h-12 min-w-0 sm:h-14 rounded-xl border border-input bg-background text-center text-lg sm:text-xl font-semibold tabular-nums tracking-normal min-[380px]:tracking-wider sm:tracking-widest outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30";
 
   const onPaste = (e: React.ClipboardEvent) => {
     const raw = e.clipboardData.getData("text");
@@ -124,78 +124,80 @@ export function DobInput({ value, onChange, autoFocus, onBlur }: Props) {
   };
 
   return (
-    <div className="grid grid-cols-[1fr_1fr_1.5fr_auto] gap-2 sm:gap-3" onPaste={onPaste}>
-      <div>
-        <input
-          ref={mmRef}
-          className={cn(cellClass, "w-full")}
-          inputMode="numeric"
-          autoComplete="bday-month"
-          placeholder="MM"
-          aria-label="Birth month"
-          autoFocus={autoFocus}
-          value={mm}
-          onChange={(e) => handleMonth(e.target.value)}
-          onFocus={(e) => e.currentTarget.select()}
-          onBlur={onBlur}
-        />
-      </div>
-      <div>
-        <input
-          ref={ddRef}
-          className={cn(cellClass, "w-full")}
-          inputMode="numeric"
-          autoComplete="bday-day"
-          placeholder="DD"
-          aria-label="Birth day"
-          value={dd}
-          onChange={(e) => handleDay(e.target.value)}
-          onKeyDown={(e) => backspaceTo(e, dd, mmRef)}
-          onFocus={(e) => e.currentTarget.select()}
-          onBlur={onBlur}
-        />
-      </div>
-      <div>
-        <input
-          ref={yyRef}
-          className={cn(cellClass, "w-full")}
-          inputMode="numeric"
-          autoComplete="bday-year"
-          placeholder="YYYY"
-          aria-label="Birth year"
-          value={yyyy}
-          onChange={(e) => handleYear(e.target.value)}
-          onKeyDown={(e) => backspaceTo(e, yyyy, ddRef)}
-          onFocus={(e) => e.currentTarget.select()}
-          onBlur={onBlur}
-        />
-      </div>
-      <div>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              aria-label="Pick date of birth from calendar"
-              className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl p-0"
-            >
-              <CalendarIcon className="h-5 w-5" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 max-w-[calc(100vw-2rem)]" align="end">
-            <Calendar
-              mode="single"
-              selected={selected}
-              onSelect={pick}
-              defaultMonth={selected ?? maxDate}
-              captionLayout="dropdown"
-              startMonth={minDate}
-              endMonth={maxDate}
-              disabled={{ after: maxDate, before: minDate }}
-              className={cn("p-3 pointer-events-auto")}
-            />
-          </PopoverContent>
-        </Popover>
+    <div className="@container/dob min-w-0" onPaste={onPaste}>
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.5fr)] gap-2 @min-[18rem]/dob:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.5fr)_auto] sm:gap-3">
+        <div className="min-w-0">
+          <input
+            ref={mmRef}
+            className={cn(cellClass, "w-full")}
+            inputMode="numeric"
+            autoComplete="bday-month"
+            placeholder="MM"
+            aria-label="Birth month"
+            autoFocus={autoFocus}
+            value={mm}
+            onChange={(e) => handleMonth(e.target.value)}
+            onFocus={(e) => e.currentTarget.select()}
+            onBlur={onBlur}
+          />
+        </div>
+        <div className="min-w-0">
+          <input
+            ref={ddRef}
+            className={cn(cellClass, "w-full")}
+            inputMode="numeric"
+            autoComplete="bday-day"
+            placeholder="DD"
+            aria-label="Birth day"
+            value={dd}
+            onChange={(e) => handleDay(e.target.value)}
+            onKeyDown={(e) => backspaceTo(e, dd, mmRef)}
+            onFocus={(e) => e.currentTarget.select()}
+            onBlur={onBlur}
+          />
+        </div>
+        <div className="min-w-0">
+          <input
+            ref={yyRef}
+            className={cn(cellClass, "w-full")}
+            inputMode="numeric"
+            autoComplete="bday-year"
+            placeholder="YYYY"
+            aria-label="Birth year"
+            value={yyyy}
+            onChange={(e) => handleYear(e.target.value)}
+            onKeyDown={(e) => backspaceTo(e, yyyy, ddRef)}
+            onFocus={(e) => e.currentTarget.select()}
+            onBlur={onBlur}
+          />
+        </div>
+        <div className="col-span-3 justify-self-end @min-[18rem]/dob:col-span-1">
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                aria-label="Pick date of birth from calendar"
+                className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl p-0"
+              >
+                <CalendarIcon className="h-5 w-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto max-h-[calc(100dvh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto p-0" align="end">
+              <Calendar
+                mode="single"
+                selected={selected}
+                onSelect={pick}
+                defaultMonth={selected ?? maxDate}
+                captionLayout="dropdown"
+                startMonth={minDate}
+                endMonth={maxDate}
+                disabled={{ after: maxDate, before: minDate }}
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </div>
   );

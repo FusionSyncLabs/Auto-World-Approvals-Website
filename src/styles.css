@@ -130,7 +130,7 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { font-family: var(--font-sans); scroll-behavior: smooth; -webkit-font-smoothing: antialiased; font-size: 16px; }
+  html { font-family: var(--font-sans); scroll-behavior: smooth; -webkit-font-smoothing: antialiased; font-size: 100%; }
   body { background: var(--color-background); color: var(--color-foreground); font-feature-settings: 'ss01','cv11'; }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0; }
   :where(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }

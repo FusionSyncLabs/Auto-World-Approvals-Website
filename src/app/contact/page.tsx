@@ -65,7 +65,7 @@ export default function ContactPage() {
             <p className="mt-2 font-semibold">Email</p>
             <a
               href="mailto:admin@autoworldapprovals.com"
-              className="break-words text-sm text-muted-foreground underline"
+              className="inline-block min-h-11 max-w-full py-2 text-sm text-muted-foreground underline [overflow-wrap:anywhere]"
             >
               admin@autoworldapprovals.com
             </a>
@@ -88,10 +88,10 @@ export default function ContactPage() {
               </p>
             </div>
           ) : (
-            <form onSubmit={onSubmit} className="space-y-4">
+            <form onSubmit={onSubmit} className="min-w-0 space-y-4">
               <h3 className="text-xl font-bold text-center sm:text-left">Send us a message</h3>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,13rem),1fr))] gap-4">
+                <div className="min-w-0">
                   <Label htmlFor="contact-name">Name</Label>
                   <NameInput
                     id="contact-name"
@@ -102,7 +102,7 @@ export default function ContactPage() {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <Label htmlFor="contact-email">Email</Label>
                   <Input
                     id="contact-email"
@@ -131,7 +131,7 @@ export default function ContactPage() {
                 type="submit"
                 variant="hero"
                 size="lg"
-                className="w-full"
+                className="h-auto min-h-12 w-full px-4 py-3"
                 disabled={busy || (hasTurnstile && !turnstileToken)}
               >
                 {busy ? (

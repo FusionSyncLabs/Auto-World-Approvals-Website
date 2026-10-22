@@ -28,13 +28,13 @@ export function ChoiceCard({
       aria-pressed={Boolean(selected)}
       onClick={onClick}
       className={cn(
-        "group relative flex w-full min-h-[56px] sm:min-h-[64px] items-center justify-between rounded-xl sm:rounded-2xl border-2 px-3.5 py-3 sm:px-5 sm:py-4 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 motion-safe:active:scale-[0.99]",
+        "group relative flex min-w-0 w-full min-h-[56px] sm:min-h-[64px] items-center justify-between rounded-xl sm:rounded-2xl border-2 px-3.5 py-3 sm:px-5 sm:py-4 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 motion-safe:active:scale-[0.99]",
         selected
           ? "border-primary bg-primary/5 shadow-sm shadow-primary/10 ring-2 ring-primary/20"
           : "border-border/80 bg-card hover:border-primary/50 hover:bg-slate-50/80 hover:shadow-sm"
       )}
     >
-      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3.5 pr-2 sm:pr-3">
+      <div className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3.5 pr-2 sm:pr-3">
         {icon && (
           <div
             className={cn(
@@ -47,13 +47,13 @@ export function ChoiceCard({
             {icon}
           </div>
         )}
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1 [overflow-wrap:anywhere]">
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span className="font-display text-sm sm:text-base font-bold text-foreground">
+            <span className="min-w-0 max-w-full font-display text-sm sm:text-base font-bold text-foreground">
               {label}
             </span>
             {badge && (
-              <span className="rounded-full bg-primary/10 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-primary">
+              <span className="min-w-0 max-w-full rounded-full bg-primary/10 px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-primary">
                 {badge}
               </span>
             )}

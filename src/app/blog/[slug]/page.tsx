@@ -69,11 +69,11 @@ export default async function BlogPostPage({ params }: Props) {
       <article>
         <header className="bg-hero text-white">
           <div className="container mx-auto max-w-3xl px-4 py-14 lg:px-8 lg:py-20">
-            <Link href="/blog" className="mb-6 inline-flex items-center gap-2 text-sm text-white/70 hover:text-white">
+            <Link href="/blog" className="mx-auto mb-6 flex min-h-11 w-fit max-w-full items-center justify-center gap-2 rounded-sm text-sm text-white/70 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:mx-0">
               <ArrowLeft className="h-4 w-4" /> All guides
             </Link>
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              {post.category && <Badge className="bg-white/15 text-white hover:bg-white/25">{post.category}</Badge>}
+            <div className="mb-4 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+              {post.category && <Badge className="max-w-full bg-white/15 text-center text-white hover:bg-white/25 [overflow-wrap:anywhere]">{post.category}</Badge>}
               <span className="inline-flex items-center gap-1 text-xs text-white/70">
                 <Clock className="h-3 w-3" /> {post.reading_minutes} min read
               </span>
@@ -87,8 +87,8 @@ export default async function BlogPostPage({ params }: Props) {
                 </span>
               )}
             </div>
-            <h1 className="mobile-heading text-balance text-3xl font-bold leading-tight lg:text-4xl">{post.title}</h1>
-            {post.excerpt && <p className="mobile-body mt-4 text-lg text-white/75">{post.excerpt}</p>}
+            <h1 className="mobile-heading text-balance text-3xl font-bold leading-tight [overflow-wrap:anywhere] lg:text-4xl">{post.title}</h1>
+            {post.excerpt && <p className="mobile-body mt-4 text-lg text-white/75 [overflow-wrap:anywhere]">{post.excerpt}</p>}
           </div>
         </header>
 
@@ -109,9 +109,9 @@ export default async function BlogPostPage({ params }: Props) {
           />
 
           {post.tags?.length ? (
-            <div className="mt-10 flex flex-wrap gap-2">
+            <div className="mt-10 flex flex-wrap justify-center gap-2 sm:justify-start">
               {post.tags.map((t) => (
-                <Badge key={t} variant="outline">
+                <Badge key={t} variant="outline" className="max-w-full text-center [overflow-wrap:anywhere]">
                   {t}
                 </Badge>
               ))}
@@ -123,7 +123,7 @@ export default async function BlogPostPage({ params }: Props) {
             <p className="mobile-body mt-2 text-sm text-muted-foreground">
               A short financing inquiry takes 2 minutes, is 100% free with no impact on your credit score.
             </p>
-            <Button asChild className="mt-4">
+            <Button asChild className="mt-4 h-auto min-h-11 w-full max-w-full py-3 text-center sm:w-auto">
               <Link href="/apply">Check Financing Options</Link>
             </Button>
           </div>
@@ -133,12 +133,12 @@ export default async function BlogPostPage({ params }: Props) {
           <section className="border-t border-border bg-soft">
             <div className="container mx-auto max-w-5xl px-4 py-14 lg:px-8">
               <h2 className="mobile-heading mb-6 font-display text-xl font-bold">Keep reading</h2>
-              <div className="grid gap-5 sm:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((r) => (
                   <Link
                     key={r.slug}
                     href={`/blog/${r.slug}`}
-                    className="group overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary/50"
+                    className="group min-w-0 overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
                     {r.cover_image_url && (
                       <img
@@ -149,8 +149,8 @@ export default async function BlogPostPage({ params }: Props) {
                       />
                     )}
                     <div className="p-4">
-                      <p className="mobile-heading font-semibold leading-snug group-hover:text-primary">{r.title}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">{r.reading_minutes} min read</p>
+                      <p className="mobile-heading font-semibold leading-snug group-hover:text-primary [overflow-wrap:anywhere]">{r.title}</p>
+                      <p className="mobile-heading mt-1 text-xs text-muted-foreground">{r.reading_minutes} min read</p>
                     </div>
                   </Link>
                 ))}

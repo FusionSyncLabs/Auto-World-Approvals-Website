@@ -45,7 +45,7 @@ export default function HowItWorksPage() {
           {steps.map((s) => (
             <div
               key={s.n}
-              className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-card flex flex-col items-center text-center sm:items-start sm:text-left"
+              className="min-w-0 rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-card flex flex-col items-center text-center sm:items-start sm:text-left [overflow-wrap:anywhere]"
             >
               <p className="font-display text-3xl sm:text-4xl font-bold text-[var(--electric)]">
                 {s.n}
@@ -56,7 +56,7 @@ export default function HowItWorksPage() {
           ))}
         </div>
         <div className="mt-10 sm:mt-12 text-center">
-          <Button asChild variant="hero" size="xl" className="w-full sm:w-auto">
+          <Button asChild variant="hero" size="xl" className="h-auto min-h-14 w-full max-w-full px-4 py-3 text-center sm:w-auto sm:px-10">
             <Link href="/apply">Check Financing Options</Link>
           </Button>
         </div>

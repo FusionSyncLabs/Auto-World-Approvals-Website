@@ -30,7 +30,7 @@ export function IntakeReview({ data, update, onBack, onEdit, onSubmit, submittin
   ];
   return <StepShell title="Review your inquiry" description="An advisor will review your request. This is not an approval or a loan offer.">
     <dl className="divide-y divide-border">{groups.map((g) => <div key={g.step} className="flex gap-3 py-4">
-      <div className="min-w-0 flex-1"><dt className="font-semibold">{g.title}</dt><dd className="mt-1 break-words text-sm text-muted-foreground">{g.text}</dd></div>
+      <div className="min-w-0 flex-1"><dt className="font-semibold [overflow-wrap:anywhere]">{g.title}</dt><dd className="mt-1 text-sm text-muted-foreground [overflow-wrap:anywhere]">{g.text}</dd></div>
       <Button variant="ghost" size="icon" className="shrink-0" aria-label={`Edit ${g.title}`} onClick={() => onEdit(g.step)} disabled={submitting}><Pencil className="h-4 w-4" /></Button>
     </div>)}</dl>
     <p className="mt-5 text-base leading-relaxed text-muted-foreground">Auto World Approvals uses your vehicle, location, income-source and contact details to help authorized staff and appropriate dealer-finance partners respond to your inquiry. Your inquiry may be shared with participating dealers and financing partners for this purpose. This submission does not authorize a credit check; a partner must obtain appropriate separate authorization.</p>
@@ -39,10 +39,10 @@ export function IntakeReview({ data, update, onBack, onEdit, onSubmit, submittin
       <label className="flex min-h-11 cursor-pointer items-start gap-3 text-sm leading-relaxed"><Checkbox className="mt-1 h-6 w-6 shrink-0" aria-required="true" checked={acknowledged} onCheckedChange={(v) => update({ consent_contact: v === true, consent_accuracy: v === true, consent_not_guarantee: v === true })} disabled={submitting} /><span>I confirm my details are accurate, acknowledge this is not a financing approval, and agree to be contacted and have my inquiry shared as described above. <strong>(required)</strong></span></label>
       <label className="flex min-h-11 cursor-pointer items-start gap-3 text-sm leading-relaxed"><Checkbox className="mt-1 h-6 w-6 shrink-0" checked={data.consent_marketing === true} onCheckedChange={(v) => update({ consent_marketing: v === true })} disabled={submitting} /><span>Send me occasional vehicle offers and updates by email from Auto World Approvals. Optional; I can unsubscribe at any time.</span></label>
     </div>
-    {errorMsg && <p role="alert" className="mt-5 text-sm text-destructive">{errorMsg}</p>}
-    <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+    {errorMsg && <p role="alert" className="mt-5 text-sm text-destructive [overflow-wrap:anywhere]">{errorMsg}</p>}
+    <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:flex-wrap sm:justify-between">
       <Button variant="ghost" onClick={onBack} disabled={submitting} className="w-full sm:w-auto"><ArrowLeft className="h-4 w-4" />Back</Button>
-      <Button size="lg" variant="hero" disabled={!acknowledged || submitting} onClick={() => onSubmit({})} className="w-full sm:w-auto">{submitting ? <><Loader2 className="h-4 w-4 animate-spin" />Saving your inquiry…</> : <>Submit my application<ArrowRight className="h-4 w-4" /></>}</Button>
+      <Button size="lg" variant="hero" disabled={!acknowledged || submitting} onClick={() => onSubmit({})} className="h-auto min-h-12 w-full max-w-full px-4 py-3 sm:w-auto">{submitting ? <><Loader2 className="h-4 w-4 animate-spin" /><span className="min-w-0 [overflow-wrap:anywhere]">Saving your inquiry…</span></> : <><span className="min-w-0 [overflow-wrap:anywhere]">Submit my application</span><ArrowRight className="h-4 w-4" /></>}</Button>
     </div>
   </StepShell>;
 }

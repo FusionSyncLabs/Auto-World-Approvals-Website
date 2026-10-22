@@ -79,9 +79,9 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
 
       {/* Progress bar */}
       <div className="mx-auto mt-6 sm:mt-8 max-w-md">
-        <div className="mb-2 flex items-center justify-between text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="flex min-w-0 items-center gap-1.5 [overflow-wrap:anywhere]">
+            <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500 animate-pulse" />
             Search in progress
           </span>
           <span className="text-primary font-bold text-xs sm:text-sm">{progress}%</span>
@@ -125,7 +125,7 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
                   <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
               )}
-              <span className="text-xs sm:text-sm font-semibold leading-tight">{it.label}</span>
+              <span className="min-w-0 text-xs sm:text-sm font-semibold leading-tight [overflow-wrap:anywhere]">{it.label}</span>
             </div>
           );
         })}
@@ -133,7 +133,7 @@ export function LenderMatchingLoader({ onComplete }: LenderMatchingLoaderProps) 
 
       <div className="mt-6 sm:mt-8 flex items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-muted-foreground">
         <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600 shrink-0" />
-        <span>100% Free · No credit check required · No obligation</span>
+        <span className="min-w-0 [overflow-wrap:anywhere]">100% Free · No credit check required · No obligation</span>
       </div>
     </div>
   );

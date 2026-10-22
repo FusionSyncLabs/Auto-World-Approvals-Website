@@ -103,13 +103,13 @@ export default async function VehicleRoute({
       />
 
       <section className="container mx-auto px-4 py-16 lg:px-8">
-        <div className="mx-auto max-w-3xl flex flex-col items-center sm:items-start text-center sm:text-left">
+        <div className="mx-auto min-w-0 max-w-3xl flex flex-col items-center sm:items-start text-center sm:text-left">
           <h2 className="text-2xl font-bold">What you get</h2>
-          <ul className="mt-6 space-y-4 text-left inline-block">
+          <ul className="mt-6 w-full space-y-4 text-left">
             {page.points.map((p) => (
               <li key={p} className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--electric)]" />
-                <span className="text-base">{p}</span>
+                <span className="min-w-0 text-base [overflow-wrap:anywhere]">{p}</span>
               </li>
             ))}
           </ul>
@@ -122,9 +122,9 @@ export default async function VehicleRoute({
             </p>
             <Link
               href={`/apply?vt=${page.vt}`}
-              className="mt-6 inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--electric)] px-4 py-3 text-center text-base font-semibold text-white hover:opacity-90 sm:px-8"
+              className="mt-6 inline-flex min-h-12 w-full max-w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--electric)] px-4 py-3 text-center text-base font-semibold text-white hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:px-8"
             >
-              Check Financing Options{" "}
+              <span className="min-w-0 [overflow-wrap:anywhere]">Check Financing Options</span>
               <ArrowRight className="h-4 w-4 shrink-0" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
@@ -132,7 +132,7 @@ export default async function VehicleRoute({
             </p>
           </div>
 
-          <p className="mt-8 text-sm text-muted-foreground text-center sm:text-left">
+          <p className="mobile-body mt-8 text-sm text-muted-foreground sm:text-left">
             Serving British Columbia, Alberta, Saskatchewan, Manitoba, Yukon,
             the Northwest Territories and Nunavut. Submitting an inquiry is not
             an approval; any financing decision is made by the lender.

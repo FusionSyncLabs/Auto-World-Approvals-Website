@@ -6,9 +6,9 @@ import { SiteFooter } from "./SiteFooter";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh min-w-0 flex-col">
       <SiteHeader />
-      <main className="flex-1">{children}</main>
+      <main className="min-w-0 flex-1">{children}</main>
       <SiteFooter />
     </div>
   );

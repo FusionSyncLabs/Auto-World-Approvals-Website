@@ -124,7 +124,7 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
                   </div>
 
                   {/* Review Body */}
-                  <blockquote className="mt-4 break-words text-justify text-sm leading-relaxed text-foreground/90 sm:text-left sm:text-[15px]">
+                  <blockquote className="mt-4 break-words text-justify text-sm leading-relaxed text-foreground/90 max-sm:hyphens-auto sm:text-left sm:text-[15px]">
                     "{r.body}"
                   </blockquote>
                 </div>
@@ -161,12 +161,12 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
 
       {/* Navigation Controls */}
       {totalPages > 1 && (
-        <div className="mx-auto mt-6 grid max-w-full grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-2 sm:mt-8 sm:w-fit sm:grid-cols-[44px_auto_44px] sm:gap-4">
+        <div className="mx-auto mt-6 grid w-full max-w-md grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-[8px] sm:mt-8 sm:gap-4">
           <button
             type="button"
             aria-label="Previous reviews"
             onClick={handlePrev}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex h-[44px] w-[44px] items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -183,7 +183,7 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
             type="button"
             aria-label="Next reviews"
             onClick={handleNext}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex h-[44px] w-[44px] items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm transition-all hover:border-[var(--electric)] hover:bg-muted hover:text-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ChevronRight className="h-5 w-5" />
           </button>

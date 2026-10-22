@@ -19,7 +19,7 @@ function ThankYouContent() {
           <h1 className="mt-6 text-3xl font-bold sm:text-4xl">
             Your inquiry has been received.
           </h1>
-          <p className="mt-5 text-lg text-muted-foreground">
+          <p className="mobile-body mt-5 text-lg text-muted-foreground">
             An authorized advisor will review your inquiry and contact you about
             your preferences and any further information needed. This is not a
             financing approval or an interest-rate offer.
@@ -43,7 +43,7 @@ function ThankYouContent() {
               </li>
             </ol>
           </div>
-          <Button asChild size="lg" className="mt-10 w-full sm:w-auto">
+          <Button asChild size="lg" className="mt-10 h-auto min-h-12 w-full max-w-full px-4 py-3 sm:w-auto">
             <Link href="/">Back to home</Link>
           </Button>
         </div>
