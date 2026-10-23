@@ -5,6 +5,7 @@ import { PersonNameSchema } from "@/lib/name-validation";
 const ContactSchema = z.object({
   name: PersonNameSchema,
   email: z.string().trim().email().max(255),
+  phone: z.string().trim().max(30).optional(),
   message: z.string().trim().min(1).max(5000),
   recaptchaToken: z.string().optional(),
   turnstileToken: z.string().optional(),
@@ -63,6 +64,7 @@ export async function POST(req: NextRequest) {
       source: "contact_inquiry",
       name: data.name,
       email: data.email,
+      phone: data.phone || null,
       message: data.message,
       subject: "Website Contact Form Message",
     };
@@ -94,10 +96,11 @@ export async function POST(req: NextRequest) {
         .insert({
           name: data.name,
           email: data.email,
+          phone: data.phone || null,
           message: data.message,
           ip_address: ip,
           user_agent: userAgent,
-        })
+        } as any)
         .select("id")
         .single();
 
@@ -111,6 +114,7 @@ export async function POST(req: NextRequest) {
       console.log("[contact] message received (saved in local dev mode):", {
         name: data.name,
         email: data.email,
+        phone: data.phone || null,
         message: data.message,
         time: new Date().toISOString(),
       });

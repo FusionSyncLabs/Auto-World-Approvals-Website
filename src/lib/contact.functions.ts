@@ -6,6 +6,7 @@ import { PersonNameSchema } from "@/lib/name-validation";
 const ContactSchema = z.object({
   name: PersonNameSchema,
   email: z.string().trim().email().max(255),
+  phone: z.string().trim().max(30).optional(),
   message: z.string().trim().min(1).max(5000),
   turnstileToken: z.string().min(10, "Captcha required"),
 });
@@ -52,10 +53,11 @@ export const submitContactMessage = createServerFn({ method: "POST" })
       .insert({
         name: data.name,
         email: data.email,
+        phone: data.phone || null,
         message: data.message,
         ip_address: ip,
         user_agent: userAgent,
-      })
+      } as any)
       .select("id")
       .single();
     if (error) {
@@ -87,6 +89,7 @@ async function sendContactNotification(data: ContactInput) {
   const safeMsg = esc(data.message).replace(/\n/g, "<br/>");
   const safeName = esc(data.name);
   const safeEmail = esc(data.email);
+  const safePhone = data.phone ? esc(data.phone) : null;
   const html = `
     <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#0f172a">
       <h2 style="margin:0 0 12px;color:#0F1B3D">New contact form message</h2>
@@ -94,6 +97,7 @@ async function sendContactNotification(data: ContactInput) {
       <table style="width:100%;border-collapse:collapse;font-size:14px">
         <tr><td style="padding:6px 0;color:#64748b;width:120px">Name</td><td style="padding:6px 0;font-weight:600">${safeName}</td></tr>
         <tr><td style="padding:6px 0;color:#64748b">Email</td><td style="padding:6px 0;font-weight:600"><a href="mailto:${safeEmail}" style="color:#2D7BFF">${safeEmail}</a></td></tr>
+        ${safePhone ? `<tr><td style="padding:6px 0;color:#64748b">Phone</td><td style="padding:6px 0;font-weight:600"><a href="tel:${safePhone}" style="color:#2D7BFF">${safePhone}</a></td></tr>` : ""}
       </table>
       <div style="margin-top:18px;padding:16px;background:#f8fafc;border-radius:8px;border-left:3px solid #2D7BFF">
         <div style="font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#64748b;margin-bottom:8px">Message</div>

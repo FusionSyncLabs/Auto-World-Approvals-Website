@@ -13,11 +13,21 @@ import { executeRecaptcha, loadRecaptchaScript } from "@/lib/recaptcha";
 import { trackGa } from "@/lib/analytics";
 import { toast } from "sonner";
 
+function formatPhoneInput(v: string): string {
+  let d = v.replace(/\D/g, "");
+  if (d.length === 11 && d.startsWith("1")) d = d.slice(1);
+  d = d.slice(0, 10);
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+}
+
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -38,7 +48,7 @@ export default function ContactPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message, recaptchaToken }),
+        body: JSON.stringify({ name, email, phone, message, recaptchaToken }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -91,8 +101,8 @@ export default function ContactPage() {
           ) : (
             <form onSubmit={onSubmit} className="min-w-0 space-y-4">
               <h3 className="text-xl font-bold text-center sm:text-left">Send us a message</h3>
-              <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,13rem),1fr))] gap-4">
-                <div className="min-w-0">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="min-w-0 sm:col-span-2">
                   <Label htmlFor="contact-name">Name</Label>
                   <NameInput
                     id="contact-name"
@@ -113,6 +123,19 @@ export default function ContactPage() {
                     maxLength={255}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="min-w-0">
+                  <Label htmlFor="contact-phone">Phone number</Label>
+                  <Input
+                    id="contact-phone"
+                    autoComplete="tel"
+                    required
+                    type="tel"
+                    maxLength={16}
+                    placeholder="(604) 555-0123"
+                    value={phone}
+                    onChange={(e) => setPhone(formatPhoneInput(e.target.value))}
                   />
                 </div>
               </div>

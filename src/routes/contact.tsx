@@ -32,12 +32,22 @@ export const Route = createFileRoute("/contact")({
   component: Page,
 });
 
+function formatPhoneInput(v: string): string {
+  let d = v.replace(/\D/g, "");
+  if (d.length === 11 && d.startsWith("1")) d = d.slice(1);
+  d = d.slice(0, 10);
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+}
+
 function Page() {
   const submit = useServerFn(submitContactMessage);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string>("");
 
@@ -54,7 +64,7 @@ function Page() {
     }
     setBusy(true);
     try {
-      await submit({ data: { name, email, message, turnstileToken } });
+      await submit({ data: { name, email, phone, message, turnstileToken } });
       setSent(true);
       trackGa("contact_submit");
     } catch (err) {
@@ -79,8 +89,9 @@ function Page() {
             <form onSubmit={onSubmit} className="space-y-4">
               <h3 className="text-xl font-bold">Send us a message</h3>
               <div className="grid gap-4 sm:grid-cols-2">
-                <div><Label htmlFor="contact-name">Name</Label><NameInput id="contact-name" autoComplete="name" required maxLength={100} value={name} onChange={(e) => setName(e.target.value)} /></div>
+                <div className="sm:col-span-2"><Label htmlFor="contact-name">Name</Label><NameInput id="contact-name" autoComplete="name" required maxLength={100} value={name} onChange={(e) => setName(e.target.value)} /></div>
                 <div><Label htmlFor="contact-email">Email</Label><Input id="contact-email" autoComplete="email" required type="email" maxLength={255} value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+                <div><Label htmlFor="contact-phone">Phone number</Label><Input id="contact-phone" autoComplete="tel" required type="tel" maxLength={16} placeholder="(604) 555-0123" value={phone} onChange={(e) => setPhone(formatPhoneInput(e.target.value))} /></div>
               </div>
               <div><Label htmlFor="contact-message">Message</Label><Textarea id="contact-message" required rows={5} maxLength={5000} value={message} onChange={(e) => setMessage(e.target.value)} /></div>
               <TurnstileWidget onToken={onToken} onExpire={onExpire} />
