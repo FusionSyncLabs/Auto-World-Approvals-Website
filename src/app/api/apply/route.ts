@@ -33,7 +33,41 @@ export async function POST(req: NextRequest) {
     }
 
     if (existing?.submitted_at) {
-      const response = NextResponse.json({
+      // Forward lead directly to Auto World Approvals CRM
+    const crmUrl = process.env.CRM_API_URL || "http://localhost:3002/api/leads";
+    try {
+      await fetch(crmUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "website_apply",
+          firstName: lead.first_name,
+          lastName: lead.last_name,
+          phone: lead.phone,
+          email: lead.email,
+          province: lead.province,
+          city: lead.city,
+          vehicleType: lead.vehicle_type,
+          desiredVehicle: lead.vehicle_type ? `${lead.vehicle_type.toUpperCase()} Financing` : "Vehicle Financing",
+          grossMonthlyIncome: Number(lead.monthly_income || 0),
+          downPayment: Number(lead.down_payment || 0),
+          creditScore: lead.credit_rating || "Good (650+)",
+          employmentStatus: lead.employment_status || "Full-Time Employed",
+          employerName: lead.employer_name || "",
+          tradeIn: lead.has_trade_in ? {
+            hasTradeIn: true,
+            year: lead.trade_in_year,
+            make: lead.trade_in_make,
+            model: lead.trade_in_model,
+            mileageKm: lead.trade_in_mileage,
+          } : { hasTradeIn: false },
+        }),
+      });
+    } catch (crmErr) {
+      console.error("[apply] Could not forward lead to CRM:", crmErr);
+    }
+
+    const response = NextResponse.json({
         id: existing.id,
         event_id: `lead_${existing.duplicate_of || existing.id}`,
         duplicate: true,
