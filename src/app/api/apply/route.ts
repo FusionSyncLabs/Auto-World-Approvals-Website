@@ -33,41 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (existing?.submitted_at) {
-      // Forward lead directly to Auto World Approvals CRM
-    const crmUrl = process.env.CRM_API_URL || "http://localhost:3002/api/leads";
-    try {
-      await fetch(crmUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          source: "website_apply",
-          firstName: lead.first_name,
-          lastName: lead.last_name,
-          phone: lead.phone,
-          email: lead.email,
-          province: lead.province,
-          city: lead.city,
-          vehicleType: lead.vehicle_type,
-          desiredVehicle: lead.vehicle_type ? `${lead.vehicle_type.toUpperCase()} Financing` : "Vehicle Financing",
-          grossMonthlyIncome: Number(lead.monthly_income || 0),
-          downPayment: Number(lead.down_payment || 0),
-          creditScore: lead.credit_rating || "Good (650+)",
-          employmentStatus: lead.employment_status || "Full-Time Employed",
-          employerName: lead.employer_name || "",
-          tradeIn: lead.has_trade_in ? {
-            hasTradeIn: true,
-            year: lead.trade_in_year,
-            make: lead.trade_in_make,
-            model: lead.trade_in_model,
-            mileageKm: lead.trade_in_mileage,
-          } : { hasTradeIn: false },
-        }),
-      });
-    } catch (crmErr) {
-      console.error("[apply] Could not forward lead to CRM:", crmErr);
-    }
-
-    const response = NextResponse.json({
+      const response = NextResponse.json({
         id: existing.id,
         event_id: `lead_${existing.duplicate_of || existing.id}`,
         duplicate: true,
@@ -177,6 +143,52 @@ export async function POST(req: NextRequest) {
         await autoDeliverLead(lead as Record<string, unknown>);
       } catch (err) {
         console.error("[intake] delivery pending recovery", lead.id, err);
+      }
+
+      // Forward lead directly to Auto World Approvals CRM
+      const crmUrl = process.env.CRM_API_URL || "https://crm.autoworldapprovals.com/api/leads";
+      const leadObj = lead as Record<string, any>;
+      const crmPayload = {
+        source: "website_apply",
+        firstName: leadObj.first_name,
+        lastName: leadObj.last_name,
+        phone: leadObj.phone,
+        email: leadObj.email,
+        province: leadObj.province,
+        city: leadObj.city,
+        vehicleType: leadObj.vehicle_type,
+        desiredVehicle: leadObj.vehicle_type ? `${String(leadObj.vehicle_type).toUpperCase()} Financing` : "Vehicle Financing",
+        grossMonthlyIncome: Number(leadObj.monthly_income || leadObj.income_amount || 0),
+        downPayment: Number(leadObj.down_payment || 0),
+        creditScore: leadObj.credit_rating || "Good (650+)",
+        employmentStatus: leadObj.employment_status || "Full-Time Employed",
+        employerName: leadObj.employer_name || "",
+        tradeIn: leadObj.has_trade_in ? {
+          hasTradeIn: true,
+          year: leadObj.trade_in_year,
+          make: leadObj.trade_in_make,
+          model: leadObj.trade_in_model,
+          mileageKm: leadObj.trade_in_mileage,
+        } : { hasTradeIn: false },
+      };
+
+      try {
+        await fetch(crmUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(crmPayload),
+        });
+      } catch {
+        // If HTTPS refused before SSL setup, retry via HTTP
+        if (crmUrl.startsWith("https://")) {
+          try {
+            await fetch(crmUrl.replace("https://", "http://"), {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(crmPayload),
+            });
+          } catch {}
+        }
       }
     }
 

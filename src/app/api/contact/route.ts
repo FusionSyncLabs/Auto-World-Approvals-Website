@@ -58,21 +58,31 @@ export async function POST(req: NextRequest) {
     }
 
     // Forward lead directly to Auto World Approvals CRM
-    const crmUrl = process.env.CRM_API_URL || "http://localhost:3002/api/leads";
+    const crmUrl = process.env.CRM_API_URL || "https://crm.autoworldapprovals.com/api/leads";
+    const crmPayload = {
+      source: "contact_inquiry",
+      name: data.name,
+      email: data.email,
+      message: data.message,
+      subject: "Website Contact Form Message",
+    };
     try {
       await fetch(crmUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          source: "contact_inquiry",
-          name: data.name,
-          email: data.email,
-          message: data.message,
-          subject: "Website Contact Form Message",
-        }),
+        body: JSON.stringify(crmPayload),
       });
-    } catch (crmErr) {
-      console.error("[contact] Could not forward lead to CRM:", crmErr);
+    } catch {
+      // If HTTPS refused before SSL setup, retry via HTTP
+      if (crmUrl.startsWith("https://")) {
+        try {
+          await fetch(crmUrl.replace("https://", "http://"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(crmPayload),
+          });
+        } catch {}
+      }
     }
 
     // Save to Supabase if service role key is available, otherwise log in dev mode
