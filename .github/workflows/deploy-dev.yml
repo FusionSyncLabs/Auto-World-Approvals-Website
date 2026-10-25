@@ -1,0 +1,61 @@
+name: Deploy Auto World Approvals (Dev)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: auto-world-approvals-dev
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          port: 22
+          command_timeout: 15m
+          script: |
+            set -e
+
+            APP_DIR="/var/www/dev/frontends/webs/Auto-World-Approvals-Website"
+            APP_PORT="9001"
+            PM2_NAME="auto-world-approvals-dev"
+            BRANCH="main"
+            NODE_BIN="/home/deployusr/.nvm/versions/node/v24.14.1/bin"
+
+            export PATH="$NODE_BIN:$PATH:/usr/local/bin:/usr/bin"
+            command -v pm2 >/dev/null || { echo "pm2 not found"; exit 1; }
+            case "$(node -v)" in v24.*) ;; *) echo "expected Node 24"; exit 1;; esac
+
+            [ -d "$APP_DIR" ] || { echo "$APP_DIR missing"; exit 1; }
+            cd "$APP_DIR"
+            [ -f .env ] || { echo ".env missing"; exit 1; }
+
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            echo "Now at: $(git log -1 --oneline)"
+
+            npm ci --prefer-offline
+            npm run build
+
+            if pm2 describe "$PM2_NAME" > /dev/null 2>&1; then
+              pm2 reload "$PM2_NAME" --update-env
+            else
+              pm2 start "$NODE_BIN/npm" --name "$PM2_NAME" --interpreter "$NODE_BIN/node" \
+                --cwd "$APP_DIR" -- start -- -p "$APP_PORT"
+            fi
+            pm2 save
+
+            for i in $(seq 1 10); do
+              curl -fsS -o /dev/null "http://127.0.0.1:${APP_PORT}/" && { echo "Health check OK"; break; }
+              [ "$i" -eq 10 ] && { echo "Health check FAILED"; exit 1; }
+              sleep 3
+            done
