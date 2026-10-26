@@ -47,25 +47,37 @@ export async function executeRecaptcha(action = "contact_form"): Promise<string 
   if (!siteKey || siteKey === "your_recaptcha_site_key_here" || typeof window === "undefined") {
     return null;
   }
-  try {
-    await loadRecaptchaScript(siteKey);
-    return await new Promise<string | null>((resolve) => {
-      if (!window.grecaptcha) {
-        resolve(null);
-        return;
-      }
-      window.grecaptcha.ready(async () => {
-        try {
-          const token = await window.grecaptcha!.execute(siteKey, { action });
-          resolve(token);
-        } catch (err) {
-          console.error("[recaptcha] execute error", err);
+
+  const tokenPromise = (async () => {
+    try {
+      await loadRecaptchaScript(siteKey);
+      return await new Promise<string | null>((resolve) => {
+        if (!window.grecaptcha) {
           resolve(null);
+          return;
         }
+        window.grecaptcha.ready(async () => {
+          try {
+            const token = await window.grecaptcha!.execute(siteKey, { action });
+            resolve(token);
+          } catch (err) {
+            console.error("[recaptcha] execute error", err);
+            resolve(null);
+          }
+        });
       });
-    });
-  } catch (err) {
-    console.error("[recaptcha] load error", err);
-    return null;
-  }
+    } catch (err) {
+      console.error("[recaptcha] load error", err);
+      return null;
+    }
+  })();
+
+  const timeoutPromise = new Promise<string | null>((resolve) => {
+    setTimeout(() => {
+      console.warn("[recaptcha] token fetch timed out after 3.5s; continuing without token");
+      resolve(null);
+    }, 3500);
+  });
+
+  return Promise.race([tokenPromise, timeoutPromise]);
 }

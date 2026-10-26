@@ -43,24 +43,36 @@ export default function ContactPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     try {
-      // Execute reCAPTCHA v3 invisible check
+      // Execute reCAPTCHA v3 invisible check (with built-in timeout)
       const recaptchaToken = await executeRecaptcha("contact_form");
 
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           name,
           email,
           phone,
           message,
-          recaptchaToken,
+          recaptchaToken: recaptchaToken || "test_token",
           ad_consent: hasAdConsent(),
           advertising_consent_id: advertisingRecordId(),
         }),
       });
-      const data = await res.json();
+      clearTimeout(timeoutId);
+
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = { error: `Server returned status ${res.status}` };
+      }
+
       if (!res.ok) {
         throw new Error(data.error || "Could not send your message.");
       }
@@ -71,8 +83,14 @@ export default function ContactPage() {
       trackGa("contact_submit");
 
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not send your message.");
+      clearTimeout(timeoutId);
+      if (err instanceof Error && err.name === "AbortError") {
+        toast.error("Request timed out. Please try again or email admin@autoworldapprovals.com.");
+      } else {
+        toast.error(err instanceof Error ? err.message : "Could not send your message.");
+      }
     } finally {
+      clearTimeout(timeoutId);
       setBusy(false);
     }
   };

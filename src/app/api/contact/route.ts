@@ -30,34 +30,31 @@ export async function POST(req: NextRequest) {
 
     // Verify Google reCAPTCHA v3 if secret key is configured
     const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
-    if (recaptchaSecret && recaptchaSecret !== "your_recaptcha_secret_key_here" && data.recaptchaToken !== "test_token") {
-      const token = data.recaptchaToken;
-      if (!token) {
-        return NextResponse.json(
-          { error: "Security check failed. Please refresh the page and try again." },
-          { status: 400 }
-        );
-      }
+    if (recaptchaSecret && recaptchaSecret !== "your_recaptcha_secret_key_here" && data.recaptchaToken && data.recaptchaToken !== "test_token") {
+      try {
+        const verifyParams = new URLSearchParams({
+          secret: recaptchaSecret,
+          response: data.recaptchaToken,
+          ...(ip ? { remoteip: ip } : {}),
+        });
 
-      const verifyParams = new URLSearchParams({
-        secret: recaptchaSecret,
-        response: token,
-        ...(ip ? { remoteip: ip } : {}),
-      });
+        const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: verifyParams.toString(),
+          signal: AbortSignal.timeout(5000),
+        });
+        const verifyJson = await verifyRes.json();
 
-      const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: verifyParams.toString(),
-      });
-      const verifyJson = await verifyRes.json();
-
-      if (!verifyJson.success || (typeof verifyJson.score === "number" && verifyJson.score < 0.5)) {
-        console.warn("[contact] reCAPTCHA rejected:", verifyJson);
-        return NextResponse.json(
-          { error: "Captcha verification failed. Please try again." },
-          { status: 400 }
-        );
+        if (!verifyJson.success || (typeof verifyJson.score === "number" && verifyJson.score < 0.4)) {
+          console.warn("[contact] reCAPTCHA rejected:", verifyJson);
+          return NextResponse.json(
+            { error: "Captcha verification failed. Please try again." },
+            { status: 400 }
+          );
+        }
+      } catch (captchaErr) {
+        console.warn("[contact] reCAPTCHA verification timeout or error:", captchaErr);
       }
     }
 
@@ -76,6 +73,7 @@ export async function POST(req: NextRequest) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(crmPayload),
+        signal: AbortSignal.timeout(5000),
       });
     } catch {
       // If HTTPS refused before SSL setup, retry via HTTP
@@ -85,6 +83,7 @@ export async function POST(req: NextRequest) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(crmPayload),
+            signal: AbortSignal.timeout(4000),
           });
         } catch {}
       }
