@@ -227,7 +227,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Forward lead directly to Auto World Approvals CRM
-      const crmUrl = process.env.CRM_API_URL || "https://crm.autoworldapprovals.com/api/leads";
+      const crmUrl = process.env.CRM_API_URL || "http://localhost:3002/api/leads";
       const leadObj = lead as Record<string, any>;
       const crmPayload = {
         source: isTradeIn ? "website_trade_in" : "website_apply",

@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
     }
 
     // Forward lead directly to Auto World Approvals CRM
-    const crmUrl = process.env.CRM_API_URL || "https://crm.autoworldapprovals.com/api/leads";
     const crmPayload = {
       source: "contact_inquiry",
       name: data.name,
@@ -68,25 +67,27 @@ export async function POST(req: NextRequest) {
       message: data.message,
       subject: "Website Contact Form Message",
     };
-    try {
-      await fetch(crmUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(crmPayload),
-        signal: AbortSignal.timeout(5000),
-      });
-    } catch {
-      // If HTTPS refused before SSL setup, retry via HTTP
-      if (crmUrl.startsWith("https://")) {
-        try {
-          await fetch(crmUrl.replace("https://", "http://"), {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(crmPayload),
-            signal: AbortSignal.timeout(4000),
-          });
-        } catch {}
-      }
+    const crmEndpoints = Array.from(
+      new Set([
+        process.env.CRM_API_URL,
+        "http://localhost:3002/api/leads",
+        "http://127.0.0.1:3002/api/leads",
+        "https://crm.autoworldapprovals.com/api/leads",
+      ].filter(Boolean))
+    );
+    for (const endpoint of crmEndpoints) {
+      try {
+        const crmRes = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(crmPayload),
+          signal: AbortSignal.timeout(4000),
+        });
+        if (crmRes.ok) {
+          console.log("[contact] Lead delivered to CRM at " + endpoint);
+          break;
+        }
+      } catch (err) {}
     }
 
     // Save to Supabase if service role key is available, otherwise log in dev mode
