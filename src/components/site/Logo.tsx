@@ -17,27 +17,33 @@ interface LogoProps {
 export function Logo({ variant = "default", className = "" }: LogoProps) {
   const { data } = useBranding();
   const onDark = variant === "light";
+  const defaultLocalLogo = onDark ? "/logo-white.png" : "/logo.png";
   const [imgError, setImgError] = useState(false);
 
   // If a valid custom logo URL is uploaded and doesn't point to dead cloud paths:
-  const remoteLogo = (onDark ? data?.logoUrlDark : data?.logoUrlLight) || data?.logoUrl;
-  const validRemoteLogo = remoteLogo && !remoteLogo.startsWith("/__l5e/") ? remoteLogo : null;
+  const remoteLogo = onDark ? data?.logoUrlDark : (data?.logoUrlLight || data?.logoUrl);
+  const validRemoteLogo =
+    remoteLogo && !remoteLogo.startsWith("/__l5e/") && (!onDark || remoteLogo !== "/logo.png")
+      ? remoteLogo
+      : null;
 
-  const [currentSrc, setCurrentSrc] = useState<string>(validRemoteLogo || "/logo.png");
+  const [currentSrc, setCurrentSrc] = useState<string>(validRemoteLogo || defaultLocalLogo);
   const [allFailed, setAllFailed] = useState(false);
 
   React.useEffect(() => {
     if (validRemoteLogo) {
       setCurrentSrc(validRemoteLogo);
+    } else {
+      setCurrentSrc(defaultLocalLogo);
     }
-  }, [validRemoteLogo]);
+  }, [validRemoteLogo, defaultLocalLogo]);
 
   const handleError = () => {
-    if (currentSrc !== "/logo.png") {
-      // Fallback to local official HD logo
-      setCurrentSrc("/logo.png");
+    if (currentSrc !== defaultLocalLogo) {
+      // Fallback to local official HD logo according to mode
+      setCurrentSrc(defaultLocalLogo);
     } else {
-      // If even /logo.png fails, show wordmark icon
+      // If even default fails, show wordmark icon
       setAllFailed(true);
     }
   };

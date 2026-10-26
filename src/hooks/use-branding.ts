@@ -32,9 +32,9 @@ export function useBranding() {
       const str = (v: unknown) => (typeof v === "string" ? v : "");
       return {
         faviconUrl: str(m.favicon_url),
-        logoUrl: str(m.logo_url),
-        logoUrlLight: str(m.logo_url_light) || str(m.logo_url),
-        logoUrlDark: str(m.logo_url_dark) || str(m.logo_url_light) || str(m.logo_url),
+        logoUrl: str(m.logo_url) || "/logo.png",
+        logoUrlLight: str(m.logo_url_light) || str(m.logo_url) || "/logo.png",
+        logoUrlDark: str(m.logo_url_dark) || "/logo-white.png",
         heroImageUrl: str(m.hero_image_url),
         heroSlots: Object.fromEntries(
           HERO_SLOTS.map((s) => [s.key, str(m[s.key])]),
