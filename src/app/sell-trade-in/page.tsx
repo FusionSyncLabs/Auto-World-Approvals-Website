@@ -9,6 +9,8 @@ import { NameInput } from "@/components/ui/name-input";
 import { Label } from "@/components/ui/label";
 import { Link } from "@/components/ui/link";
 import { getTracking } from "@/lib/attribution";
+import { hasAdConsent, advertisingRecordId } from "@/components/site/CookieConsent";
+import { metaTrack } from "@/lib/meta-pixel";
 import { CheckCircle2 } from "lucide-react";
 
 export default function SellTradeInPage() {
@@ -39,6 +41,9 @@ export default function SellTradeInPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           idempotency_key: crypto.randomUUID(),
+          source: "trade_in_form",
+          ad_consent: hasAdConsent(),
+          advertising_consent_id: advertisingRecordId(),
           answers: {
             first_name: form.first_name,
             last_name: form.last_name,
@@ -60,11 +65,15 @@ export default function SellTradeInPage() {
           tracking: getTracking(),
         }),
       });
+      const data = await res.json().catch(() => null);
       if (!res.ok) {
-        const data = await res.json().catch(() => null);
         throw new Error(data?.error || "Submission failed");
       }
+      if (data?.event_id && !data?.duplicate && !data?.is_test) {
+        metaTrack("TradeInRequest", { custom: true, eventId: data.event_id });
+      }
       setDone(true);
+
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Try again");
     } finally {

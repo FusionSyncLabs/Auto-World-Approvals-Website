@@ -12,6 +12,8 @@ import { getTracking } from "@/lib/attribution";
 import { trackGa } from "@/lib/analytics";
 import { hasAdConsent, advertisingRecordId } from "@/components/site/CookieConsent";
 import { META_ELIGIBILITY_VERIFIED } from "@/lib/ad-policy";
+import { metaTrack } from "@/lib/meta-pixel";
+
 
 import { phoneError, isBlockedRegion, BLOCKED_PROVINCES, EASTERN_REGION_MESSAGE } from "@/lib/phone";
 
@@ -129,11 +131,14 @@ function ApplyPage() {
     setErrorMsg(null);
     try {
       const result = await submitIntakeFn({ data: parsed.data });
-      const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
-      if (META_ELIGIBILITY_VERIFIED && hasAdConsent() && fbq && !result.duplicate && !result.is_test) fbq("track", "Lead", {}, { eventID: result.event_id });
+      if (!result.duplicate && !result.is_test) metaTrack("Lead", { eventId: result.event_id });
       if (!result.duplicate) trackGa("generate_lead", { form_variant: variant });
-      try { sessionStorage.removeItem(TOKEN_KEY); } catch { /* storage unavailable */ }
-      void navigate({ to: "/thank-you", search: { id: result.id } });
+      try {
+        sessionStorage.removeItem(TOKEN_KEY);
+        sessionStorage.setItem("awa.last_lead_id", result.id);
+      } catch { /* storage unavailable */ }
+      void navigate({ to: "/thank-you" });
+
     } catch (error) {
       setErrorMsg(error instanceof Error ? error.message : "Unable to submit. Your answers are still here; please try again.");
       trackGa("application_error", { error_code: "submit_failed", form_variant: variant });

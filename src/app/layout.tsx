@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Suspense } from "react";
 import "@/styles.css";
 import { Providers } from "./providers";
+import { MetaPageViews } from "@/components/site/MetaPageViews";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -76,8 +78,12 @@ export default function RootLayout({
             }),
           }}
         />
+        <Suspense fallback={null}>
+          <MetaPageViews />
+        </Suspense>
         <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+

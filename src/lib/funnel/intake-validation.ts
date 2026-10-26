@@ -75,6 +75,10 @@ export const IntakeAnswersSchema = VehicleSchema.merge(BudgetSchema).merge(Emplo
     province: z.string(), city: z.string().trim().max(120).optional(), postal_code: z.string().trim().max(7).optional(),
     purchase_timeline: z.string(), employment_length: optionalOption(TIME_LENGTHS),
     date_of_birth: DateOfBirthSchema.shape.date_of_birth,
+    trade_in_year: z.string().optional(),
+    trade_in_make: z.string().optional(),
+    trade_in_model: z.string().optional(),
+    trade_in_mileage: z.string().optional(),
   }).strict().superRefine((d, ctx) => {
     for (const schema of [LocationSchema, IncomeSchema]) {
       const result = schema.safeParse(d);
@@ -84,6 +88,7 @@ export const IntakeAnswersSchema = VehicleSchema.merge(BudgetSchema).merge(Emplo
   });
 export const IntakeSubmissionSchema = z.object({
   idempotency_key: z.string().uuid(),
+  source: z.string().optional(),
   answers: IntakeAnswersSchema,
   consents: AcknowledgementSchema,
   advertising_consent_id: z.string().uuid().optional(),
@@ -95,5 +100,9 @@ export const IntakeSubmissionSchema = z.object({
     channel: z.string().max(120).optional(), device: z.string().max(40).optional(),
     referrer: z.string().max(500).optional(), landing_page: z.string().max(500).optional(),
     funnel_variant: z.enum(["A", "B"]).optional(),
+    fbclid_ts: z.union([z.string(), z.number()]).optional(),
+    fbp: z.string().optional(),
+    fbc: z.string().optional(),
+    xid: z.string().optional(),
   }).strict().optional(),
 }).strict();

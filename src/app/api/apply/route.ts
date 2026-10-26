@@ -1,7 +1,8 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest, after } from "next/server";
 import { IntakeSubmissionSchema, INTAKE_CONSENT_VERSION } from "@/lib/funnel/intake-validation";
 import { hostFromHeader, isProductionHost } from "@/lib/prod-host";
 import { normalizePhone } from "@/lib/phone";
+import { buildFbc, sendMetaEvent, type MetaServerEvent } from "@/lib/meta-capi";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,6 +19,7 @@ export async function POST(req: NextRequest) {
     const origin = req.headers.get("origin") || req.headers.get("referer") || req.headers.get("host") || "";
     const host = hostFromHeader(origin);
     const isTest = !isProductionHost(host);
+    const isTradeIn = input.source === "trade_in_form" || body.source === "trade_in_form";
 
     const { data: existing, error: lookupError } = await supabaseAdmin
       .from("leads")
@@ -33,9 +35,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (existing?.submitted_at) {
+      const existingEventId = `${isTradeIn ? "tradein" : "lead"}_${existing.duplicate_of || existing.id}`;
       const response = NextResponse.json({
         id: existing.id,
-        event_id: `lead_${existing.duplicate_of || existing.id}`,
+        event_id: existingEventId,
         duplicate: true,
         is_test: Boolean(existing.is_test),
       });
@@ -70,7 +73,7 @@ export async function POST(req: NextRequest) {
     }
 
     const now = new Date().toISOString();
-    const { channel, ...tracking } = input.tracking ?? {};
+    const { channel, fbclid_ts, fbp, fbc, xid, ...tracking } = input.tracking ?? {};
     const row = {
       ...input.answers,
       ...tracking,
@@ -78,7 +81,7 @@ export async function POST(req: NextRequest) {
       phone: normalizePhone(input.answers.phone),
       resume_token: input.idempotency_key,
       is_test: isTest,
-      source: "website",
+      source: isTradeIn ? "trade_in_form" : "website",
       status: "new" as const,
       submitted_at: now,
       last_activity_at: now,
@@ -110,9 +113,10 @@ export async function POST(req: NextRequest) {
         .maybeSingle();
 
       if (saved?.submitted_at) {
+        const savedEventId = `${isTradeIn ? "tradein" : "lead"}_${saved.duplicate_of || saved.id}`;
         const response = NextResponse.json({
           id: saved.id,
-          event_id: `lead_${saved.duplicate_of || saved.id}`,
+          event_id: savedEventId,
           duplicate: true,
           is_test: Boolean(saved.is_test),
         });
@@ -131,12 +135,89 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const eventId = `lead_${lead.duplicate_of || lead.id}`;
+    const eventId = `${isTradeIn ? "tradein" : "lead"}_${lead.duplicate_of || lead.id}`;
+
+    // Store meta_event_id on lead
+    try {
+      await supabaseAdmin.from("leads").update({ meta_event_id: eventId } as any).eq("id", lead.id);
+    } catch {}
+
+    const secGpc = req.headers.get("sec-gpc");
+    const consentRecordId = input.advertising_consent_id;
+    let consentOk = Boolean(input.ad_consent === true && secGpc !== "1");
+
+    if (consentOk && consentRecordId) {
+      try {
+        const visitorToken = req.cookies.get("awa_consent_visitor")?.value;
+        const { data: atEvent } = await supabaseAdmin
+          .from("advertising_consent_records")
+          .select("visitor_token,advertising")
+          .eq("id", consentRecordId)
+          .maybeSingle();
+
+        if (atEvent && atEvent.advertising === true) {
+          if (!visitorToken || !atEvent.visitor_token || atEvent.visitor_token === visitorToken) {
+            consentOk = true;
+          } else {
+            consentOk = false;
+          }
+        } else {
+          consentOk = false;
+        }
+      } catch {
+        // fail closed on consent verification error
+        consentOk = false;
+      }
+    }
+
+    if (consentOk && !isTest && !lead.duplicate_of) {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://autoworldapprovals.com";
+      const fbp = req.cookies.get("_fbp")?.value || input.tracking?.fbp;
+      const fbc =
+        req.cookies.get("_fbc")?.value ||
+        input.tracking?.fbc ||
+        buildFbc(input.tracking?.fbclid, input.tracking?.fbclid_ts ? Number(input.tracking?.fbclid_ts) : undefined);
+      const xid = req.cookies.get("aw_xid")?.value || input.tracking?.xid;
+
+      const metaEvent: MetaServerEvent = {
+        eventName: isTradeIn ? "TradeInRequest" : "Lead",
+        eventId,
+        sourceUrl: `${siteUrl}/${isTradeIn ? "sell-trade-in" : "apply"}`,
+        ip,
+        userAgent: agent,
+        fbp,
+        fbc,
+        xid,
+      };
+
+      after(async () => {
+        try {
+          const sent = await sendMetaEvent(metaEvent);
+          if (sent) {
+            await supabaseAdmin
+              .from("leads")
+              .update({ capi_sent_at: new Date().toISOString() } as any)
+              .eq("id", lead.id);
+            await supabaseAdmin.from("ad_conversion_log").insert({
+              event_id: eventId,
+              lead_id: String(lead.id),
+              event_name: metaEvent.eventName,
+              occurred_at: now,
+              consent_record_id: consentRecordId ?? null,
+              status: "sent",
+            } as any);
+          }
+        } catch (capiErr) {
+          console.error("[apply/route] CAPI send exception:", capiErr);
+        }
+      });
+    }
+
     if (!isTest && !lead.duplicate_of) {
       const { notifyLeadSubmission } = await import("@/lib/leads-notify.server");
       await notifyLeadSubmission(lead as Record<string, unknown>, eventId, ip, agent, {
         force: true,
-        skipCapi: !input.ad_consent || !input.advertising_consent_id,
+        skipCapi: true, // Managed by meta-capi above
       });
       try {
         const { autoDeliverLead } = await import("@/lib/lead-delivery.server");
@@ -149,7 +230,7 @@ export async function POST(req: NextRequest) {
       const crmUrl = process.env.CRM_API_URL || "https://crm.autoworldapprovals.com/api/leads";
       const leadObj = lead as Record<string, any>;
       const crmPayload = {
-        source: "website_apply",
+        source: isTradeIn ? "website_trade_in" : "website_apply",
         firstName: leadObj.first_name,
         lastName: leadObj.last_name,
         phone: leadObj.phone,
@@ -170,6 +251,14 @@ export async function POST(req: NextRequest) {
           model: leadObj.trade_in_model,
           mileageKm: leadObj.trade_in_mileage,
         } : { hasTradeIn: false },
+        utmSource: leadObj.utm_source || undefined,
+        utmMedium: leadObj.utm_medium || undefined,
+        utmCampaign: leadObj.utm_campaign || undefined,
+        utmTerm: leadObj.utm_term || undefined,
+        utmContent: leadObj.utm_content || undefined,
+        fbclid: leadObj.fbclid || undefined,
+        gclid: leadObj.gclid || undefined,
+        metaEventId: eventId,
       };
 
       try {
@@ -214,3 +303,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+

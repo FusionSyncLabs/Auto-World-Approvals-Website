@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, CheckCircle2, Loader2 } from "lucide-react";
 import { executeRecaptcha, loadRecaptchaScript } from "@/lib/recaptcha";
 import { trackGa } from "@/lib/analytics";
+import { hasAdConsent, advertisingRecordId } from "@/components/site/CookieConsent";
+import { metaTrack } from "@/lib/meta-pixel";
 import { toast } from "sonner";
 
 function formatPhoneInput(v: string): string {
@@ -48,14 +50,26 @@ export default function ContactPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message, recaptchaToken }),
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          message,
+          recaptchaToken,
+          ad_consent: hasAdConsent(),
+          advertising_consent_id: advertisingRecordId(),
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Could not send your message.");
       }
+      if (data?.event_id) {
+        metaTrack("Contact", { eventId: data.event_id });
+      }
       setSent(true);
       trackGa("contact_submit");
+
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not send your message.");
     } finally {

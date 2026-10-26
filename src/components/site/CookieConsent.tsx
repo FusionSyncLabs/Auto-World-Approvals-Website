@@ -14,19 +14,17 @@ import {
 } from "@/components/ui/dialog";
 import { Cookie, Shield, BarChart3, Megaphone, Sparkles } from "lucide-react";
 import { META_ELIGIBILITY_VERIFIED, AD_NOTICE_TEXT } from "@/lib/ad-policy";
+import { syncMetaPixel } from "@/lib/meta-pixel";
+import {
+  STORAGE_KEY,
+  POLICY_VERSION,
+  type Prefs,
+  readPrefs,
+  hasAdConsent,
+  advertisingRecordId,
+} from "@/lib/consent";
 
-const STORAGE_KEY = "awa-cookie-consent-v1";
-const POLICY_VERSION = 2;
-
-type Prefs = {
-  necessary: true;
-  functional: boolean;
-  analytics: boolean;
-  marketing: boolean;
-  ts: number;
-  version: number;
-  recordId?: string;
-};
+export { hasAdConsent, advertisingRecordId };
 
 const DEFAULT_PREFS: Prefs = {
   necessary: true,
@@ -37,27 +35,6 @@ const DEFAULT_PREFS: Prefs = {
   version: POLICY_VERSION,
 };
 
-/** True only when the visitor accepted marketing/advertising cookies. */
-export function hasAdConsent(): boolean {
-  if (typeof navigator === "undefined") return false;
-  return Boolean(readPrefs()?.marketing && readPrefs()?.recordId) && !(navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl;
-}
-
-export function advertisingRecordId(): string | undefined { return hasAdConsent() ? readPrefs()?.recordId : undefined; }
-
-function readPrefs(): Prefs | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const p = JSON.parse(raw) as Prefs;
-    if (p.version !== POLICY_VERSION) return null;
-    return p;
-  } catch {
-    return null;
-  }
-}
-
 function writePrefs(p: Prefs) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
@@ -65,6 +42,7 @@ function writePrefs(p: Prefs) {
     /* ignore */
   }
 }
+
 
 /** Apply consent to Google Analytics (Consent Mode v2) and Meta Pixel. */
 function applyConsent(p: Prefs) {
@@ -130,18 +108,25 @@ export function CookieConsent() {
     if (existing) {
       setPrefs(existing);
       applyConsent(existing);
+      syncMetaPixel();
     } else {
       // Ensure a "denied" default is registered before any tracker fires.
       applyConsent(DEFAULT_PREFS);
+      syncMetaPixel();
       timer = setTimeout(() => setVisible(true), 400);
     }
     const sync = (event: StorageEvent) => {
       if (event.key !== STORAGE_KEY) return;
       const next = readPrefs() || DEFAULT_PREFS;
-      setPrefs(next); applyConsent(next);
+      setPrefs(next);
+      applyConsent(next);
+      syncMetaPixel();
     };
     window.addEventListener("storage", sync);
-    return () => { if (timer) clearTimeout(timer); window.removeEventListener("storage", sync); };
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener("storage", sync);
+    };
   }, []);
 
   useEffect(() => {
@@ -162,6 +147,7 @@ export function CookieConsent() {
     setPrefs(full);
     writePrefs(full);
     applyConsent(full);
+    syncMetaPixel();
     setVisible(false);
     setManageOpen(false);
     try {
@@ -180,10 +166,12 @@ export function CookieConsent() {
           const saved = { ...full, recordId: record.id };
           writePrefs(saved);
           setPrefs(saved);
+          syncMetaPixel();
         }
       }
     } catch { /* no receipt means no advertising permission */ }
   }, []);
+
 
   const acceptAll = () => persist({ functional: true, analytics: true, marketing: true });
   const rejectAll = () => persist({ functional: false, analytics: false, marketing: false });

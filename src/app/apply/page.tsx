@@ -14,6 +14,7 @@ import { getTracking } from "@/lib/attribution";
 import { trackGa } from "@/lib/analytics";
 import { hasAdConsent, advertisingRecordId } from "@/components/site/CookieConsent";
 import { META_ELIGIBILITY_VERIFIED } from "@/lib/ad-policy";
+import { metaTrack, metaTrackOnce } from "@/lib/meta-pixel";
 import { isBlockedRegion, BLOCKED_PROVINCES, EASTERN_REGION_MESSAGE } from "@/lib/phone";
 import { ChoiceCard } from "@/components/funnel/ChoiceCard";
 import { VehicleGridCard } from "@/components/funnel/VehicleGridCard";
@@ -95,6 +96,9 @@ function ApplyForm() {
     } catch {
       submissionKey.current = crypto.randomUUID();
     }
+    if (submissionKey.current) {
+      metaTrackOnce("ViewContent", submissionKey.current);
+    }
     const selected = vt === "ev" ? "ev_hybrid" : vt;
     if (selected && VEHICLE_TYPES.some((o) => o.value === selected)) {
       setData({ vehicle_type: selected });
@@ -102,6 +106,12 @@ function ApplyForm() {
     setVariant(readVariant());
     setHydrated(true);
   }, [vt]);
+
+  useEffect(() => {
+    if (currentStep === "contact" && submissionKey.current) {
+      metaTrackOnce("ApplicationContactStep", submissionKey.current, true);
+    }
+  }, [currentStep]);
 
   const update = useCallback((patch: Partial<FunnelData>) => {
     dataRef.current = { ...dataRef.current, ...patch };
@@ -111,7 +121,12 @@ function ApplyForm() {
 
   const next = () => {
     if (!completedStepsRef.current.has(currentStep)) {
-      if (completedStepsRef.current.size === 0) trackGa("application_start", { form_variant: variant });
+      if (completedStepsRef.current.size === 0) {
+        trackGa("application_start", { form_variant: variant });
+        if (submissionKey.current) {
+          metaTrackOnce("ApplicationStarted", submissionKey.current, true);
+        }
+      }
       completedStepsRef.current.add(currentStep);
       trackGa("application_step_complete", { step_number: idx + 1, step_name: currentStep, form_variant: variant });
     }
@@ -161,17 +176,17 @@ function ApplyForm() {
       if (!response.ok) {
         throw new Error(result.error || "Unable to submit. Please try again.");
       }
-      const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
-      if (META_ELIGIBILITY_VERIFIED && hasAdConsent() && fbq && !result.duplicate && !result.is_test) {
-        fbq("track", "Lead", {}, { eventID: result.event_id });
+      if (!result.duplicate && !result.is_test) {
+        metaTrack("Lead", { eventId: result.event_id });
       }
       if (!result.duplicate) trackGa("generate_lead", { form_variant: variant });
       try {
         sessionStorage.removeItem(TOKEN_KEY);
+        sessionStorage.setItem("awa.last_lead_id", result.id);
       } catch {
         /* storage unavailable */
       }
-      router.push(`/thank-you?id=${result.id}`);
+      router.push("/thank-you");
     } catch (error) {
       setErrorMsg(error instanceof Error ? error.message : "Unable to submit. Your answers are still here; please try again.");
       trackGa("application_error", { error_code: "submit_failed", form_variant: variant });
@@ -180,6 +195,7 @@ function ApplyForm() {
       setSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-soft">

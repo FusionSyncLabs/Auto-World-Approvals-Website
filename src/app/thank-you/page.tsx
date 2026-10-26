@@ -1,15 +1,28 @@
 "use client";
 
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 import { Check } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 
+
 function ThankYouContent() {
   const searchParams = useSearchParams();
-  const id = searchParams?.get("id");
+  const [referenceId, setReferenceId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const urlId = searchParams?.get("id");
+    if (urlId) {
+      setReferenceId(urlId);
+    } else {
+      try {
+        const stored = sessionStorage.getItem("awa.last_lead_id");
+        if (stored) setReferenceId(stored);
+      } catch {}
+    }
+  }, [searchParams]);
 
   return (
     <SiteLayout>
@@ -24,11 +37,12 @@ function ThankYouContent() {
             your preferences and any further information needed. This is not a
             financing approval or an interest-rate offer.
           </p>
-          {id && (
+          {referenceId && (
             <p className="mt-5 font-mono text-base text-muted-foreground">
-              Reference: {id.slice(0, 8).toUpperCase()}
+              Reference: {referenceId.slice(0, 8).toUpperCase()}
             </p>
           )}
+
           <div className="mt-10 border-t border-border pt-8 text-center sm:text-left">
             <h2 className="text-xl font-semibold">What happens next</h2>
             <ol className="mt-4 inline-block list-decimal space-y-4 pl-5 text-left text-base text-muted-foreground">

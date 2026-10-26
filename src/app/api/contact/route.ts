@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest, after } from "next/server";
 import { z } from "zod";
 import { PersonNameSchema } from "@/lib/name-validation";
 
@@ -9,7 +9,10 @@ const ContactSchema = z.object({
   message: z.string().trim().min(1).max(5000),
   recaptchaToken: z.string().optional(),
   turnstileToken: z.string().optional(),
+  ad_consent: z.boolean().optional(),
+  advertising_consent_id: z.string().optional(),
 });
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -89,6 +92,7 @@ export async function POST(req: NextRequest) {
 
     // Save to Supabase if service role key is available, otherwise log in dev mode
     const hasServiceRole = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+    let messageId = "msg-" + Date.now();
     if (hasServiceRole) {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
       const { data: row, error } = await supabaseAdmin
@@ -106,10 +110,10 @@ export async function POST(req: NextRequest) {
 
       if (error) {
         console.warn("[contact] Supabase save warning (fallback to CRM):", error.message);
-        return NextResponse.json({ success: true, id: "crm-" + Date.now() });
+        messageId = "crm-" + Date.now();
+      } else if (row?.id) {
+        messageId = row.id;
       }
-
-      return NextResponse.json({ success: true, id: row?.id });
     } else {
       console.log("[contact] message received (saved in local dev mode):", {
         name: data.name,
@@ -118,8 +122,58 @@ export async function POST(req: NextRequest) {
         message: data.message,
         time: new Date().toISOString(),
       });
-      return NextResponse.json({ success: true, id: "dev-" + Date.now() });
+      messageId = "dev-" + Date.now();
     }
+
+    const eventId = `contact_${messageId}`;
+
+    const secGpc = req.headers.get("sec-gpc");
+    const consentRecordId = data.advertising_consent_id;
+    let consentOk = Boolean(data.ad_consent === true && secGpc !== "1");
+
+    if (consentOk && consentRecordId) {
+      try {
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { data: atEvent } = await supabaseAdmin
+          .from("advertising_consent_records")
+          .select("advertising")
+          .eq("id", consentRecordId)
+          .maybeSingle();
+        if (!atEvent || atEvent.advertising !== true) {
+          consentOk = false;
+        }
+      } catch {
+        consentOk = false;
+      }
+    }
+
+    if (consentOk) {
+      const { sendMetaEvent } = await import("@/lib/meta-capi");
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://autoworldapprovals.com";
+      const fbp = req.cookies.get("_fbp")?.value;
+      const fbc = req.cookies.get("_fbc")?.value;
+      const xid = req.cookies.get("aw_xid")?.value;
+
+      after(async () => {
+        try {
+          await sendMetaEvent({
+            eventName: "Contact",
+            eventId,
+            sourceUrl: `${siteUrl}/contact`,
+            ip,
+            userAgent,
+            fbp,
+            fbc,
+            xid,
+          });
+        } catch (capiErr) {
+          console.error("[contact] CAPI delivery error", capiErr);
+        }
+      });
+    }
+
+    return NextResponse.json({ success: true, id: messageId, event_id: eventId });
+
   } catch (err) {
     console.error("[contact] exception", err);
     return NextResponse.json(

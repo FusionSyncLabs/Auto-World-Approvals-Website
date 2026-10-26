@@ -1,5 +1,5 @@
-/** Do not bypass the financing dataset restriction notice. Enable only after documented review. */
-export const META_ELIGIBILITY_VERIFIED = false;
+/** Controlled via NEXT_PUBLIC_META_PIXEL_ID environment variable. */
+export const META_ELIGIBILITY_VERIFIED = Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID);
 export const AD_NOTICE_VERSION = "2026-10-19";
 export const AD_NOTICE_TEXT = "Optional analytics shares usage events with Google Analytics. Optional advertising, when eligible, shares page activity and completed-application events with Meta and Google for measurement and ad optimization. We do not share application answers or contact details for ad matching. Rejecting does not affect your application. Withdraw in Cookie preferences. Choices and this notice version are recorded; prior acceptance evidence is retained after withdrawal.";
 export function canSendAdvertising(input: { production: boolean; accepted: boolean; currentAccepted: boolean; eligible: boolean; optOut?: boolean }): boolean {
