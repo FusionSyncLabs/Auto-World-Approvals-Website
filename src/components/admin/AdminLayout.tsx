@@ -1,10 +1,10 @@
-import { Link, useNavigate, useRouterState } from "@/lib/router-compat";
+import { Link, useNavigate, useRouterState } from "../../lib/router-compat";
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Logo } from "@/components/site/Logo";
-import { Button } from "@/components/ui/button";
+import { supabase } from "../../integrations/supabase/client";
+import { Logo } from "../site/Logo";
+import { Button } from "../ui/button";
 import { LayoutDashboard, Users, Settings, LogOut, Sparkles, Shield, Menu, X, Palette, Library, MessageSquare, FileText, Heart, Megaphone, Image as ImageIcon, Share2, BarChart3 } from "lucide-react";
-import { BackgroundTasksPanel } from "@/components/admin/BackgroundTasksPanel";
+import { BackgroundTasksPanel } from "./BackgroundTasksPanel";
 
 const NAV = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -26,12 +26,12 @@ const NAV = [
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pathname = useRouterState({ select: (s: any) => s.location.pathname });
   const [email, setEmail] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? ""));
+    supabase.auth.getUser().then(({ data }: any) => setEmail(data?.user?.email ?? ""));
   }, []);
 
   // Close drawer on route change

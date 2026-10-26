@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader, getRequestIP } from "@tanstack/react-start/server";
 import { z } from "zod";
-import { PersonNameSchema } from "@/lib/name-validation";
+import { PersonNameSchema } from "./name-validation";
 
 const ContactSchema = z.object({
   name: PersonNameSchema,
@@ -40,21 +40,22 @@ async function verifyTurnstile(token: string | undefined, ip: string | null): Pr
 
 export const submitContactMessage = createServerFn({ method: "POST" })
   .inputValidator((input: ContactInput) => ContactSchema.parse(input))
-  .handler(async ({ data }) => {
+  .handler(async ({ data }: { data: any }) => {
+    const payload = data as ContactInput;
     const ip = getRequestIP({ xForwardedFor: true }) || null;
     const userAgent = getRequestHeader("user-agent") || null;
 
-    const ok = await verifyTurnstile(data.turnstileToken, ip);
+    const ok = await verifyTurnstile(payload.turnstileToken, ip);
     if (!ok) throw new Error("Captcha verification failed. Please try again.");
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("../integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
       .from("contact_messages")
       .insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone || null,
-        message: data.message,
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone || null,
+        message: payload.message,
         ip_address: ip,
         user_agent: userAgent,
       } as any)
@@ -67,7 +68,7 @@ export const submitContactMessage = createServerFn({ method: "POST" })
 
     // Fire-and-forget email notification
     try {
-      await sendContactNotification(data);
+      await sendContactNotification(payload);
     } catch (e) {
       console.error("[contact] email error", e);
     }
@@ -85,11 +86,11 @@ async function sendContactNotification(data: ContactInput) {
   const from = "Auto World Approvals <onboarding@resend.dev>";
   const esc = (s: string) =>
     s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-  const subject = `New contact message from ${data.name}`;
-  const safeMsg = esc(data.message).replace(/\n/g, "<br/>");
-  const safeName = esc(data.name);
-  const safeEmail = esc(data.email);
-  const safePhone = data.phone ? esc(data.phone) : null;
+  const subject = `New contact message from ${String(data.name || "")}`;
+  const safeMsg = esc(String(data.message || "")).replace(/\n/g, "<br/>");
+  const safeName = esc(String(data.name || ""));
+  const safeEmail = esc(String(data.email || ""));
+  const safePhone = data.phone ? esc(String(data.phone)) : null;
   const html = `
     <div style="font-family:Inter,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#0f172a">
       <h2 style="margin:0 0 12px;color:#0F1B3D">New contact form message</h2>
@@ -125,17 +126,17 @@ async function sendContactNotification(data: ContactInput) {
 }
 
 // --- Admin: list & mark read ---
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireSupabaseAuth } from "../integrations/supabase/auth-middleware";
 
 async function getAdminClient(userId: string) {
-  const { requireAdmin } = await import("@/lib/admin-auth.server");
+  const { requireAdmin } = await import("./admin-auth.server");
   return requireAdmin(userId);
 }
 
 export const listContactMessages = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const supabaseAdmin = await getAdminClient(context.userId);
+  .handler(async ({ context }: { context: any }) => {
+    const supabaseAdmin = await getAdminClient(context?.userId);
     const { data, error } = await supabaseAdmin
       .from("contact_messages")
       .select("*")
@@ -148,8 +149,8 @@ export const listContactMessages = createServerFn({ method: "GET" })
 export const setContactMessageRead = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: { id: string; isRead: boolean }) => i)
-  .handler(async ({ data, context }) => {
-    const supabaseAdmin = await getAdminClient(context.userId);
+  .handler(async ({ data, context }: { data: any; context: any }) => {
+    const supabaseAdmin = await getAdminClient(context?.userId);
     const { error } = await supabaseAdmin
       .from("contact_messages")
       .update({ is_read: data.isRead, read_at: data.isRead ? new Date().toISOString() : null })
@@ -161,8 +162,8 @@ export const setContactMessageRead = createServerFn({ method: "POST" })
 export const deleteContactMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i: { id: string }) => i)
-  .handler(async ({ data, context }) => {
-    const supabaseAdmin = await getAdminClient(context.userId);
+  .handler(async ({ data, context }: { data: any; context: any }) => {
+    const supabaseAdmin = await getAdminClient(context?.userId);
     const { error } = await supabaseAdmin.from("contact_messages").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };

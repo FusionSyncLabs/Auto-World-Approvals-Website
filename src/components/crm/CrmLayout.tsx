@@ -1,8 +1,8 @@
-import { Link, useNavigate, useRouterState } from "@/lib/router-compat";
+import { Link, useNavigate, useRouterState } from "../../lib/router-compat";
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Logo } from "@/components/site/Logo";
-import { Button } from "@/components/ui/button";
+import { supabase } from "../../integrations/supabase/client";
+import { Logo } from "../site/Logo";
+import { Button } from "../ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { LayoutGrid, BarChart3, Contact, UserCircle, LogOut, Menu, X, Shield } from "lucide-react";
 
@@ -16,12 +16,12 @@ const NAV = [
 export function CrmLayout({ children, role }: { children: ReactNode; role?: string }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pathname = useRouterState({ select: (s: any) => s.location.pathname });
   const [email, setEmail] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? ""));
+    supabase.auth.getUser().then(({ data }: any) => setEmail(data?.user?.email ?? ""));
   }, []);
   useEffect(() => setDrawerOpen(false), [pathname]);
 

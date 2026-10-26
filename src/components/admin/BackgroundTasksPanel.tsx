@@ -5,10 +5,10 @@
  */
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import { Link } from "../../lib/router-compat";
 import { Bell, Loader2, CheckCircle2, XCircle, X, Clock, MinusCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useMyJobs, type JobRow } from "@/hooks/use-jobs";
+import { Button } from "../ui/button";
+import { useMyJobs, type JobRow } from "../../hooks/use-jobs";
 import { toast } from "sonner";
 
 const KIND_LINK: Record<JobRow["kind"], { to: string; label: string }> = {
@@ -39,8 +39,8 @@ function StatusIcon({ status }: { status: JobRow["status"] }) {
 export function BackgroundTasksPanel() {
   const [open, setOpen] = useState(false);
   const { jobs } = useMyJobs({ limit: 20, notify: true });
-  const active = jobs.filter((j) => j.status === "queued" || j.status === "running");
-  const recent = jobs.filter((j) => j.status !== "queued" && j.status !== "running").slice(0, 10);
+  const active = jobs.filter((j: any) => j.status === "queued" || j.status === "running");
+  const recent = jobs.filter((j: any) => j.status !== "queued" && j.status !== "running").slice(0, 10);
 
   async function onCancel(id: string) {
     try {
@@ -90,7 +90,7 @@ export function BackgroundTasksPanel() {
                   <p className="px-2 pb-1 text-[17px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Running
                   </p>
-                  {active.map((j) => (
+                  {active.map((j: any) => (
                     <JobItem key={j.id} job={j} onCancel={() => onCancel(j.id)} />
                   ))}
                 </div>
@@ -101,7 +101,7 @@ export function BackgroundTasksPanel() {
                   <p className="px-2 pb-1 text-[17px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Recent
                   </p>
-                  {recent.map((j) => (
+                  {recent.map((j: any) => (
                     <JobItem key={j.id} job={j} />
                   ))}
                 </div>
